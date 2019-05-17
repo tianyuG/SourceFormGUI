@@ -1,0 +1,25 @@
+{
+  "name": "sourceformgui",
+  "version": "1.0.0",
+  "description": "The front-end component of SourceForm",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^5.0.1",
+    "electron-reload": "^1.4.0",
+    "python-bridge": "^1.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tianyuG/SourceFormGUI.git"
+  },
+  "author": "Tianyu Ge",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tianyuG/SourceFormGUI/issues"
+  },
+  "homepage": "https://github.com/tianyuG/SourceFormGUI#readme"
+}
