@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <!-- Load special keybinding settings -->
+    <script src="../utils/keybindings.js"></script>
+    <!-- Load special searchfield textbox handlings -->
+    <script src="../utils/searchfieldHandler.js"></script>
+    <script>
+      var jQuery = $ = require('jquery');
+      require('electron-virtual-keyboard/client')(window, jQuery);
+    </script>
+    <link href="node_modules/electron-virtual-keyboard/virtual-keyboard.css" type="text/css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <h1>SourceForm</h1>
+    We are using node <script>document.write(process.versions.node)</script>,
+    Chrome <script>document.write(process.versions.chrome)</script>,
+    and Electron <script>document.write(process.versions.electron)</script>.
+    <button onclick="const remote = require('electron').remote; let w = remote.getCurrentWindow(); w.close()">Quit</button>
+    <input type="text" id="searchfield" value="find an object to print..." onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" />
+    <script>
+      // Load onscreen keyboard
+      var keyboard = $('input:text').keyboard();
+    </script>
+  </body>
+
+</html>

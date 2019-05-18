@@ -2,8 +2,10 @@
   "name": "sourceformgui",
   "version": "1.0.0",
   "description": "The front-end component of SourceForm",
-  "main": "main.js",
-  "dependencies": {},
+  "main": "./js/main.js",
+  "dependencies": {
+    "eslint": "^5.16.0"
+  },
   "devDependencies": {
     "electron": "^5.0.1",
     "electron-localshortcut": "^3.1.0",
