@@ -8,7 +8,7 @@ const fs = require('electron').remote.require('fs')
 let win
 
 function launchAHK() {
-
+	// TODO
 }
 
 app.on('ready', () => {

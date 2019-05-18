@@ -12,7 +12,7 @@
       var jQuery = $ = require('jquery');
       require('electron-virtual-keyboard/client')(window, jQuery);
     </script>
-    <link href="node_modules/electron-virtual-keyboard/virtual-keyboard.css" type="text/css" rel="stylesheet" />
+    <link href="../css/virtual-keyboard-mod.css" type="text/css" rel="stylesheet" />
   </head>
 
   <body>
@@ -24,7 +24,7 @@
     <input type="text" id="searchfield" value="find an object to print..." onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" />
     <script>
       // Load onscreen keyboard
-      var keyboard = $('input:text').keyboard();
+      var keyboard = $('input:text').keyboard({"theme": "theme-black"});
     </script>
   </body>
 
