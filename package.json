@@ -4,7 +4,9 @@
   "description": "The front-end component of SourceForm",
   "main": "./js/main.js",
   "dependencies": {
-    "eslint": "^5.16.0"
+    "eslint": "^5.16.0",
+    "flickity": "^2.2.0",
+    "isotope-layout": "^3.0.6"
   },
   "devDependencies": {
     "electron": "^5.0.1",

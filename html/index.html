@@ -20,11 +20,11 @@
     We are using node <script>document.write(process.versions.node)</script>,
     Chrome <script>document.write(process.versions.chrome)</script>,
     and Electron <script>document.write(process.versions.electron)</script>.
-    <button onclick="const remote = require('electron').remote; let w = remote.getCurrentWindow(); w.close()">Quit</button>
+    <button onclick="const remote = require('electron').remote; let w = remote.getCurrentWindow(); w.close();">Quit</button>
     <input type="text" id="searchfield" value="find an object to print..." onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" />
     <script>
       // Load onscreen keyboard
-      var keyboard = $('input:text').keyboard({"theme": "theme-black"});
+      var keyboard = $('input:text').keyboard({ "theme": "theme-black" });
     </script>
   </body>
 

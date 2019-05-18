@@ -19,7 +19,7 @@ function createWindow() {
   })
 
   // and load the index.html of the app.
-  win.loadFile('./html/index.html')
+  win.loadFile('./html/setup.html')
 
   // Open the DevTools.
   win.webContents.openDevTools()
@@ -30,6 +30,7 @@ function createWindow() {
   win.setFullScreenable(false)
   win.setAlwaysOnTop(true)
 
+  // Enable virtual keyboard
   vkb = new VirtualKeyboard(win.webContents);
 
   // Emitted when the window is closed.
@@ -52,19 +53,7 @@ app.on('ready', () => {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
-
-app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (win === null) {
-    createWindow()
-  }
+  app.quit()
 })
 
 // In this file you can include the rest of your app's specific main process

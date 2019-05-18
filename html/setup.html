@@ -13,6 +13,11 @@
     <div id="ahk-installation-status"></div>
     <h2>Step 2: Identify Screens</h2>
     <p>Select which screen this window is being displayed.</p>
+    <div id="screen-selector"></div>
+    <button onclick="const remote = require('electron').remote; let w = remote.getCurrentWindow(); w.close();">Quit</button>
+    <script>
+      require("../js/setup.js")
+    </script>
   </body>
 
 </html>
