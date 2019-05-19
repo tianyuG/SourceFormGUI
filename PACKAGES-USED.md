@@ -1,0 +1,9 @@
+| Packages                  | License                    | Allow Commercial? | Same License?                 | Modified? | Version | Link                                                     |
+|---------------------------|----------------------------|-------------------|-------------------------------|-----------|---------|----------------------------------------------------------|
+| ESLint                    | MIT                        | Yes               | No                            | No        | 5.16.0  | https://github.com/eslint/eslint                         |
+| flickity                  | GPLv3 for OS or Commerical | Yes (Paid)        | Yes for GPL No for Commercial | No        | 2.2.0   | https://flickity.metafizzy.co/                           |
+| isotope-layout            | GPLv3 for OS or Commercial | Yes (Paid)        | Yes for GPL No for Commercial | No        | 3.0.6   | https://isotope.metafizzy.co/                            |
+|                           |                            |                   |                               |           |         |                                                          |
+| electron                  | MIT                        | Yes               | No                            | No        | 5.0.1   | https://github.com/electron/electron                     |
+| electron-virtual-keyboard | Unclear; MIT upstream      | Yes               | No                            | Yes       | 1.0.7   | https://github.com/DigiThinkIT/electron-virtual-keyboard |
+| python-bridge             | MIT                        | Yes               | No                            | No        | 1.1.0   | https://github.com/Submersible/node-python-bridge        |
