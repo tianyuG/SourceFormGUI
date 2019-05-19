@@ -1,6 +1,3 @@
-// Load keyboard
-var keyboard = $('input:text').keyboard();
-
 // Remove default content in the searchfield textbox on click
 function checkSearchFieldOnClick() {
     if (document.getElementById("searchfield").value === "find an object to print...") {

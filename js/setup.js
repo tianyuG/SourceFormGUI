@@ -20,9 +20,9 @@ require('electron').remote.getCurrentWindow().webContents.once('dom-ready', () =
       document.getElementById('ahk-installation-status-warning').innerHTML = "AHK is not installed."
     }
   })
-  let displays = remote.screen.getAllDisplays()
+  let displays = require('electron').remote.screen.getAllDisplays()
   if (displays.length == 2) {
-    const { d0width, d0height } = remote.screen.getPrimaryDisplay().workAreaSize
+    const { d0width, d0height } = require('electron').remote.screen.getPrimaryDisplay().workAreaSize
     let d1 = displays.find((display) => {
       return display.bounds.x !== 0 || display.bounds.y !== 0
     })

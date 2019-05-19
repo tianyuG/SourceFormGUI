@@ -6,13 +6,14 @@
   "dependencies": {
     "eslint": "^5.16.0",
     "flickity": "^2.2.0",
-    "isotope-layout": "^3.0.6"
+    "isotope-layout": "^3.0.6",
+    "virtual-keyboard": "^1.29.1"
   },
   "devDependencies": {
     "electron": "^5.0.1",
     "electron-localshortcut": "^3.1.0",
     "electron-reload": "^1.4.0",
-    "electron-virtual-keyboard": "^1.0.7",
+    "electron-virtual-keyboard": "100.0.7",
     "python-bridge": "^1.1.0"
   },
   "scripts": {

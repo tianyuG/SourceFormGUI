@@ -8,6 +8,7 @@
     <script src="../utils/keybindings.js"></script>
     <!-- Load special searchfield textbox handlings -->
     <script src="../utils/searchfieldHandler.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/disable-text-selection.css">
     <script>
       var jQuery = $ = require('jquery');
       require('electron-virtual-keyboard/client')(window, jQuery);
@@ -24,7 +25,71 @@
     <input type="text" id="searchfield" value="find an object to print..." onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" />
     <script>
       // Load onscreen keyboard
-      var keyboard = $('input:text').keyboard({ "theme": "theme-black" });
+      // var keyboard = $('input:text').keyboard({
+      //   theme: 'theme-black'
+      // });
+
+      // Define a key to hide the keyboard
+      $.fn.keyboard_custom_keys['^hidekey$'] = {
+        render: function(kb, $key, modifier) {
+          // You can override the key dom element to display anything you
+          // want on the key. On this case, we just replace the key text.
+          $key.text('hide');
+        },
+        handler: function(kb, $key) {
+          // This key simply switche the keyboard keyout to a custom one
+          // called 'special'.
+          kb.hide();
+          document.getElementById('searchfield').blur()
+        }
+      }
+      $.fn.keyboard_custom_keys['^leftarrow$'] = {
+        render: function(kb, $key, modifier) {
+          // You can override the key dom element to display anything you
+          // want on the key. On this case, we just replace the key text.
+          $key.text('←');
+        },
+        handler: function(kb, $key) {
+          // This key simply switche the keyboard keyout to a custom one
+          // called 'special'.
+          var box = document.getElementById('searchfield')
+          var caret = box.selectionStart
+          box.setSelectionRange(caret - 1, caret - 1)
+        }
+      }
+      $.fn.keyboard_custom_keys['^rightarrow$'] = {
+        render: function(kb, $key, modifier) {
+          // You can override the key dom element to display anything you
+          // want on the key. On this case, we just replace the key text.
+          $key.text('→');
+        },
+        handler: function(kb, $key) {
+          // This key simply switche the keyboard keyout to a custom one
+          // called 'special'.
+          var box = document.getElementById('searchfield')
+          var caret = box.selectionStart
+          box.setSelectionRange(caret + 1, caret + 1)
+        }
+      }
+      // Load keyboard
+      var keyboard = $('input:text').keyboard({
+        layout: {
+          'normal': [
+            '1 2 3 4 5 6 7 8 9 0 {backspace}',
+            ['q w e r t y u i o p {sp:1}'],
+            ['{sp:2} a s d f g h j k l \' {enter}'],
+            ['{shift} {sp:1} z x c v b n m . {sp:2}'],
+            ['{hidekey} {sp:1} {space} {sp:1} {leftarrow} {rightarrow}']
+          ],
+          'shift': [
+            '1 2 3 4 5 6 7 8 9 0  {backspace}',
+            ['Q W E R T Y U I O P {sp:1}'],
+            ['{sp:2} A S D F G H J K L " {enter}'],
+            ['{shift} {sp:1} Z X C V B N M ? {sp:2}'],
+            ['{hidekey} {sp:1} {space} {sp:1} {leftarrow} {rightarrow}']
+          ]
+        }
+      });
     </script>
   </body>
 
