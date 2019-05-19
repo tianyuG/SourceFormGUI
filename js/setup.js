@@ -4,6 +4,7 @@ const remote = require('electron')
 const { app, BrowserWindow, shell } = remote
 const os = require('os')
 const fs = require('electron').remote.require('fs')
+const { ipcMain } = require('electron')
 
 let win
 
@@ -14,15 +15,9 @@ function launchAHK() {
 require('electron').remote.getCurrentWindow().webContents.once('dom-ready', () => {
   fs.access(`C:\\Program Files\\AutoHotkey\\AutoHotkey.exe`, (err) => {
     if (err) {
-      var node = document.createElement("p")
-      var text = document.createTextNode("AHK is not installed.")
-      node.appendChild(text)
-      document.getElementById('ahk-installation-status').appendChild(node)
-    } else {
-      var button = document.createElement("button")
-      button.innerHTML = "Launch AHK Script"
-      button.onclick = "launchAHK()"
-      document.getElementById('ahk-installation-status').appendChild(button)
+      document.getElementById('start-ahk-button').style.display = "none"
+      document.getElementById('stop-ahk-button').style.display = "none"
+      document.getElementById('ahk-installation-status-warning').innerHTML = "AHK is not installed."
     }
   })
   let displays = remote.screen.getAllDisplays()
@@ -31,11 +26,13 @@ require('electron').remote.getCurrentWindow().webContents.once('dom-ready', () =
     let d1 = displays.find((display) => {
       return display.bounds.x !== 0 || display.bounds.y !== 0
     })
-    const { d1width, d1height } = d1.screen.getPrimaryDisplay().workAreaSize
+    const { d1width, d1height } = d1.workAreaSize
+
+    document.getElementById('top-button').disabled = false
+    document.getElementById('bottom-button').disabled = false
   } else {
-    var para = document.createElement("p")
-    var ptext = document.createTextNode("Unsupported display setup (2 required; detected " + displays.length + " display/displays).")
-    para.appendChild(ptext)
-    document.getElementById('screen-selector').appendChild(para)
+    document.getElementById('top-button').style.display = "none"
+    document.getElementById('bottom-button').style.display = "none"
+    document.getElementById('screen-selector-warning').innerHTML = "Unsupported display setup (2 required; detected " + displays.length + " display/displays)."
   }
 });
