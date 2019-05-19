@@ -9,10 +9,12 @@
     <!-- Load special searchfield textbox handlings -->
     <script src="../utils/searchfieldHandler.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/disable-text-selection.css">
+    <!-- Load onscreen keyboard -->
     <script>
       var jQuery = $ = require('jquery');
       require('electron-virtual-keyboard/client')(window, jQuery);
     </script>
+    <!-- Load stylesheet for onscreen keyboard -->
     <link href="../css/virtual-keyboard-mod.css" type="text/css" rel="stylesheet" />
   </head>
 
@@ -24,48 +26,33 @@
     <button onclick="const remote = require('electron').remote; let w = remote.getCurrentWindow(); w.close();">Quit</button>
     <input type="text" id="searchfield" value="find an object to print..." onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" />
     <script>
-      // Load onscreen keyboard
-      // var keyboard = $('input:text').keyboard({
-      //   theme: 'theme-black'
-      // });
-
       // Define a key to hide the keyboard
       $.fn.keyboard_custom_keys['^hidekey$'] = {
         render: function(kb, $key, modifier) {
-          // You can override the key dom element to display anything you
-          // want on the key. On this case, we just replace the key text.
           $key.text('hide');
         },
         handler: function(kb, $key) {
-          // This key simply switche the keyboard keyout to a custom one
-          // called 'special'.
           kb.hide();
           document.getElementById('searchfield').blur()
         }
       }
+      // Define the left arrow key (move caret one character to the left)
       $.fn.keyboard_custom_keys['^leftarrow$'] = {
         render: function(kb, $key, modifier) {
-          // You can override the key dom element to display anything you
-          // want on the key. On this case, we just replace the key text.
           $key.text('←');
         },
         handler: function(kb, $key) {
-          // This key simply switche the keyboard keyout to a custom one
-          // called 'special'.
           var box = document.getElementById('searchfield')
           var caret = box.selectionStart
           box.setSelectionRange(caret - 1, caret - 1)
         }
       }
+      // Define the right arrow key (move caret one character to the right)
       $.fn.keyboard_custom_keys['^rightarrow$'] = {
         render: function(kb, $key, modifier) {
-          // You can override the key dom element to display anything you
-          // want on the key. On this case, we just replace the key text.
           $key.text('→');
         },
         handler: function(kb, $key) {
-          // This key simply switche the keyboard keyout to a custom one
-          // called 'special'.
           var box = document.getElementById('searchfield')
           var caret = box.selectionStart
           box.setSelectionRange(caret + 1, caret + 1)
@@ -88,6 +75,16 @@
             ['{shift} {sp:1} Z X C V B N M ? {sp:2}'],
             ['{hidekey} {sp:1} {space} {sp:1} {leftarrow} {rightarrow}']
           ]
+        }
+      });
+
+      // Hide virtual keyboard if user clicked outside of its container
+      $(document).click(function(event) {
+        $target = $(event.target);
+        if (!$target.is("input#searchfield") &&
+          !$target.closest('.virtual-keyboard').length &&
+          $('.virtual-keyboard').is(":visible")) {
+          $('.virtual-keyboard').hide();
         }
       });
     </script>
