@@ -24,10 +24,11 @@
     Chrome <script>document.write(process.versions.chrome)</script>,
     and Electron <script>document.write(process.versions.electron)</script>.
     <button onclick="let w = remote.getCurrentWindow(); w.close();">Quit</button>
-    <input type="text" id="searchfield" value="find an object to print..." onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" onselect="checkSearchFieldOnSelect()"/>
+    <input type="text" id="searchfield" value="find an object to print..." 
+    onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" 
+    onselect="checkSearchFieldOnSelect()" />
     <script>
       const { ipcRenderer } = require('electron')
-
 
       // Define a key to hide the keyboard
       $.fn.keyboard_custom_keys['^hidekey$'] = {
@@ -114,6 +115,7 @@
         }
       });
 
+      // Commit search queries
       $(document).keydown(function(event) {
         if ($target.is("input#searchfield") &&
           event.key === 'Enter' && document.getElementById('searchfield').value !== '') {
@@ -121,8 +123,6 @@
           ipcRenderer.send('search-query', document.getElementById('searchfield').value)
         }
       })
-
-      
     </script>
   </body>
 
