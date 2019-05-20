@@ -2,9 +2,10 @@
     display: inline-block;
     background: white;
     font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    font-size: 24px;
     user-select: none;
     white-space: nowrap;
-    border-radius: .3rem;
+    border-radius: .5rem;
 }
 
 .virtual-keyboard .layout {
@@ -30,16 +31,16 @@
     display: inline-block;
     vertical-align: bottom;
     text-align: center;
-    margin: .2rem;
-    padding: .3rem .7rem;
-    line-height: 1.3rem;
+    margin: .5rem;
+    padding: .6rem 1rem;
+    line-height: 2rem;
     cursor: pointer;
     user-select: none;
-    border: 1px solid lightgrey;
-    border-radius: .3rem;
+    border: 2px solid lightgrey;
+    border-radius: .5rem;
     color: grey;
     white-space: nowrap;
-    min-width: 1rem;
+    min-width: 2rem;
 }
 
 .virtual-keyboard .key.spacer {
