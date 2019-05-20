@@ -23,9 +23,9 @@
       <button id="bottom-button" disabled="true">Bottom</button>
       <p id="screen-selector-warning"></p>
     </div>
-    
-    <div id="step3">
+    <div id="step4">
       <h2>Finally: Start SourceForm</h2>
+      <input type="checkbox" id="confirm-sourceform-config" onclick="onCheckboxChange()"><label for="confirm-sourceform-config">Check to confirm that SourceForm has been properly configured.</label><br /> <br />
       <button id="start-sourceform-button" disabled="true">Start SourceForm</button>
       <span style="display: inline-block; width: 20px;"></span>
       <button onclick="const remote = require('electron').remote; let w = remote.getCurrentWindow(); w.close();">Quit</button>
@@ -33,27 +33,16 @@
     <script>
       require("../js/setup.js")
 
-      const { ipcRenderer } = require('electron');
-      const startahkbtn = document.getElementById('start-ahk-button');
-      const stopahkbtn = document.getElementById('stop-ahk-button');
-      const topbtn = document.getElementById('top-button');
-      const btmbtn = document.getElementById('bottom-button');
-      const startsourceformbtn = document.getElementById('start-sourceform-button');
-      startahkbtn.addEventListener('click', () => {
-        ipcRenderer.send('setup-start-ahk-button-clicked')
-      });
-      stopahkbtn.addEventListener('click', () => {
-        ipcRenderer.send('setup-stop-ahk-button-clicked')
-      });
-      topbtn.addEventListener('click', () => {
-        ipcRenderer.send('setup-top-button-clicked')
-      });
-      btmbtn.addEventListener('click', () => {
-        ipcRenderer.send('setup-bottom-button-clicked')
-      });
-      startsourceformbtn.addEventListener('click', () => {
-        ipcRenderer.send('setup-start-sourceform-button-clicked')
-      });
+      function onCheckboxChange() {
+        var checkbox = document.getElementById('confirm-sourceform-config')
+        var button = document.getElementById('start-sourceform-button')
+
+        if (checkbox.checked == true) {
+          button.disabled = false
+        } else {
+          button.disabled = true
+        }
+      }
     </script>
   </body>
 

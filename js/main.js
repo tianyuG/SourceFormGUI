@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, electron } = require('electron')
 const url = require('url')
 const path = require('path')
 const VirtualKeyboard = require('electron-virtual-keyboard')
@@ -51,6 +51,10 @@ const windows = {}
 // app.on('ready', createWindow)
 app.on('ready', () => {
   // createWindow();
+
+  // Collect information on monitors
+  global.displays = require('electron').screen.getAllDisplays()
+
 
   // Create main window on the top screen
   windows.main = new BrowserWindow({
@@ -113,4 +117,18 @@ app.on('window-all-closed', () => {
 // Run AHK script on demand
 ipcMain.on('start-ahk-button-clicked', (evt, arg) => {
   app.quit()
+})
+
+// Swap monitors on demand
+ipcMain.on('swap-displays', (evt, arg) => {
+  // console.log(windows.main.getBounds().x)
+  // console.log(typeof windows)
+  if (typeof (windows.main) != undefined && typeof(windows.preview) != undefined && require('electron').screen.getAllDisplays().length == 2) {
+    var mainWindowBounds = windows.main.getBounds()
+    var mainDisplay = require('electron').screen.getDisplayNearestPoint({x: mainWindowBounds.x, y: mainWindowBounds.x})
+    var secondaryWindowBounds = windows.preview.getBounds()
+    var secondaryDisplay = require('electron').screen.getDisplayNearestPoint({x: secondaryWindowBounds.x, y: secondaryWindowBounds.x})
+    window.main.setBounds(secondaryDisplay.bounds)
+    window.preview.setBounds(mainDisplay.bounds)
+  }
 })
