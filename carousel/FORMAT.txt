@@ -1,0 +1,17 @@
+The format of this JSON file:
+
+{
+	"0000": {											<- [1]
+		"title": "Statue of Liberty",					<- [2]
+		"thumbnail": "imgs\0000.jpg",					<- [3]
+		"path": "C:\\Users\\test\\projects\\liberty"	<- [4]
+	},
+	...
+}
+
+[1]:	ID of the model described in this stacked JSON file. 
+			Ideally sequential, but not identical.
+[2]:	The _relative_ path to the thumbnail of this model
+[3]:	The _absolute_ path to the folder that contains the point cloud file
+			(fused.ply) and the downloaded images. For best performance,
+			this path should not be a network location.
