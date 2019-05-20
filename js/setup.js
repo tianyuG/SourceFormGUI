@@ -13,27 +13,21 @@ function launchAHK() {
 
 require('electron').remote.getCurrentWindow().webContents.once('dom-ready', () => {
   fs.access(`C:\\Program Files\\AutoHotkey\\AutoHotkey.exe`, (err) => {
-    // if (err) {
-    // document.getElementById('start-ahk-button').style.display = "none"
-    // document.getElementById('stop-ahk-button').style.display = "none"
-    // document.getElementById('ahk-installation-status-warning').innerHTML = "AHK is not installed."
-    // }
+    if (err) {
+    document.getElementById('start-ahk-button').style.display = "none"
+    document.getElementById('stop-ahk-button').style.display = "none"
+    document.getElementById('ahk-installation-status-warning').innerHTML = "AHK is not installed."
+    }
   })
-  // let displays = require('electron').remote.screen.getAllDisplays()
-  // if (displays.length == 2) {
-  //   const { d0width, d0height } = require('electron').remote.screen.getPrimaryDisplay().workAreaSize
-  //   let d1 = displays.find((display) => {
-  //     return display.bounds.x !== 0 || display.bounds.y !== 0
-  //   })
-  //   const { d1width, d1height } = d1.workAreaSize
 
-  //   document.getElementById('top-button').disabled = false
-  //   document.getElementById('bottom-button').disabled = false
-  // } else {
-  //   document.getElementById('top-button').style.display = "none"
-  //   document.getElementById('bottom-button').style.display = "none"
-  //   document.getElementById('screen-selector-warning').innerHTML = "Unsupported display setup (2 required; detected " + displays.length + " display/displays)."
-  // }
+  if (require('electron').remote.getGlobal('displays').length == 2) {
+    document.getElementById('top-button').disabled = false
+    document.getElementById('bottom-button').disabled = false
+  } else {
+    document.getElementById('top-button').style.display = "none"
+    document.getElementById('bottom-button').style.display = "none"
+    document.getElementById('screen-selector-warning').innerHTML = "Unsupported display setup (2 required; " + require('electron').remote.getGlobal('displays').length + " detected)."
+  }
 
   const startahkbtn = document.getElementById('start-ahk-button');
   const stopahkbtn = document.getElementById('stop-ahk-button');

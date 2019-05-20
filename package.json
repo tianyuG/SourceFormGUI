@@ -18,7 +18,8 @@
   },
   "scripts": {
     "start": "electron .",
-    "rebuild": "electron-rebuild ."
+    "rebuild": "electron-rebuild .",
+    "debug": "electron . --debugenv"
   },
   "repository": {
     "type": "git",
