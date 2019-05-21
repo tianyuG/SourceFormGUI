@@ -13,7 +13,6 @@
     "electron": "^5.0.1",
     "electron-localshortcut": "^3.1.0",
     "electron-reload": "^1.4.0",
-    "electron-virtual-keyboard": "100.0.7",
     "python-bridge": "^1.1.0"
   },
   "scripts": {
