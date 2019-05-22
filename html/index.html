@@ -12,18 +12,22 @@
     <!-- Load onscreen keyboard -->
     <script>
       var jQuery = $ = require('jquery');
-      require('electron-virtual-keyboard/client')(window, jQuery);
-    </script>
+    require('electron-virtual-keyboard/client')(window, jQuery);
+  </script>
     <!-- Load stylesheet for onscreen keyboard -->
     <link href="../css/virtual-keyboard-mod.css" type="text/css" rel="stylesheet" />
     <link rel="stylesheet" href="../node_modules/swiper/dist/css/swiper.min.css">
     <script src="../node_modules/swiper/dist/js/swiper.min.js"></script>
     <style>
       .swiper-container {
-        width: 600px;
+        width: 80%;
         height: 300px;
       }
-    </style>
+
+      .swiper-slide img {
+        width: 550px;
+      }
+  </style>
   </head>
 
   <body>
@@ -32,35 +36,43 @@
     Chrome <script>document.write(process.versions.chrome)</script>,
     and Electron <script>document.write(process.versions.electron)</script>.
     <button onclick="let w = remote.getCurrentWindow(); w.close();">Quit</button>
-    <input type="text" id="searchfield" value="find an object to print..." onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" onselect="checkSearchFieldOnSelect()" />
+    <input type="text" id="searchfield" value="find an object to print..."
+      onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()"
+      onselect="checkSearchFieldOnSelect()" />
     <!-- TEST -->
     <!-- Slider main container -->
     <div class="swiper-container">
-      <!-- Additional required wrapper -->
-      <div class="swiper-wrapper">
-        <!-- Slides -->
-        <div class="swiper-slide">
-          <img src="../carousel/imgs/0000.jpg" alt="0000" />
-        </div>
-        <div class="swiper-slide">
-          <img src="../carousel/imgs/0001.jpg" alt="0001" />
-        </div>
-        <div class="swiper-slide">
-          <img src="../carousel/imgs/0002.jpg" alt="0002" />
-        </div>
-        <div class="swiper-slide">
-          <img src="../carousel/imgs/0003.jpg" alt="0003" />
-        </div>
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+      <!-- Slides -->
+      <div class="swiper-slide">
+        <img src="../carousel/imgs/0000.jpg" alt="0000" />
+      </div>
+    <div class="swiper-slide">
+        <img src="../carousel/imgs/0001.jpg" alt="0001" />
+      </div>
+    <div class="swiper-slide">
+        <img src="../carousel/imgs/0002.jpg" alt="0002" />
+      </div>
+    <div class="swiper-slide">
+        <img src="../carousel/imgs/0003.jpg" alt="0003" />
       </div>
     </div>
-            <!-- END-TEST -->
+    </div>
+    <!-- END-TEST -->
     <script>
       require('../js/index.js')
 
       var mySwiper = new Swiper('.swiper-container', {
-        // Optional parameters
         direction: 'horizontal',
-        loop: true
+        autohight: true,
+        spaceBetween: 10,
+        slidesPerView: 3,
+        loop: true,
+        autoplay: {
+          delay: 1500,
+          disableOnInteraction: true,
+        }
       })
     </script>
   </body>
