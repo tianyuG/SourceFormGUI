@@ -54,13 +54,11 @@
 
   <body>
     <h1>SourceForm</h1>
-    We are using node <script>document.write(process.versions.node)</script>,
-    Chrome <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
-    <button onclick="let w = remote.getCurrentWindow(); w.close();">Quit</button>
+    <a href="diagnostics.html">Diagnostics</a>
     <input type="text" id="searchfield" value="find an object to print..."
     onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()"
     onselect="checkSearchFieldOnSelect()" />
+    <button onclick="let w = remote.getCurrentWindow(); w.close();">Quit</button>
     <!-- TEST -->
     <!-- Slider main container -->
     <div class="swiper-container">
@@ -105,7 +103,7 @@
           disableOnInteraction: false,
         }
       })
-      
+
       carousel.on('slideChange', function() {
         // console.log(carousel.slides.length + " " + carousel.activeIndex + " " + carousel.previousIndex);
         // console.log(carousel.slides[carousel.activeIndex])
