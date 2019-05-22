@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 
+<<<<<<< HEAD
   <head>
     <meta charset="UTF-8">
     <title>SourceForm</title>
@@ -22,6 +23,55 @@
       .swiper-container {
         width: 80%;
         height: 300px;
+=======
+<head>
+  <meta charset="UTF-8">
+  <title>SourceForm</title>
+  <!-- Load special keybinding settings -->
+  <script src="../utils/keybindings.js"></script>
+  <!-- Load special searchfield textbox handlings -->
+  <script src="../utils/searchfieldHandler.js"></script>
+  <link rel="stylesheet" type="text/css" href="../css/disable-text-selection.css">
+  <!-- Load onscreen keyboard -->
+  <script>
+    var jQuery = $ = require('jquery');
+    require('electron-virtual-keyboard/client')(window, jQuery);
+  </script>
+  <!-- Load stylesheet for onscreen keyboard -->
+  <link href="../css/virtual-keyboard-mod.css" type="text/css" rel="stylesheet" />
+  <link rel="stylesheet" href="../node_modules/swiper/dist/css/swiper.min.css">
+  <script src="../node_modules/swiper/dist/js/swiper.min.js"></script>
+  <style>
+    .swiper-container {
+      width: 80%;
+      height: 300px;
+    }
+
+    /*.swiper-slide {
+      position: relative;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      }*/
+
+      .swiper-slide img {
+        width: 300px;
+      }
+
+      .swiper-slide-alt {
+        width: 300px;
+        text-align: center;
+        display: none;
+>>>>>>> Experimenting with Swiper for the main screen carousel
       }
 
       .swiper-slide img {
@@ -37,6 +87,7 @@
     and Electron <script>document.write(process.versions.electron)</script>.
     <button onclick="let w = remote.getCurrentWindow(); w.close();">Quit</button>
     <input type="text" id="searchfield" value="find an object to print..."
+<<<<<<< HEAD
       onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()"
       onselect="checkSearchFieldOnSelect()" />
     <!-- TEST -->
@@ -58,23 +109,74 @@
         <img src="../carousel/imgs/0003.jpg" alt="0003" />
       </div>
     </div>
+=======
+    onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()"
+    onselect="checkSearchFieldOnSelect()" />
+    <!-- TEST -->
+    <!-- Slider main container -->
+    <div class="swiper-container">
+      <!-- Additional required wrapper -->
+      <div class="swiper-wrapper">
+        <!-- Slides -->
+        <div class="swiper-slide">
+          <img src="../carousel/imgs/0000.jpg" alt="0000" />
+          <div class="swiper-slide-alt">0000</div>
+        </div>
+        <div class="swiper-slide">
+          <img src="../carousel/imgs/0001.jpg" alt="0001" />
+          <div class="swiper-slide-alt">0001</div>
+        </div>
+        <div class="swiper-slide">
+          <img src="../carousel/imgs/0002.jpg" alt="0002" />
+          <div class="swiper-slide-alt">0002</div>
+        </div>
+        <div class="swiper-slide">
+          <img src="../carousel/imgs/0003.jpg" alt="0003" />
+          <div class="swiper-slide-alt">0003</div>
+        </div>
+      </div>
+      <!-- Add Pagination -->
+      <div class="swiper-pagination"></div>
+>>>>>>> Experimenting with Swiper for the main screen carousel
     </div>
     <!-- END-TEST -->
     <script>
       require('../js/index.js')
 
+<<<<<<< HEAD
       var mySwiper = new Swiper('.swiper-container', {
         direction: 'horizontal',
         autohight: true,
+=======
+      var carousel = new Swiper('.swiper-container', {
+        direction: 'horizontal',
+        autohight: true,
+        pagination: {
+          el: '.swiper-pagination',
+        },
+>>>>>>> Experimenting with Swiper for the main screen carousel
         spaceBetween: 10,
         slidesPerView: 3,
         loop: true,
         autoplay: {
+<<<<<<< HEAD
           delay: 1500,
           disableOnInteraction: true,
         }
+=======
+          delay: 3000,
+          disableOnInteraction: false,
+        }
+      })
+      
+      carousel.on('slideChange', function() {
+        // console.log(carousel.slides.length + " " + carousel.activeIndex + " " + carousel.previousIndex);
+        // console.log(carousel.slides[carousel.activeIndex])
+        carousel.slides[carousel.activeIndex].getElementsByClassName("swiper-slide-alt")[0].style.display = "none";
+        carousel.slides[carousel.activeIndex + 1].getElementsByClassName("swiper-slide-alt")[0].style.display = "block";
+>>>>>>> Experimenting with Swiper for the main screen carousel
       })
     </script>
   </body>
 
-</html>
+  </html>
