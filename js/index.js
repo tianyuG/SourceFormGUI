@@ -59,18 +59,18 @@ var keyboard = $('input:text').keyboard({
   // theme: 'theme-black',
   layout: {
     'normal': [
-      '1 2 3 4 5 6 7 8 9 0 {backspace}',
-      ['q w e r t y u i o p {sp:1}'],
-      ['{sp:2} a s d f g h j k l \' {enterIcon}'],
-      ['{shiftIcon} {sp:1} z x c v b n m . {sp:2}'],
-      ['{hidekey} {sp:1} {space} {sp:1} {leftarrow} {rightarrow}']
+    '1 2 3 4 5 6 7 8 9 0 {backspace}',
+    ['q w e r t y u i o p {sp:1}'],
+    ['{sp:2} a s d f g h j k l \' {enterIcon}'],
+    ['{shiftIcon} {sp:1} z x c v b n m . {sp:2}'],
+    ['{hidekey} {sp:1} {space} {sp:1} {leftarrow} {rightarrow}']
     ],
     'shift': [
-      '1 2 3 4 5 6 7 8 9 0  {backspace}',
-      ['Q W E R T Y U I O P {sp:1}'],
-      ['{sp:2} A S D F G H J K L " {enterIcon}'],
-      ['{shiftIcon} {sp:1} Z X C V B N M ? {sp:2}'],
-      ['{hidekey} {sp:1} {space} {sp:1} {leftarrow} {rightarrow}']
+    '1 2 3 4 5 6 7 8 9 0  {backspace}',
+    ['Q W E R T Y U I O P {sp:1}'],
+    ['{sp:2} A S D F G H J K L " {enterIcon}'],
+    ['{shiftIcon} {sp:1} Z X C V B N M ? {sp:2}'],
+    ['{hidekey} {sp:1} {space} {sp:1} {leftarrow} {rightarrow}']
     ]
   }
 });
@@ -82,7 +82,7 @@ $(document).click(function(event) {
     !$target.closest('.virtual-keyboard').length &&
     $('.virtual-keyboard').is(":visible")) {
     $('.virtual-keyboard').hide();
-  }
+}
 });
 
 // Commit search queries
@@ -90,6 +90,59 @@ $(document).keydown(function(event) {
   if ($target.is("input#searchfield") &&
     event.key === 'Enter' && document.getElementById('searchfield').value !== '') {
     console.log(document.getElementById('searchfield').value)
-    ipcRenderer.send('search-query', document.getElementById('searchfield').value)
+  ipcRenderer.send('search-query', document.getElementById('searchfield').value)
+}
+});
+
+// Initialise carousel
+var carousel = new Swiper('.swiper-container', {
+  direction: 'horizontal',
+  autohight: true,
+  pagination: {
+    el: '.swiper-pagination',
+  },
+  slidesPerView: 3,
+  // centeredSlides: true, // DO NOT use, doesn't work as intended
+  // slideToClickedSlide: true, // DO NOT use, doesn't work as intended
+  loop: true,
+  // DEBUG: Comment the next four lines to disable autoplay
+  autoplay: {
+    delay: 3000,
+    disableOnInteraction: false,
+  }
+});
+
+// Show the description for the image in the centre of the carousel
+// This works with a carousel that shows three slides at a time
+// This is because the looping actually creates phantom slides... 
+carousel.on('slideChange', function() {
+  logDebug("Carousel - slideChange detected with { previousIndex, activeIndex } == { " + carousel.previousIndex + ", " + carousel.activeIndex + " }.")
+  if (Math.abs(carousel.previousIndex - carousel.activeIndex) > 1) {
+    logDebug("Carousel: slideChange wrapped around. ignoring.")
+  } else if (carousel.previousIndex < carousel.activeIndex) {
+    carousel.slides[carousel.activeIndex].getElementsByClassName("swiper-slide-alt")[0].style.display = "none";
+    carousel.slides[carousel.activeIndex + 1].getElementsByClassName("swiper-slide-alt")[0].style.display = "block";
+    carousel.slides[carousel.activeIndex + 2].getElementsByClassName("swiper-slide-alt")[0].style.display = "none";
+  } else {
+    carousel.slides[carousel.previousIndex - 1].getElementsByClassName("swiper-slide-alt")[0].style.display = "none";
+    carousel.slides[carousel.previousIndex].getElementsByClassName("swiper-slide-alt")[0].style.display = "block";
+    carousel.slides[carousel.previousIndex + 1].getElementsByClassName("swiper-slide-alt")[0].style.display = "none";
+  }
+});
+
+carousel.on('tap', function() { 
+  logDebug("Carousel - tap received with { activeIndex, clickedIndex } == { " + carousel.activeIndex + ", " + carousel.clickedIndex + " }.")
+
+  if (carousel.activeIndex - carousel.clickedIndex == 0) {
+    logDebug("Carousel - tap: clicked on previous slide.")
+    carousel.slidePrev()
+  } else if (carousel.activeIndex - carousel.clickedIndex == -2) {
+    logDebug("Carousel - tap: clicked on next slide.")
+    carousel.slideNext()
+  } else if (carousel.activeIndex - carousel.clickedIndex == -1) {
+    logDebug("Carousel - tap: clicked on the centre slide.")
+    // TODO: Load this premade model
+  } else {
+    logDebug("Carousel - tap: this should not happen...")
   }
 })

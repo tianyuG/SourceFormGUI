@@ -5,6 +5,8 @@ const VirtualKeyboard = require('electron-virtual-keyboard')
 
 const windows = {}
 
+global.isInDebugEnv = process.argv.includes('--debugenv')
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -12,7 +14,7 @@ const windows = {}
 app.on('ready', () => {
   console.log("")
   // createWindow();
-  if (process.argv.includes('--debugenv')) {
+  if (isInDebugEnv) {
     var timestamp = new Date(Date.now())
     console.log("[DEBUG] format: YYYYMMDD@HH:MM:SS.fff")
     logDebug("Entering debug mode.")
@@ -23,7 +25,7 @@ app.on('ready', () => {
 
   // Create main window on the top screen
 
-  if (process.argv.includes('--debugenv')) {
+  if (isInDebugEnv) {
     logDebug("Kiosk mode will be disabled (main screen).")
 
     windows.main = new BrowserWindow({
@@ -73,7 +75,7 @@ app.on('ready', () => {
   })
 
   // Create preview window on the bottom screen.
-  if (process.argv.includes('--debugenv')) {
+  if (isInDebugEnv) {
     logDebug("Kiosk mode will be disabled (preview screen).")
 
     windows.preview = new BrowserWindow({
@@ -147,11 +149,13 @@ ipcMain.on('swap-displays', (evt, arg) => {
 // Format debug log
 function logDebug(arg) {
   var timestamp = new Date()
-  console.log("[DEBUG:" + timestamp.getFullYear() +
-    String(timestamp.getMonth() + 1).padStart(2, '0') +
-    String(timestamp.getDate()).padStart(2, '0') + "@" +
-    String(timestamp.getHours()).padStart(2, '0') + ":" +
-    String(timestamp.getMinutes()).padStart(2, '0') + ":" +
-    String(timestamp.getSeconds()).padStart(2, '0') + "." +
-    String(timestamp.getMilliseconds()).padStart(3, 0) + "] " + arg)
+  if (isInDebugEnv) {
+    console.log("[DEBUG:" + timestamp.getFullYear() +
+      String(timestamp.getMonth() + 1).padStart(2, '0') +
+      String(timestamp.getDate()).padStart(2, '0') + "@" +
+      String(timestamp.getHours()).padStart(2, '0') + ":" +
+      String(timestamp.getMinutes()).padStart(2, '0') + ":" +
+      String(timestamp.getSeconds()).padStart(2, '0') + "." +
+      String(timestamp.getMilliseconds()).padStart(3, 0) + "] " + arg)
+  }
 }
