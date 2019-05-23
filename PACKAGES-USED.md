@@ -2,7 +2,7 @@
 |                           |                    | Commercial?  | License?          |           |         |                                                          |
 |---------------------------|--------------------|--------------|-------------------|-----------|---------|----------------------------------------------------------|
 | ESLint                    | MIT                | Yes          | No                | No        | 5.16.0  | https://github.com/eslint/eslint                         |
-| isotope-layout            | GPLv3 for OS       | No (Free) 	| Yes for GPL		| No		| 3.0.6   | https://isotope.metafizzy.co/                            |
+| isotope-layout            | GPLv3 for OS       | No (Free) 	| Yes for GPL		| No		| 3.0.6   | https://isotope.metafizzy.co                             |
 |							| or Commercial      | Yes (Paid)   | No for Commercial	| -         | 3.0.6   | -                                                        |
 | swiper					| MIT				 | Yes			| No 				| No 		| 4.5.0   | https://github.com/nolimits4web/swiper 					 |
 |                           |                    |              |                   |           |         |                                                          |
@@ -10,3 +10,5 @@
 | electron-virtual-keyboard | Unclear            | ?            | ?                 | Yes		| 1.0.7   | https://github.com/DigiThinkIT/electron-virtual-keyboard |
 |                           | (upstream: MIT)    | (Yes)        | (No)              | -         | 1.29.1  | https://github.com/Mottie/Keyboard                       |
 | python-bridge             | MIT                | Yes          | No                | No        | 1.1.0   | https://github.com/Submersible/node-python-bridge        |
+| flickr-sdk				| MIT				 | Yes			| No 				| No 		| 3.9.0   | https://github.com/flickr/flickr-sdk 					 |
+| superagent 				| MIT 				 | Yes 			| No 				| No 		| 5.0.5   | https://github.com/visionmedia/superagent				 |
