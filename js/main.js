@@ -8,6 +8,10 @@ const windows = {}
 // GLOBAL variable for if the program is run in debug environment
 global.isInDebugEnv = process.argv.includes('--debugenv')
 
+// Define Flickr API key and secret
+global.flickrKey = "d8961cd658655c19ee5ae158b9a191dc"
+global.flickrSecret = "b9eb42d1426b41f2"
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.

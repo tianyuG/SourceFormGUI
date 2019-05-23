@@ -6,7 +6,9 @@
   "dependencies": {
     "eslint": "^5.16.0",
     "flickity": "^2.2.0",
+    "flickr-sdk": "^3.9.0",
     "isotope-layout": "^3.0.6",
+    "superagent": "^5.0.5",
     "swiper": "^4.5.0",
     "virtual-keyboard": "^1.29.1"
   },
