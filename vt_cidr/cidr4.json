@@ -1,0 +1,279 @@
+{
+	"BC" : {
+		"0000" : {
+			"cidr" : "45.3.96.0/19",
+			"loc" : "Blacksburg Campus",
+			"desc" : "Residence hall NAT (Wired and wireless)",
+			"subnets" : {}
+		},
+		"0001" : {
+			"cidr" : "45.3.64.0/19",
+			"loc" : "Blacksburg Campus",
+			"desc" : "Academic NAT (Wireless and privately addressed wired)",
+			"subnets" : {}
+		},
+		"0002" : {
+			"cidr" : "128.173.0.0/16",
+			"loc" : "Blacksburg Campus",
+			"desc" : "",
+			"subnets" : {
+				"0002_01" : {
+					"cidr" : "128.173.38.0/23",
+					"loc" : "Blacksburg Campus",
+					"desc" : "Remote access - VPN (all traffic over VPN) service"
+				}
+			}
+		},
+		"0003" : {
+			"cidr" : "198.82.0.0/16",
+			"loc" : "Blacksburg Campus",
+			"desc" : "",
+			"subnets" : {}
+		},
+		"0004" : {
+			"cidr" : "172.16.0.0/12",
+			"loc" : "Blacksburg Campus",
+			"desc" : "",
+			"subnets" : {
+				"0004_01" : {
+					"cidr" : "172.30.0.0/16",
+					"loc" : "Blacksburg Campus",
+					"desc" : "General Wireless (On-campus use only)"
+				},
+				"0004_02" : {
+					"cidr" : "172.29.0.0/16",
+					"loc" : "Blacksburg Campus",
+					"desc" : "General Wireless (On-campus use only)"
+				},
+				"0004_03" : {
+					"cidr" : "172.31.0.0/17",
+					"loc" : "Blacksburg Campus",
+					"desc" : "General Wireless (On-campus use only)"
+				},
+				"0004_04" : {
+					"cidr" : "172.18.0.0/16",
+					"loc" : "Blacksburg Campus",
+					"desc" : "Unified Communications (On-campus use only)"
+				},
+				"0004_05" : {
+					"cidr" : "172.21.0.0/16",
+					"loc" : "Blacksburg Campus",
+					"desc" : "General campus wired (On-campus use only)"
+				},
+				"0004_06" : {
+					"cidr" : "172.24.0.0/16",
+					"loc" : "Blacksburg Campus",
+					"desc" : "Residential wired (On-campus use only)"
+				},
+				"0004_07" : {
+					"cidr" : "172.31.0.0/17",
+					"loc" : "Blacksburg Campus",
+					"desc" : ""
+				},
+				"0004_08" : {
+					"cidr" : "172.26.0.0/16",
+					"loc" : "Blacksburg Campus",
+					"desc" : "RLAN (On-campus use only)"
+				},
+				"0004_09" : {
+					"cidr" : "172.27.0.0/16",
+					"loc" : "Blacksburg Campus",
+					"desc" : "Remote access - VPN (VT traffic over VPN) service"
+				}
+			}
+		},
+		"0005" : {
+			"cidr" : "192.70.138.0/24",
+			"loc" : "Blacksburg Campus",
+			"desc" : "Network devices only",
+			"subnets" : {}
+		},
+		"0006" : {
+			"cidr" : "192.70.187.0/24",
+			"loc" : "Blacksburg Campus",
+			"desc" : "Network devices only",
+			"subnets" : {}
+		}
+	},
+	"EXT" : {
+		"0000" : {
+			"cidr" : "54.241.191.128/26",
+			"loc" : "External IP Addresses",
+			"desc" : "2-Factor authentication (2FA) hosts",
+			"subnets" : {}
+		},
+		"0001" : {
+			"cidr" : "54.236.251.192/26",
+			"loc" : "External IP Addresses",
+			"desc" : "Duo hostname is duosecurity.com",
+			"subnets" : {}
+		},
+		"0002" : {
+			"cidr" : "96.127.127.224/27",
+			"loc" : "External IP Addresses",
+			"desc" : "",
+			"subnets" : {}
+		}
+	},
+	"NVC" : {
+		"0000" : {
+			"cidr" : "38.68.240.0/23",
+			"loc" : "Northern Virginia Center",
+			"desc" : "Wired",
+			"subnets" : {}
+		},
+		"0001" : {
+			"cidr" : "38.68.250.0/24",
+			"loc" : "Northern Virginia Center",
+			"desc" : "Wired",
+			"subnets" : {}
+		},
+		"0002" : {
+			"cidr" : "38.68.242.0/23",
+			"loc" : "Northern Virginia Center",
+			"desc" : "Wireless",
+			"subnets" : {}
+		}
+	},
+	"BBRES" : {
+		"0000" : {
+			"cidr" : "63.164.28.0/24",
+			"loc" : "Blacksburg Residential",
+			"desc" : "VTACS \"Virginia Tech affiliates\"",
+			"subnets" : {}
+		},
+		"0001" : {
+			"cidr" : "63.164.29.0/24",
+			"loc" : "Blacksburg Residential",
+			"desc" : "The Inn at Virginia Tech",
+			"subnets" : {}
+		},
+		"0002" : {
+			"cidr" : "63.164.30.0/23",
+			"loc" : "Blacksburg Residential",
+			"desc" : "The Inn at Virginia Tech",
+			"subnets" : {}
+		}
+	},
+	"RC" : {
+		"0000" : {
+			"cidr" : "208.16.73.0/24",
+			"loc" : "Richmond Outreach Office",
+			"desc" : "",
+			"subnets" : {}
+		},
+		"0001" : {
+			"cidr" : "38.68.255.64/26",
+			"loc" : "Richmond Outreach Office",
+			"desc" : "",
+			"subnets" : {}
+		}
+	},
+	"EMC" : {
+		"0000" : {
+			"cidr" : "38.68.252.0/24",
+			"loc" : "Equine Medical Center",
+			"desc" : "",
+			"subnets" : {}
+		},
+		"0001" : {
+			"cidr" : "38.68.198.0/24",
+			"loc" : "Equine Medical Center",
+			"desc" : "",
+			"subnets" : {}
+		}
+	},
+	"OL" : {
+		"0000" : {
+			"cidr" : "38.68.253.0/24",
+			"loc" : "Occoquan Lab",
+			"desc" : "",
+			"subnets" : {}
+		}
+	},
+	"601PS" : {
+		"0000" : {
+			"cidr" : "38.68.254.0/24",
+			"loc" : "601 Prince Street, Alexandria",
+			"desc" : "",
+			"subnets" : {}
+		}
+	},
+	"10211001PS" : {
+		"0000" : {
+			"cidr" : "38.68.251.0/24",
+			"loc" : "1021/1001 Prince Street, Alexandria",
+			"desc" : "",
+			"subnets" : {}
+		}
+	},
+	"HR" : {
+		"0000" : {
+			"cidr" : "208.22.130.0/24",
+			"loc" : "Hampton Roads Higher Ed and Extension Center",
+			"desc" : "",
+			"subnets" : {}
+		}
+	},
+	"REC" : {
+		"0000" : {
+			"cidr" : "63.167.242.0/24",
+			"loc" : "Roanoke Education Center",
+			"desc" : "",
+			"subnets" : {}
+		}
+	},
+	"WVTF" : {
+		"0000" : {
+			"cidr" : "70.165.101.22/31",
+			"loc" : "WVTF in Roanoke",
+			"desc" : "",
+			"subnets" : {}
+		},
+		"0001" : {
+			"cidr" : "70.165.101.24/31",
+			"loc" : "WVTF in Roanoke",
+			"desc" : "",
+			"subnets" : {}
+		},
+		"0002" : {
+			"cidr" : "70.165.101.26/32",
+			"loc" : "WVTF in Roanoke",
+			"desc" : "",
+			"subnets" : {}
+		}
+	},
+	"CESA" : {
+		"0000" : {
+			"cidr" : "195.176.186.64/28",
+			"loc" : "Center for European Studies and Architecture, Switzerland",
+			"desc" : "",
+			"subnets" : {}
+		}
+	},
+	"RGC" : {
+		"0000" : {
+			"cidr" : "206.105.198.0/24",
+			"loc" : "Richmond Graduate Center",
+			"desc" : "",
+			"subnets" : {}
+		}
+	},
+	"VCE" : {
+		"0000" : {
+			"cidr" : "208.22.128.0/19",
+			"loc" : "Virginia Cooperative Extension",
+			"desc" : "",
+			"subnets" : {}
+		}
+	},
+	"900NGR" : {
+		"0000" : {
+			"cidr" : "38.68.224.0/20",
+			"loc" : "Virginia Tech Research Center, 900 North Glebe, Arlington",
+			"desc" : "",
+			"subnets" : {}
+		}
+	},
+	"_UPDATED" : 1558636232
+}

@@ -50,6 +50,13 @@
       </script></button>
     <!-- <div class="content" id="network-info-content"><script>document.write(JSON.stringify(require('os').networkInterfaces()));</script></div> -->
     <div class="content" id="network-info-content"></div>
+    <h2>Display</h2>
+    <button class="collapsible">Total number of available displays:
+      <script>
+        document.write(Object.keys(require('electron').remote.getGlobal('displays')).length);
+      </script></button>
+    <!-- <div class="content" id="network-info-content"><script>document.write(JSON.stringify(require('os').networkInterfaces()));</script></div> -->
+    <div class="content" id="display-content"></div>
     <h2>Runtime Environment</h2>
     Node.js: <script>
       document.write(process.versions.node)

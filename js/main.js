@@ -5,6 +5,7 @@ const VirtualKeyboard = require('electron-virtual-keyboard')
 
 const windows = {}
 
+// GLOBAL variable for if the program is run in debug environment
 global.isInDebugEnv = process.argv.includes('--debugenv')
 
 // This method will be called when Electron has finished
@@ -13,15 +14,15 @@ global.isInDebugEnv = process.argv.includes('--debugenv')
 // app.on('ready', createWindow)
 app.on('ready', () => {
   console.log("")
-  // createWindow();
+
+  // GLOABL variable for display information
+  global.displays = require('electron').screen.getAllDisplays()
+  
   if (isInDebugEnv) {
     var timestamp = new Date(Date.now())
     console.log("[DEBUG] format: YYYYMMDD@HH:MM:SS.fff")
     logDebug("Entering debug mode.")
   }
-
-  // Collect information on monitors
-  global.displays = require('electron').screen.getAllDisplays()
 
   // Create main window on the top screen
 

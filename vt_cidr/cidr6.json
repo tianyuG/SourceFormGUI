@@ -1,0 +1,43 @@
+{
+	"BC" : {
+		"0000" : {
+			"cidr" : "2607:b400:20::/44",
+			"loc" : "Blacksburg Campus ",
+			"desc" : "Campus wireless networks IPv6",
+			"subnets" : {}
+		},
+		"0001" : {
+			"cidr" : "2001:468:c80::/48",
+			"loc" : "Blacksburg Campus ",
+			"desc" : "IPv6 Global Prefix wired)",
+			"subnets" : {}
+		},
+		"0002" : {
+			"cidr" : "2607:b400::/40",
+			"loc" : "Blacksburg Campus ",
+			"desc" : "IPv6 Global Prefix wired)",
+			"subnets" : {}
+		},
+		"0003" : {
+			"cidr" : "2002:80ad::/32",
+			"loc" : "Blacksburg Campus ",
+			"desc" : "IPv6 6in4 users from 128.173.0.0/16",
+			"subnets" : {}
+		},
+		"0004" : {
+			"cidr" : "2002:c652::/32",
+			"loc" : "Blacksburg Campus ",
+			"desc" : "IPv6 6in4 users from 198.82.0.0/16",
+			"subnets" : {}
+		}
+	},
+	"900NGR" : {
+		"0000" : {
+			"cidr" : "2607:b400:800::/48",
+			"loc" : "Virginia Tech Research Center, 900 North Glebe, Arlington",
+			"desc" : "",
+			"subnets" : {}
+		}
+	},
+	"_UPDATED" : 1558636232
+}

@@ -1,29 +1,30 @@
-The format of this JSON file:
+The format of this JSON file (content.json):
 
 {
-	"0000": {											<- [1]
-		"title": "Statue of Liberty",					<- [2]
-		"thumbnail": "imgs\0000.jpg",					<- [3]
-		"path": "C:\\Users\\test\\projects\\liberty",	<- [4]
-		"updated": "1318289051000.1",					<- [5]
-		"accessed": "1318289051000.1",					<- [6]
-		"image_count": 500								<- [7]
+	"0000" : {											<- [1]
+		"title" : "Statue of Liberty",					<- [2]
+		"thumbnail" : "imgs\0000.jpg",					<- [3]
+		"path" : "C:\\Users\\test\\projects\\liberty",	<- [4]
+		"updated" : 1318289051,							<- [5]
+		"accessed" : 1318289051,						<- [6]
+		"image_count" : 500								<- [7]
 	},
-	...
+	[[...]]
 }
 
-[1]:	ID of the model described in this stacked JSON file. 
+[1]:	(obj) ID of the model described in this stacked JSON file. 
 			Ideally sequential, but not identical.
-[2]:	The _relative_ path to the thumbnail of this model.
-[3]:	The _absolute_ path to the folder that contains the point cloud file
+[2]:	(str) Title of the model
+[3]:	(str) The _relative_ path to the thumbnail of this model.
+[4]:	(str) The _absolute_ path to the folder that contains the pointcloud file
 			(fused.ply) and the downloaded images. For best performance,
 			this path should not be a network location.
-[4]:	Date and time of the "path" folder when it was last updated.
-			Use Node.js's millisecond format.
+[5]:	(str) Date and time of the "path" folder when it was last updated.
+			Use UNIX timestamp.
 			Corresponds to fs.Stats().mtime.
-[5]:	Date and time of the "path" folder when it was last accessed.
-			Use Node.js's millisecond format.
+[6]:	(int) Date and time of the "path" folder when it was last accessed.
+			Use UNIX timestamp.
 			Corresponds to fs.Stats().atime.
-[6]:	Total number of images in the "path" folder.
+[7]:	(int) Total number of images in the "path" folder.
 			The image count includes duplicates, and should be a even number.
 			Corresponds to fs.length.

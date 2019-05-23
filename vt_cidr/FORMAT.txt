@@ -1,0 +1,42 @@
+The format of this JSON file (cidr4.json, cidr6.json):
+
+{
+	"BC" : {															<- [1]
+		"0000" : {														<- [2]
+			"cidr" : "128.0.0.1/16",									<- [3]
+			"loc" : "Blacksburg Campus",								<- [4]
+			"desc" : "",												<- [5]
+			"subnets" : {												<- [6]
+				"0001_01" : {											
+					"cidr" : "128.0.1.1/17",
+					"loc" : "Blacksburg Campus",
+					"desc" : "Example CIDR"
+				},
+				[[...]]
+			}
+		},
+		[[...]]
+	},
+	[[...]]
+	"_UPDATED" : 1558636232												<- [7]
+}
+
+[1]:	(obj) Abbreviation of the service provider.
+[2]:	(obj) ID of the CIDR range.
+[3]:	(str) CIDR range.
+			IPv4 CIDR range should be stored in cidr4.json, and IPv6 CIDR range
+			should be stored in cidr6.json.
+[4]:	(str) Physical location of the CIDR range.
+[5]:	(str) Extended definition of the CIDR range.
+			Can be empty.
+[6]:	(obj) Subnets within this CIDR range that has different extended definition.
+			!!!: Can be _undefined_
+[7]:	(int) Time of the last update.
+			In UNIX timestamp.
+
+Both JSON files can be used if SourceForm moves onto VT Advanced Research Computing
+cluster, which requires a VT IP address. The frontend can check the IP address
+against both files and see if the IP address is a Virginia Tech one.
+
+
+CIDR is provided by VT 4Help: https://vt4help.service-now.com/sp/videohelp@vt.edu?id=kb_article&sys_id=16eadd6f0fe6a640ee5a0bcce1050e77
