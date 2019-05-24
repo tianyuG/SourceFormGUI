@@ -105,6 +105,7 @@ ipcRenderer.once('select-all-input', (event, message) => {
 
 // Commit search queries
 $(document).keydown(function(event) {
+  $target = $(event.target);
   if ($target.is("input#searchfield") &&
     event.key === 'Enter') {
     var cleaned = purify.sanitize(document.getElementById('searchfield').value, { SAFE_FOR_TEMPLATES: true })

@@ -181,7 +181,7 @@ ipcMain.on('search-committed', function(event, data) {
  */
 ipcMain.on('preview-aborted', function(event, data) {
   windows.main.loadFile('./html/index.html')
-  logDebug("SEND " + data)
+  // logDebug("SEND " + data)
   windows.main.webContents.once('dom-ready', () => {
     windows.main.webContents.send('select-all-input', data);
   })
