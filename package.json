@@ -4,6 +4,7 @@
   "description": "The front-end component of SourceForm",
   "main": "./js/main.js",
   "dependencies": {
+    "dompurify": "^1.0.10",
     "eslint": "^5.16.0",
     "flickity": "^2.2.0",
     "flickr-sdk": "^3.9.0",

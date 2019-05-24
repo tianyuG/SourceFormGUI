@@ -18,3 +18,7 @@ var result = flickr.photos.search({
 }).catch(function (err) {
   console.error('bonk', err);
 });
+
+ipcRenderer.on('search-query-relay', (event, message) => {
+	logDebug("RECV " + message)
+})

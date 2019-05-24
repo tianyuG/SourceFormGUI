@@ -96,7 +96,7 @@ app.on('ready', () => {
       parent: windows.main,
       show: false
     })
-    windows.preview.loadFile('./html/setup.html')
+    windows.preview.loadFile('./html/preview.html')
     windows.preview.webContents.openDevTools()
   } else {
     windows.preview = new BrowserWindow({
@@ -108,7 +108,7 @@ app.on('ready', () => {
       parent: windows.main,
       show: false
     })
-    windows.preview.loadFile('./html/setup.html')
+    windows.preview.loadFile('./html/preview.html')
     windows.preview.webContents.openDevTools()
     windows.preview.setMaximizable(false)
     windows.preview.setMinimizable(false)
@@ -164,3 +164,10 @@ function logDebug(arg) {
       String(timestamp.getMilliseconds()).padStart(3, 0) + "] " + arg)
   }
 }
+
+/*
+ * Relaying search query to preview window
+ */
+ipcMain.on('search-query', function(event, data) {
+    windows.preview.webContents.send('search-query-relay', data);
+});
