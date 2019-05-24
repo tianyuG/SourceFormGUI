@@ -9,6 +9,8 @@ var parse = require('url').parse;
 logDebug(require('electron').remote.getGlobal('flickrKey'));
 logDebug(require('electron').remote.getGlobal('flickrSecret'));
 
+var searchResult = ""
+
 // var flickr = new Flickr(require('electron').remote.getGlobal('flickrKey'))
 
 // var result = flickr.photos.search({
@@ -20,6 +22,24 @@ logDebug(require('electron').remote.getGlobal('flickrSecret'));
 // });
 
 ipcRenderer.once('search-query-relay', (event, message) => {
-	logDebug("RECV " + message)
-	document.getElementById("preview-search-query").innerHTML = message
+  logDebug("RECV " + message)
+  searchResult = message
+  document.getElementById("preview-search-query").innerHTML = message
+
+  var flickr = new Flickr(require('electron').remote.getGlobal('flickrKey'))
+
+  var result = flickr.photos.search({
+    text: message
+  }).then(function(res) {
+    console.log('yay!', res.body.photos.photo);
+  }).catch(function(err) {
+    console.error('bonk', err);
+  });
+
+})
+
+const abortButton = document.getElementById("preview-no")
+
+abortButton.addEventListener('click', function() {
+  ipcRenderer.send('preview-aborted', searchResult)
 })

@@ -174,5 +174,15 @@ ipcMain.on('search-committed', function(event, data) {
   windows.main.webContents.once('dom-ready', () => {
     windows.main.webContents.send('search-query-relay', data);
   })
-  
+});
+
+/*
+ * Moving from preview back to main screen
+ */
+ipcMain.on('preview-aborted', function(event, data) {
+  windows.main.loadFile('./html/index.html')
+  logDebug("SEND " + data)
+  windows.main.webContents.once('dom-ready', () => {
+    windows.main.webContents.send('select-all-input', data);
+  })
 });

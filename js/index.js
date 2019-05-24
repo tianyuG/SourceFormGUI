@@ -1,5 +1,6 @@
 const { ipcRenderer, remote } = require('electron')
 var purify = require('dompurify')
+var selectAll = false
 
 /*
  * On-screen keyboard
@@ -87,8 +88,16 @@ $(document).click(function(event) {
     !$target.closest('.virtual-keyboard').length &&
     $('.virtual-keyboard').is(":visible")) {
     $('.virtual-keyboard').hide();
+  } else if ($target.is("input#searchfield") && selectAll) {
+    $target.select();
   }
 });
+
+// When coming back from an unsuccessful search, select all text
+ipcRenderer.once('select-all-input', (event, message) => {
+  $("#searchfield").val(message);
+  selectAll = true;
+})
 
 /*
  * Search bar
@@ -96,9 +105,9 @@ $(document).click(function(event) {
 
 // Commit search queries
 $(document).keydown(function(event) {
-  if ($target.is("input#searchfield") && 
+  if ($target.is("input#searchfield") &&
     event.key === 'Enter') {
-    var cleaned = purify.sanitize(document.getElementById('searchfield').value, {SAFE_FOR_TEMPLATES: true})
+    var cleaned = purify.sanitize(document.getElementById('searchfield').value, { SAFE_FOR_TEMPLATES: true })
     console.log(cleaned)
     if (cleaned !== '') {
       ipcRenderer.send('search-committed', cleaned)
@@ -167,4 +176,3 @@ carousel.on('tap', function() {
 function populateCarousel() {
 
 }
-
