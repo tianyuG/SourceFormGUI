@@ -1,4 +1,5 @@
 const { ipcRenderer, remote } = require('electron')
+var purify = require('dompurify')
 
 /*
  * On-screen keyboard
@@ -95,10 +96,13 @@ $(document).click(function(event) {
 
 // Commit search queries
 $(document).keydown(function(event) {
-  if ($target.is("input#searchfield") &&
-    event.key === 'Enter' && document.getElementById('searchfield').value !== '') {
-    console.log(document.getElementById('searchfield').value)
-    ipcRenderer.send('search-query', document.getElementById('searchfield').value)
+  if ($target.is("input#searchfield") && 
+    event.key === 'Enter') {
+    var cleaned = purify.sanitize(document.getElementById('searchfield').value, {SAFE_FOR_TEMPLATES: true})
+    console.log(cleaned)
+    if (cleaned !== '') {
+      ipcRenderer.send('search-committed', cleaned)
+    }
   }
 });
 

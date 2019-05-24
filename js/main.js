@@ -21,7 +21,7 @@ app.on('ready', () => {
 
   // GLOABL variable for display information
   global.displays = require('electron').screen.getAllDisplays()
-  
+
   if (isInDebugEnv) {
     var timestamp = new Date(Date.now())
     console.log("[DEBUG] format: YYYYMMDD@HH:MM:SS.fff")
@@ -96,7 +96,7 @@ app.on('ready', () => {
       parent: windows.main,
       show: false
     })
-    windows.preview.loadFile('./html/preview.html')
+    windows.preview.loadFile('./html/diagnostics.html')
     windows.preview.webContents.openDevTools()
   } else {
     windows.preview = new BrowserWindow({
@@ -108,7 +108,7 @@ app.on('ready', () => {
       parent: windows.main,
       show: false
     })
-    windows.preview.loadFile('./html/preview.html')
+    windows.preview.loadFile('./html/diagnostics.html')
     windows.preview.webContents.openDevTools()
     windows.preview.setMaximizable(false)
     windows.preview.setMinimizable(false)
@@ -168,6 +168,11 @@ function logDebug(arg) {
 /*
  * Relaying search query to preview window
  */
-ipcMain.on('search-query', function(event, data) {
-    windows.preview.webContents.send('search-query-relay', data);
+ipcMain.on('search-committed', function(event, data) {
+  windows.main.loadFile('./html/searchpreview.html')
+  logDebug("SEND " + data)
+  windows.main.webContents.once('dom-ready', () => {
+    windows.main.webContents.send('search-query-relay', data);
+  })
+  
 });

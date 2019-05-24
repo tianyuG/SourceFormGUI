@@ -18,15 +18,15 @@
     <div class="preview-confirmation-container">
       <h2>Are most of those images directly related to the model you want us to print?</h2>
       <div class="preview-confirmation-buttons-container">
-       <button id="preview-no" disabled="false">No, I want to change my search to something else</button>
-       <button id="preview-yes" disabled="false">Looks alright to me, go ahead and print it out</button>
+       <button id="preview-no">No, I want to change my search to something else</button>
+       <button id="preview-yes">Looks alright to me, go ahead and print it out</button>
      </div>
     </div>
     </div>
     <button onclick="const remote = require('electron').remote; let w = remote.getCurrentWindow(); w.close();">Quit</button>
     </div>
     <script>
-      require("../js/preview.js")
+      require("../js/searchpreview.js")
     </script>
   </body>
 
