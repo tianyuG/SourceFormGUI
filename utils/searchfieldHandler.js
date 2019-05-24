@@ -15,3 +15,7 @@ function checkSearchFieldOnBlur() {
 function checkSearchFieldOnSelect() {
   checkSearchFieldOnClick();
 }
+
+function clearSearchField() {
+	document.getElementById("searchfield").value = "find an object to print...";
+}

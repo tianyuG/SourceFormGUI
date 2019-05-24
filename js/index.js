@@ -162,24 +162,40 @@ carousel.on('tap', function() {
   }
 });
 
+// Read `../carousel/content.json` and populate the carousel accordingly. 
+function populateCarousel() {
+
+}
+
 /*
  * Flickr API
  */
 // logDebug(Flickr == null)
 // logDebug(JSON.stringify(Flickr))
-var feeds = new Flickr.Feeds();
-feeds.publicPhotos().then(function(res) {
-  console.log(res.body);
-}, function(err) {
-  console.log('got error', err.message);
-});
+// var feeds = new Flickr.Feeds();
+// feeds.publicPhotos().then(function(res) {
+//   console.log(res.body);
+// }, function(err) {
+//   console.log('got error', err.message);
+// });
 
-// var flickrOauth = new require('flickr-sdk).'Flickr.OAuth(
+logDebug(require('electron').remote.getGlobal('flickrKey'));
+logDebug(require('electron').remote.getGlobal('flickrSecret'));
+
+// var flickrOauth = new Flickr.OAuth(
 //   require('electron').remote.getGlobal('flickrKey'),
 //   require('electron').remote.getGlobal('flickrSecret')
 // );
 
-// var flickr = new Flickr(flickrOauth)
+var flickr = new Flickr(require('electron').remote.getGlobal('flickrKey'))
+
+flickr.photos.search({
+  text: 'doggo'
+}).then(function (res) {
+  console.log('yay!', res.body.photos.photo);
+}).catch(function (err) {
+  console.error('bonk', err);
+});
 
 // flickr.test.login().then(function (res) {
 //   console.log('yay!', res.body);

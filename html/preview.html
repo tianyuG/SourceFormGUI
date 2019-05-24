@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>SourceForm Preview</title>
+  <!-- Load common functions -->
+  <script src="../utils/common.js"></script>
+  <link rel="stylesheet" type="text/css" href="../css/disable-text-selection.css">
+</head>
+
+<body>
+  <div class="preview-container">
+    <h1>We found these images based on your search</h1>
+    <div class="preview-confirmation-container">
+      <h2>Are most of those images directly related to the model you want us to print?</h2>
+      <div class="preview-confirmation-buttons-container">
+       <button id="preview-no" disabled="false">No, I want to change my search to something else</button>
+       <button id="preview-yes" disabled="false">Looks alright to me, go ahead and print it out</button>
+     </div>
+   </div>
+ </div>
+ 
+ <button onclick="const remote = require('electron').remote; let w = remote.getCurrentWindow(); w.close();">Quit</button>
+</div>
+<script>
+  require("../js/preview.js")
+</script>
+</body>
+
+</html>
