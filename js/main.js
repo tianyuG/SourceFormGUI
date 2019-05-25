@@ -96,7 +96,7 @@ app.on('ready', () => {
       parent: windows.main,
       show: false
     })
-    windows.preview.loadFile('./html/diagnostics.html')
+    windows.preview.loadFile('./html/setup.html')
     windows.preview.webContents.openDevTools()
   } else {
     windows.preview = new BrowserWindow({
@@ -108,7 +108,7 @@ app.on('ready', () => {
       parent: windows.main,
       show: false
     })
-    windows.preview.loadFile('./html/diagnostics.html')
+    windows.preview.loadFile('./html/setup.html')
     windows.preview.webContents.openDevTools()
     windows.preview.setMaximizable(false)
     windows.preview.setMinimizable(false)

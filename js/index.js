@@ -10,6 +10,7 @@ var selectAll = false
 $.fn.keyboard_custom_keys['^hidekey$'] = {
   render: function(kb, $key, modifier) {
     $key.text('hide');
+
   },
   handler: function(kb, $key) {
     kb.hide();
@@ -87,9 +88,13 @@ $(document).click(function(event) {
   if (!$target.is("input#searchfield") &&
     !$target.closest('.virtual-keyboard').length &&
     $('.virtual-keyboard').is(":visible")) {
+    $('div.virtual-keyboard').css("z-index", "-1");
     $('.virtual-keyboard').hide();
   } else if ($target.is("input#searchfield") && selectAll) {
     $target.select();
+    $('div.virtual-keyboard').css("z-index", "1");
+  } else if ($target.is("input#searchfield")) {
+    $('div.virtual-keyboard').css("z-index", "1");
   }
 });
 

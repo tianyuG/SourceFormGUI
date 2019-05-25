@@ -37,6 +37,11 @@ ipcRenderer.once('search-query-relay', (event, message) => {
     var gridURL = []
     for (i = 0; i < gridItemCount; i++) {
     	logDebug(JSON.stringify(res.body.photos.photo[i]))
+
+    	// if (res.body.photos.photo[i] != null) {
+    	// 	gridURL.push(())
+    	// }
+
     	// https://farm${image.farm}.staticflickr.com/${image.server}/${image.id}_${image.secret}.jpg
     	
     	// gridImages[i] = res.body.photos.photo[i].id
