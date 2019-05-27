@@ -54,6 +54,7 @@ async function ifFileExists(filepath, elementId) {
 // EXAMPLE
 // concatWith(["1", "2", "3"], ", ") // Returns "1, 2, 3"
 // concatWith("1", ", ") // Returns "1"
+// concatWith(["1"], ", ") // Returns "1"
 
 function concatWith(arr, ch) {
   ret = ""
