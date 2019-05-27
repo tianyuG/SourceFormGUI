@@ -36,28 +36,26 @@ ipcRenderer.once('search-query-relay', (event, message) => {
     var gridId = []
     var gridURL = []
     for (i = 0; i < gridItemCount; i++) {
-    	logDebug(JSON.stringify(res.body.photos.photo[i]))
+      logDebug(JSON.stringify(res.body.photos.photo[i]))
 
-    	// if (res.body.photos.photo[i] != null) {
-    	// 	gridURL.push(())
-    	// }
+      // if (res.body.photos.photo[i] != null) {
+      // 	gridURL.push(())
+      // }
 
-    	// https://farm${image.farm}.staticflickr.com/${image.server}/${image.id}_${image.secret}.jpg
-    	
-    	// gridImages[i] = res.body.photos.photo[i].id
-    	// gridId.push(res.body.photos.photo[i].id)
-    	// gridURL.push(flickr.photos.getSizes({
-    	// 	api_key: require('electron').remote.getGlobal('flickrKey'),
-    	// 	photo_id: res.body.photos.photo[i].id
-    	// }))
+      // https://farm${image.farm}.staticflickr.com/${image.server}/${image.id}_${image.secret}.jpg
+
+      // gridImages[i] = res.body.photos.photo[i].id
+      // gridId.push(res.body.photos.photo[i].id)
+      // gridURL.push(flickr.photos.getSizes({
+      // 	api_key: require('electron').remote.getGlobal('flickrKey'),
+      // 	photo_id: res.body.photos.photo[i].id
+      // }))
     }
 
     logDebug(JSON.stringify(gridURL))
   }).catch(function(err) {
     console.error('bonk', err);
   });
-
-
 
 })
 
@@ -66,3 +64,14 @@ const abortButton = document.getElementById("preview-no")
 abortButton.addEventListener('click', function() {
   ipcRenderer.send('preview-aborted', searchResult)
 })
+
+async getPhotoPreviewURLs(query) {
+    try {
+      var result = flickr.photos.search({
+        text: message
+      })
+    } catch (ret) {
+        logDebug("Preview error: " + ret)
+      }
+
+    }

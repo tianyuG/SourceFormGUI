@@ -1,5 +1,6 @@
 const { ipcRenderer, remote } = require('electron')
 const OS = require('os')
+const fs = require('electron').remote.require('fs')
 
 function getNetworkInterfaceInfo() {
   var netint = OS.networkInterfaces();
@@ -35,3 +36,34 @@ require('electron').remote.getCurrentWindow().webContents.once('dom-ready', () =
   getNetworkInterfaceInfo();
   getDisplayInfo();
 });
+
+async function ifFileExists(filepath, elementId) {
+  fs.access(filepath, (err) => {
+    if (err) {
+      document.getElementById(elementId).innerHTML = "Not installed (" + filepath + " doesn't exist): " + err
+    } else {
+      document.getElementById(elementId).innerHTML = "Installed (found at " + filepath + ")"
+    }
+  })
+}
+
+// Concatenate string (array) `arr` with string `ch`
+// If `arr` is a string array with two or more elements, combine each of the 
+// elements with `ch` in between. If `arr` is a string or a stirng array with 
+// one element, returns `arr`
+// EXAMPLE
+// concatWith(["1", "2", "3"], ", ") // Returns "1, 2, 3"
+// concatWith("1", ", ") // Returns "1"
+
+function concatWith(arr, ch) {
+  ret = ""
+
+  if (Array.isArray(arr)) {
+    for (var i = 0; i < arr.length; i++) {
+      ret += arr
+      if (i < arr.length - 1) { ret += ch }
+    }
+} else { ret = arr }
+
+  return ret
+}
