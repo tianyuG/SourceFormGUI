@@ -65,13 +65,45 @@ abortButton.addEventListener('click', function() {
   ipcRenderer.send('preview-aborted', searchResult)
 })
 
-async getPhotoPreviewURLs(query) {
-    try {
-      var result = flickr.photos.search({
-        text: message
-      })
-    } catch (ret) {
-        logDebug("Preview error: " + ret)
-      }
+async function getPhotoPreviewURLs(query) {
+  try {
+    var result = flickr.photos.search({
+      text: query
+    })
+  } catch (ret) {
+    logDebug("Preview error: " + ret)
+  }
+}
 
-    }
+// Construct the URL to a flickr image based on res.body.photos.photo
+// PARAM
+// photo: (obj) An Flickr.photos.photo object
+// size: (str, opt) Desired size of the returned image URL.
+// 			 "", "o", or anything not listed below - original size (default value)
+//			 "s" - 75x75 square
+//			 "q" - 150x150 square
+//			 "t" - thumbnail (100 on longest)
+//			 "m" - small (240 on longest)
+//			 "n" - small (320 on longest)
+//			 "-" - medium (500 on longest)
+//			 "z" - medium (640 on longest)
+//			 "c" - medium (800 on longest^)
+//			 "b" - large (1024 on longest^)
+//			 "h" - large (1600 on longest^)
+// 			 "k" - large (2048 on longest^)
+// 			 ^ denotes this format may not be available for older (pre-2010) photos.
+//			 ^^ denotes this format may not be available for older (pre-2012) photos.
+//			 Refer to Flickr API doc on misc.urls for more information.
+//			 https://www.flickr.com/services/api/misc.urls.html
+// RETURN
+// a string that contains the actual url (https) to the image at the requested size.
+// NOTES
+// - To use this function with an array of Flickr.photos.photo, use map()
+// - For original images, it can be in jpg, gif, or png format.
+function constructFlickrImageURL(photo, size = "") {
+	if (["s", "q", "t", "m", "n", "-", "z", "c", "b", "h", "k"]. includes(size)) {
+		// scaled images
+	} else {
+		// special case for original image
+	}
+}
