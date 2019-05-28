@@ -76,7 +76,7 @@ async function getPhotoPreviewURLs(query) {
 }
 
 // Construct the URL to a flickr image based on res.body.photos.photo
-// PARAM
+// PARAMETERS
 // photo: (obj) An Flickr.photos.photo object
 // size: (str, opt) Desired size of the returned image URL.
 // 			 "", "o", or anything not listed below - original size (default value)
@@ -95,15 +95,15 @@ async function getPhotoPreviewURLs(query) {
 //			 ^^ denotes this format may not be available for older (pre-2012) photos.
 //			 Refer to Flickr API doc on misc.urls for more information.
 //			 https://www.flickr.com/services/api/misc.urls.html
-// RETURN
+// RETURNS
 // a string that contains the actual url (https) to the image at the requested size.
 // NOTES
 // - To use this function with an array of Flickr.photos.photo, use map()
 // - For original images, it can be in jpg, gif, or png format.
 function constructFlickrImageURL(photo, size = "") {
-	if (["s", "q", "t", "m", "n", "-", "z", "c", "b", "h", "k"]. includes(size)) {
-		// scaled images
-	} else {
-		// special case for original image
-	}
+  if (["s", "q", "t", "m", "n", "-", "z", "c", "b", "h", "k"].includes(size)) {
+    // scaled images
+  } else {
+    // special case for original image
+  }
 }
