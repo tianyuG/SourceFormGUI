@@ -34,8 +34,16 @@
         background-color: #f1f1f1;
       }
 
-      .bold_item {
+      .bold-item {
         font-weight: bold;
+      }
+
+      .italic-item {
+        font-style: italic;
+      }
+
+      .err-msg {
+        padding-left: 20px;
       }
     </style>
   </head>
@@ -53,7 +61,8 @@
     <h2>Display</h2>
     <button class="collapsible">Total number of available displays:
       <script>
-        document.write(Object.keys(require('electron').remote.getGlobal('displays')).length);
+        document.write(Object.keys(require('electron').remote.getGlobal(
+          'displays')).length);
       </script></button>
     <!-- <div class="content" id="network-info-content"><script>document.write(JSON.stringify(require('os').networkInterfaces()));</script></div> -->
     <div class="content" id="display-content"></div>
@@ -72,8 +81,8 @@
     <p id="ahk-installation-status">Checking...</p>
     <h3>imagemagick</h3>
     <p id="imagemagick-installation-status">Checking...</p>
-    <h3>Python 2.x</h3>
-    <p id="python2-installation-status">Checking...</p>
+    <h3>Python 2.7</h3>
+    <p id="python27-installation-status">Checking...</p>
     <button onclick="let w = remote.getCurrentWindow(); w.close();">Quit</button>
     </div>
     <!-- END-TEST -->

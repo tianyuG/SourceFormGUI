@@ -24,7 +24,7 @@ function logDebug(arg) {
 function concatWith(arr, ch) {
   ret = ""
 
-  if (Array.isArray(arr)) {
+  if (arr != null && Array.isArray(arr)) {
     for (var i = 0; i < arr.length; i++) {
       ret += arr
       if (i < arr.length - 1) { ret += ch }
