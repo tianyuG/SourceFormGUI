@@ -29,7 +29,8 @@ ipcRenderer.once('search-query-relay', (event, message) => {
   var flickr = new Flickr(require('electron').remote.getGlobal('flickrKey'))
 
   var result = flickr.photos.search({
-    text: message
+    text: message,
+    extras: "url_h"
   }).then(function(res) {
     // console.log('yay!', res.body.photos.photo);
     var gridItemCount = res.body.photos.photo.length > 9 ? 9 : res.body.photos.photo.length
@@ -110,6 +111,7 @@ function constructFlickrImageURL(photo, size = "") {
   } else if (["o"].includes(size)) {
     // special case for original image
     // TODO: NOT IMPLEMENTED. 
+    // Flickr.photos.search needs the 
   } else {
     // size not specified
     // format: https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
