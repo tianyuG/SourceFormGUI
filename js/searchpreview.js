@@ -73,13 +73,14 @@ async function getPhotoPreviewURLs(query) {
   } catch (ret) {
     logDebug("Preview error: " + ret)
   }
+
 }
 
 // Construct the URL to a flickr image based on res.body.photos.photo
 // PARAMETERS
 // photo: (obj) An Flickr.photos.photo object
 // size: (str, opt) Desired size of the returned image URL.
-// 			 "", "o", or anything not listed below - original size (default value)
+// 			 "", or anything not listed below - do not specify size (default value)
 //			 "s" - 75x75 square
 //			 "q" - 150x150 square
 //			 "t" - thumbnail (100 on longest)
@@ -91,6 +92,7 @@ async function getPhotoPreviewURLs(query) {
 //			 "b" - large (1024 on longest^)
 //			 "h" - large (1600 on longest^)
 // 			 "k" - large (2048 on longest^)
+//			 "o" - original
 // 			 ^ denotes this format may not be available for older (pre-2010) photos.
 //			 ^^ denotes this format may not be available for older (pre-2012) photos.
 //			 Refer to Flickr API doc on misc.urls for more information.
@@ -103,7 +105,14 @@ async function getPhotoPreviewURLs(query) {
 function constructFlickrImageURL(photo, size = "") {
   if (["s", "q", "t", "m", "n", "-", "z", "c", "b", "h", "k"].includes(size)) {
     // scaled images
-  } else {
+    // format: https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_[mstzb].jpg
+    return "https://farm" + photo.farm + ".staticflickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_" + size + ".jpg"
+  } else if (["o"].includes(size)) {
     // special case for original image
+    // TODO: NOT IMPLEMENTED. 
+  } else {
+    // size not specified
+    // format: https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
+    return "https://farm" + photo.farm + ".staticflickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + ".jpg"
   }
 }
