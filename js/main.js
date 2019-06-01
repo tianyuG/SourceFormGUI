@@ -193,10 +193,16 @@ ipcMain.on('preview-aborted', function(event, data) {
   })
 });
 
+/*
+ * Change imagePath global variiable
+ */
 ipcMain.on('set-imagepath', function(event, data) {
   imagePath = data;
 });
 
+/*
+ * Change remoteIP global variiable
+ */
 ipcMain.on('set-remoteip', function(event, data) {
   remoteIP = data;
 });

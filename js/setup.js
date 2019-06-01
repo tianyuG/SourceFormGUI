@@ -60,24 +60,24 @@ require('electron').remote.getCurrentWindow().webContents.once('dom-ready', () =
   const remoteipbtncnfm = document.getElementById('remoteip-button-confirm');
   const remoteipwarning = document.getElementById('remoteip-warning');
 
-  // imagepathcurr.innerHTML = require('electron').remote.getGlobal('imagePath')
-  imagepathcurr.innerHTML = "TEST"
+  imagepathcurr.innerHTML = require('electron').remote.getGlobal('imagePath')
   remoteipcurr.innerHTML = require('electron').remote.getGlobal('remoteIP')
 
+  // Add button to change imagePath
   imagepathbtn.addEventListener('click', () => {
     var imgpath = dialog.showOpenDialog({ properties: ['openDirectory'] })
     ipcRenderer.send("set-imagepath", imgpath)
     imagepathcurr.innerHTML = require('electron').remote.getGlobal('imagePath')
   });
 
+  // Button to allow editing remoteIP
   remoteipbtn.addEventListener('click', () => {
     remoteipinput.style.display = "inline"
     remoteipbtn.style.display = "none"
     remoteipbtncnfm.style.display = "inline"
-    // ipcRenderer.send("set-imagepath", imgpath)
-    // imagepathcurr.innerHTML = require('electron').remote.getGlobal('imagePath')
   });
 
+  // Commit remoteIP change with validation checks
   remoteipbtncnfm.addEventListener('click', () => {
     const isIp = require('is-ip');
     if (remoteipinput.value.trim() == "") {
@@ -98,6 +98,7 @@ require('electron').remote.getCurrentWindow().webContents.once('dom-ready', () =
     }
   });
 
+  // Pressing enter will have same effect as clicking on the confirm button
   remoteipinput.addEventListener("keyup", () => {
     if (event.keyCode == 13) {
       remoteipbtncnfm.click()
