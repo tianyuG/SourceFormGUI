@@ -9,6 +9,7 @@
     "flickity": "^2.2.0",
     "flickr-sdk": "^3.9.0",
     "glob": "^7.1.4",
+    "is-ip": "^3.0.0",
     "isotope-layout": "^3.0.6",
     "superagent": "^5.0.5",
     "swiper": "^4.5.0",

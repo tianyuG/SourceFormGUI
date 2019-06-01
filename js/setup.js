@@ -1,7 +1,7 @@
 // Initial setup for assigning contents on both displays
 
 const { ipcRenderer, remote } = require('electron')
-const { app, BrowserWindow, shell } = remote
+const { app, BrowserWindow, shell, dialog } = remote
 const os = require('os')
 const fs = require('electron').remote.require('fs')
 
@@ -14,9 +14,9 @@ function launchAHK() {
 require('electron').remote.getCurrentWindow().webContents.once('dom-ready', () => {
   fs.access(`C:\\Program Files\\AutoHotkey\\AutoHotkey.exe`, (err) => {
     if (err) {
-    document.getElementById('start-ahk-button').style.display = "none"
-    document.getElementById('stop-ahk-button').style.display = "none"
-    document.getElementById('ahk-installation-status-warning').innerHTML = "AHK is not installed."
+      document.getElementById('start-ahk-button').style.display = "none"
+      document.getElementById('stop-ahk-button').style.display = "none"
+      document.getElementById('ahk-installation-status-warning').innerHTML = "AHK is not installed."
     }
   })
 
@@ -53,8 +53,54 @@ require('electron').remote.getCurrentWindow().webContents.once('dom-ready', () =
   });
 
   const imagepathcurr = document.getElementById('imagepath-current');
-  const imagepathbtn = document.getElementById('imagopath-button');
+  const imagepathbtn = document.getElementById('imagepath-button');
   const remoteipcurr = document.getElementById('remoteip-current');
   const remoteipbtn = document.getElementById('remoteip-button');
-  
+  const remoteipinput = document.getElementById('remoteip-input')
+  const remoteipbtncnfm = document.getElementById('remoteip-button-confirm');
+  const remoteipwarning = document.getElementById('remoteip-warning');
+
+  // imagepathcurr.innerHTML = require('electron').remote.getGlobal('imagePath')
+  imagepathcurr.innerHTML = "TEST"
+  remoteipcurr.innerHTML = require('electron').remote.getGlobal('remoteIP')
+
+  imagepathbtn.addEventListener('click', () => {
+    var imgpath = dialog.showOpenDialog({ properties: ['openDirectory'] })
+    ipcRenderer.send("set-imagepath", imgpath)
+    imagepathcurr.innerHTML = require('electron').remote.getGlobal('imagePath')
+  });
+
+  remoteipbtn.addEventListener('click', () => {
+    remoteipinput.style.display = "inline"
+    remoteipbtn.style.display = "none"
+    remoteipbtncnfm.style.display = "inline"
+    // ipcRenderer.send("set-imagepath", imgpath)
+    // imagepathcurr.innerHTML = require('electron').remote.getGlobal('imagePath')
+  });
+
+  remoteipbtncnfm.addEventListener('click', () => {
+    const isIp = require('is-ip');
+    if (remoteipinput.value.trim() == "") {
+      remoteipinput.style.display = "none"
+      remoteipbtn.style.display = "inline"
+      remoteipbtncnfm.style.display = "none"
+    } else if (!isIp(remoteipinput.value)) {
+      remoteipwarning.style.display = "block"
+      remoteipinput.style.color = "orange"
+    } else  {
+      remoteipwarning.style.display = "none"
+      remoteipinput.style.color = "black"
+      remoteipinput.style.display = "none"
+      remoteipbtn.style.display = "inline"
+      remoteipbtncnfm.style.display = "none"
+      ipcRenderer.send("set-remoteip", remoteipinput.value)
+      remoteipcurr.innerHTML = require('electron').remote.getGlobal('remoteIP')
+    }
+  });
+
+  remoteipinput.addEventListener("keyup", () => {
+    if (event.keyCode == 13) {
+      remoteipbtncnfm.click()
+    }
+  })
 });

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, electron } = require('electron')
+const { app, BrowserWindow, ipcMain, electron, dialog } = require('electron')
 const url = require('url')
 const path = require('path')
 const VirtualKeyboard = require('electron-virtual-keyboard')
@@ -191,4 +191,12 @@ ipcMain.on('preview-aborted', function(event, data) {
   windows.main.webContents.once('dom-ready', () => {
     windows.main.webContents.send('select-all-input', data);
   })
+});
+
+ipcMain.on('set-imagepath', function(event, data) {
+  imagePath = data;
+});
+
+ipcMain.on('set-remoteip', function(event, data) {
+  remoteIP = data;
 });

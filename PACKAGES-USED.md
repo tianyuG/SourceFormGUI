@@ -14,3 +14,4 @@
 | superagent 				| MIT 				 | Yes 			| No 				| No 		| 5.0.5   | https://github.com/visionmedia/superagent				 |
 | DOMPurify					| Apache v2			 | Yes			| No 				| No 		| 1.0.10  | https://github.com/cure53/DOMPurify 					 |
 | 							| or MPL v2	 		 | Yes			| No 				| -  		| -       | - 														 |
+| is-ip						| MIT 				 | Yes 			| No 				| No 		| 3.0.0   | https://github.com/sindresorhus/is-ip					 |
