@@ -12,6 +12,12 @@ global.isInDebugEnv = process.argv.includes('--debugenv')
 global.flickrKey = "d8961cd658655c19ee5ae158b9a191dc"
 global.flickrSecret = "b9eb42d1426b41f2"
 
+// Define where the downloaded images are
+global.imagePath = ""
+
+// Define the IP address for the modelling computer
+global.remoteIP = "192.168.1.10"
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.

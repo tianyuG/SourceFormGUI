@@ -98,6 +98,7 @@ async function getPhotoPreviewURLs(query) {
 //			 ^^ denotes this format may not be available for older (pre-2012) photos.
 //			 Refer to Flickr API doc on misc.urls for more information.
 //			 https://www.flickr.com/services/api/misc.urls.html
+//// Images on the modelling computer seem to have 640 on longest
 // RETURNS
 // a string that contains the actual url (https) to the image at the requested size.
 // NOTES

@@ -51,4 +51,10 @@ require('electron').remote.getCurrentWindow().webContents.once('dom-ready', () =
   startsourceformbtn.addEventListener('click', () => {
     ipcRenderer.send('setup-start-sourceform-button-clicked')
   });
+
+  const imagepathcurr = document.getElementById('imagepath-current');
+  const imagepathbtn = document.getElementById('imagopath-button');
+  const remoteipcurr = document.getElementById('remoteip-current');
+  const remoteipbtn = document.getElementById('remoteip-button');
+  
 });
