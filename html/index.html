@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="UTF-8">
   <title>SourceForm</title>
@@ -27,65 +26,58 @@
       margin: 0 auto;
       /*z-index: -1;*/
     }
-
     /*.swiper-slide img {
-      width: 100%;
-      margin: 0 auto;
-      }*/
-
-      .swiper-slide img {
-        width: 300px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .swiper-slide-alt {
-        width: 300px;
-        text-align: center;
-        display: none;
-        margin-left: auto;
-        margin-right: auto;
-      }
-    </style>
-  </head>
-
-  <body>
-    <h1>SourceForm</h1>
-    <a href="diagnostics.html">Diagnostics</a>
-    <input type="text" id="searchfield" value="find an object to print..."
-    onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()"
-    onselect="checkSearchFieldOnSelect()" />
-    <button onclick="let w = remote.getCurrentWindow(); w.close();">Quit</button>
-    <!-- TEST -->
-    <!-- Slider main container -->
-    <div class="swiper-container">
-      <!-- Additional required wrapper -->
-      <div class="swiper-wrapper">
-        <!-- Slides -->
-        <div class="swiper-slide">
-          <img src="../carousel/imgs/0000.jpg" alt="0000" />
-          <div class="swiper-slide-alt">0000</div>
-        </div>
-        <div class="swiper-slide">
-          <img src="../carousel/imgs/0001.jpg" alt="0001" />
-          <div class="swiper-slide-alt">0001</div>
-        </div>
-        <div class="swiper-slide">
-          <img src="../carousel/imgs/0002.jpg" alt="0002" />
-          <div class="swiper-slide-alt">0002</div>
-        </div>
-        <div class="swiper-slide">
-          <img src="../carousel/imgs/0003.jpg" alt="0003" />
-          <div class="swiper-slide-alt">0003</div>
-        </div>
+    width: 100%;
+    margin: 0 auto;
+    }*/
+    .swiper-slide img {
+      width: 300px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .swiper-slide-alt {
+      width: 300px;
+      text-align: center;
+      display: none;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>SourceForm</h1>
+  <a href="diagnostics.html">Diagnostics</a>
+  <input type="text" id="searchfield" value="find an object to print..." onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" onselect="checkSearchFieldOnSelect()" />
+  <button onclick="let w = remote.getCurrentWindow(); w.close();">Quit</button>
+  <!-- TEST -->
+  <!-- Slider main container -->
+  <div class="swiper-container">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+      <!-- Slides -->
+      <div class="swiper-slide">
+        <img src="../carousel/imgs/0000.jpg" alt="0000" />
+        <div class="swiper-slide-alt">0000</div>
       </div>
-      <!-- Add Pagination -->
-      <div class="swiper-pagination"></div>
+      <div class="swiper-slide">
+        <img src="../carousel/imgs/0001.jpg" alt="0001" />
+        <div class="swiper-slide-alt">0001</div>
+      </div>
+      <div class="swiper-slide">
+        <img src="../carousel/imgs/0002.jpg" alt="0002" />
+        <div class="swiper-slide-alt">0002</div>
+      </div>
+      <div class="swiper-slide">
+        <img src="../carousel/imgs/0003.jpg" alt="0003" />
+        <div class="swiper-slide-alt">0003</div>
+      </div>
     </div>
-    <script>
-      require('../js/index.js')
-    </script>
-  </body>
-
-  </html>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+  </div>
+  <script>
+    require('../js/index.js')
+  </script>
+</body>
+</html>
