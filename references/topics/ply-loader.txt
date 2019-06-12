@@ -7,6 +7,7 @@ https://github.com/uber/luma.gl
 
 https://medium.com/@sharadghimire5551/getting-started-with-three-js-and-electron-js-9ae49b1d3f59
 https://github.com/jeromeetienne/electron-threejs-example
+https://medium.com/vis-gl/introducing-deck-gl-v7-0-c18bcb717457
 
 
 http://vcg.isti.cnr.it/nexus/ (probably not this)
