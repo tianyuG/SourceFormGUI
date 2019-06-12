@@ -15,3 +15,4 @@
 | DOMPurify					| Apache v2			 | Yes			| No 				| No 		| 1.0.10  | https://github.com/cure53/DOMPurify 					 |
 | 							| or MPL v2	 		 | Yes			| No 				| -  		| -       | - 														 |
 | is-ip						| MIT 				 | Yes 			| No 				| No 		| 3.0.0   | https://github.com/sindresorhus/is-ip					 |
+| three.js					| MIT 				 | Yes			| No 				| No 		| 0.105.2 | https://github.com/mrdoob/three.js 						 |

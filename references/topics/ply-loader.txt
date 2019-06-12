@@ -1,0 +1,12 @@
+TOPIC: PLY loader
+
+https://threejs.org/examples/webgl_loader_ply.html
+https://github.com/mrdoob/three.js/issues/14735
+https://aframe.io/docs/0.9.0/introduction/models.html
+https://github.com/uber/luma.gl
+
+https://medium.com/@sharadghimire5551/getting-started-with-three-js-and-electron-js-9ae49b1d3f59
+https://github.com/jeromeetienne/electron-threejs-example
+
+
+http://vcg.isti.cnr.it/nexus/ (probably not this)

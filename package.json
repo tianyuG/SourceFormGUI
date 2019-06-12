@@ -19,7 +19,8 @@
     "electron": "^5.0.3",
     "electron-localshortcut": "^3.1.0",
     "electron-reload": "^1.4.0",
-    "python-bridge": "^1.1.0"
+    "python-bridge": "^1.1.0",
+    "three": "^0.105.2"
   },
   "scripts": {
     "start": "electron .",
