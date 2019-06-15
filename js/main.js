@@ -206,3 +206,10 @@ ipcMain.on('set-imagepath', function(event, data) {
 ipcMain.on('set-remoteip', function(event, data) {
   remoteIP = data;
 });
+
+/*
+ * Load setup window upon request
+ */
+ipcMain.on('load-setup-window', function(event, data) {
+  windows.preview.loadFile('./html/setup.html')
+})
