@@ -5,8 +5,15 @@ const VirtualKeyboard = require('electron-virtual-keyboard')
 
 const windows = {}
 
-// GLOBAL variable for if the program is run in debug environment
+/*
+ * BEGIN: GLOBAL VARIABLES
+ */
+
+// Define if the program is run in debug environment (windowed)
 global.isInDebugEnv = process.argv.includes('--debugenv')
+
+// Define if the program is run in debug environment (fullscreen)
+global.isInFullscreenDebugEnv = process.argv.includes('--fdebugenv')
 
 // Define Flickr API key and secret
 global.flickrKey = "d8961cd658655c19ee5ae158b9a191dc"
@@ -26,6 +33,10 @@ global.printerScriptPath = ""
 
 // Define the IP address for the modelling computer
 global.remoteIP = "192.168.1.10"
+
+/*
+ * END: GLOBAL VARIABLES
+ */
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -114,6 +125,7 @@ app.on('ready', () => {
     windows.preview.loadFile('./html/idle.html')
     windows.main.webContents.closeDevTools()
   } else {
+    if (isInFullscreenDebugEnv) { isInDebugEnv = true } // End of window creation process
     windows.preview = new BrowserWindow({
       webPreferences: {
         nodeIntegration: true

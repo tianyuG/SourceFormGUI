@@ -31,9 +31,10 @@ ipcRenderer.once('search-query-relay', (event, message) => {
   var result = flickr.photos.search({
     text: message,
     extras: "url_n",
-    privacy_filter: "1",
-    safe_search: "3",
-    per_page: "20"
+    privacy_filter: 1,
+    safe_search: 3,
+    sort: "relevance",
+    per_page: 20
   }).then(function(res) {
     // logDebug(JSON.stringify(res.body.photos))
     // console.log('yay!', res.body.photos.photo);
