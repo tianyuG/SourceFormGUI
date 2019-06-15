@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>SourceForm</title>
+  <!-- Load special keybinding settings -->
+  <script src="../utils/keybindings.js"></script>
+  <!-- Load common functions -->
+  <script src="../utils/common.js"></script>
+  <link rel="stylesheet" type="text/css" href="../css/disable-text-selection.css" />
+</head>
+<body>
+  <button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
+  <button onclick="require('electron').remote.getCurrentWindow().close();">Quit</button>
+  <img src="../assets/images/logo.png" style="display: block; height: 80vh; width: auto;">
+</body>
+</html>

@@ -52,7 +52,7 @@ app.on('ready', () => {
       show: false
     })
     windows.main.loadFile('./html/index.html')
-    windows.main.webContents.openDevTools()
+    windows.main.webContents.closeDevTools()
   } else {
     windows.main = new BrowserWindow({
       webPreferences: {
@@ -63,7 +63,7 @@ app.on('ready', () => {
       show: false
     })
     windows.main.loadFile('./html/index.html')
-    windows.main.webContents.openDevTools()
+    windows.main.webContents.closeDevTools()
     windows.main.setMaximizable(false)
     windows.main.setMinimizable(false)
     windows.main.setFullScreenable(false)
@@ -102,8 +102,8 @@ app.on('ready', () => {
       parent: windows.main,
       show: false
     })
-    windows.preview.loadFile('./html/setup.html')
-    windows.preview.webContents.openDevTools()
+    windows.preview.loadFile('./html/idle.html')
+    windows.main.webContents.closeDevTools()
   } else {
     windows.preview = new BrowserWindow({
       webPreferences: {
@@ -114,8 +114,8 @@ app.on('ready', () => {
       parent: windows.main,
       show: false
     })
-    windows.preview.loadFile('./html/setup.html')
-    windows.preview.webContents.openDevTools()
+    windows.preview.loadFile('./html/idle.html')
+    windows.main.webContents.closeDevTools()
     windows.preview.setMaximizable(false)
     windows.preview.setMinimizable(false)
     windows.preview.setFullScreenable(false)

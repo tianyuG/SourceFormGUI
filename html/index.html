@@ -50,7 +50,8 @@
   <h1>SourceForm</h1>
   <a href="diagnostics.html">Diagnostics</a>
   <input type="text" id="searchfield" value="find an object to print..." onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" onselect="checkSearchFieldOnSelect()" />
-  <button onclick="let w = remote.getCurrentWindow(); w.close();">Quit</button>
+  <button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
+  <button onclick="require('electron').remote.getCurrentWindow().close();">Quit</button>
   <!-- TEST -->
   <!-- Slider main container -->
   <div class="swiper-container">
