@@ -15,6 +15,15 @@ global.flickrSecret = "b9eb42d1426b41f2"
 // Define where the downloaded images are
 global.imagePath = ""
 
+// Define where the script for converting PLY point cloud to STL model is
+global.PLY2STLScriptPath = ""
+
+// Define where the script for converting STL model to BMP bitmap is
+global.STL2BMPScriptPath = ""
+
+// Define where the Arduino script for controlling the printer is
+global.printerScriptPath = ""
+
 // Define the IP address for the modelling computer
 global.remoteIP = "192.168.1.10"
 
@@ -198,6 +207,27 @@ ipcMain.on('preview-aborted', function(event, data) {
  */
 ipcMain.on('set-imagepath', function(event, data) {
   imagePath = data;
+});
+
+/*
+ * Change PLY2STLScriptPath global variiable
+ */
+ipcMain.on('set-ply2stlscriptpath', function(event, data) {
+  PLY2STLScriptPath = data;
+});
+
+/*
+ * Change STL2BMPScriptPath global variiable
+ */
+ipcMain.on('set-stl2bmpscriptpath', function(event, data) {
+  STL2BMPScriptPath = data;
+});
+
+/*
+ * Change printerScriptPath global variiable
+ */
+ipcMain.on('set-printerscriptpath', function(event, data) {
+  printerScriptPath = data;
 });
 
 /*
