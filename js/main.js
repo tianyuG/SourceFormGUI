@@ -122,7 +122,7 @@ app.on('ready', () => {
       parent: windows.main,
       show: false
     })
-    windows.preview.loadFile('./html/idle.html')
+    windows.preview.loadFile('./html/preview-idle.html')
     windows.main.webContents.closeDevTools()
   } else {
     if (isInFullscreenDebugEnv) { isInDebugEnv = true } // End of window creation process
@@ -135,7 +135,7 @@ app.on('ready', () => {
       parent: windows.main,
       show: false
     })
-    windows.preview.loadFile('./html/idle.html')
+    windows.preview.loadFile('./html/preview-idle.html')
     windows.main.webContents.closeDevTools()
     windows.preview.setMaximizable(false)
     windows.preview.setMinimizable(false)
