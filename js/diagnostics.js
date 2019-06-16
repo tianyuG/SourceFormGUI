@@ -58,6 +58,7 @@ require('electron')
 		getNetworkInterfaceInfo();
 		getDisplayInfo();
 		getDependencies();
+		getLongPathSupport();
 	});
 
 // Use `/` instead of `\\` in filepath, even in Windows!
@@ -86,4 +87,17 @@ function ifFileExists(filepath, elementId, appName, appUrl, errorMsg = null) {
 				.innerHTML = "Installed (found at " + concatWith(files, ", ") + ")"
 		}
 	})
+}
+
+function getLongPathSupport() {
+	require('child_process').exec('reg query HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem /v LongPathsEnabled', (err, stdout, stderr) => {
+		// logDebug(stdout.trim())
+		if (parseInt(stdout.trim().substring(stdout.trim().length - 1, stdout.trim().length - 0)) == 1) {
+			document.getElementById('misc-long-path').innerHTML = "Long path enabled."
+		} else {
+			document.getElementById('misc-long-path').innerHTML = "Long path NOT enabled."
+		}
+		// document.getElementById('misc-long-path').innerHTML = stdout.substring(stdout.length - 1, stdout.length)
+	})
+	// document.getElementById('misc-long-path').innerHTML = require('child_process').exec('reg query HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem /v LongPathsEnabled')
 }
