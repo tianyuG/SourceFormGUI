@@ -51,7 +51,7 @@
   <a href="diagnostics.html">Diagnostics</a>
   <input type="text" id="searchfield" value="find an object to print..." onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" onselect="checkSearchFieldOnSelect()" />
   <button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
-  <button onclick="require('electron').remote.getCurrentWindow().close();">Quit</button>
+  <button onclick="require('electron').remote.app.quit();">Quit</button>
   <!-- TEST -->
   <!-- Slider main container -->
   <div class="swiper-container">

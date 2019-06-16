@@ -25,7 +25,7 @@
    </div>
  </div>
  <button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
- <button onclick="require('electron').remote.getCurrentWindow().close();">Quit</button>
+ <button onclick="require('electron').remote.app.quit();">Quit</button>
 </div>
 <script>
   require("../js/searchpreview.js")

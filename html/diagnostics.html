@@ -84,7 +84,7 @@
         <h3>Python 2.7</h3>
         <p id="python27-installation-status">Checking...</p>
         <button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
-        <button onclick="require('electron').remote.getCurrentWindow().close();">Quit</button>
+        <button onclick="require('electron').remote.app.quit();">Quit</button>
       </div>
       <!-- END-TEST -->
       <script>
