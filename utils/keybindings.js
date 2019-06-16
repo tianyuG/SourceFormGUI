@@ -1,13 +1,13 @@
 const remote = require("electron")
-    .remote;
+	.remote;
 
 document.addEventListener("keydown", event => {
 
-    switch (event.key) {
-        case "F11":
-            console.log("F11 pressed.");
-            remote.getCurrentWindow()
-                .maximize()
-            break;
-    }
+	switch (event.key) {
+		case "F11":
+			console.log("F11 pressed.");
+			remote.getCurrentWindow()
+				.maximize()
+			break;
+	}
 });
