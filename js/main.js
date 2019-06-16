@@ -1,4 +1,10 @@
-const { app, BrowserWindow, ipcMain, electron, dialog } = require('electron')
+const {
+    app,
+    BrowserWindow,
+    ipcMain,
+    electron,
+    dialog
+} = require('electron')
 const url = require('url')
 const path = require('path')
 const VirtualKeyboard = require('electron-virtual-keyboard')
@@ -46,7 +52,8 @@ app.on('ready', () => {
     console.log("")
 
     // GLOABL variable for display information
-    global.displays = require('electron').screen.getAllDisplays()
+    global.displays = require('electron')
+        .screen.getAllDisplays()
 
     if (isInDebugEnv) {
         var timestamp = new Date(Date.now())
@@ -128,7 +135,9 @@ app.on('ready', () => {
         windows.preview.loadFile('./html/preview-idle.html')
         windows.main.webContents.closeDevTools()
     } else {
-        if (isInFullscreenDebugEnv) { isInDebugEnv = true } // End of window creation process
+        if (isInFullscreenDebugEnv) {
+            isInDebugEnv = true
+        } // End of window creation process
         windows.preview = new BrowserWindow({
             webPreferences: {
                 nodeIntegration: true
@@ -155,19 +164,27 @@ app.on('ready', () => {
     })
 
     windows.workerDownload = new BrowserWindow({
-        webPreferences: { nodeIntegration: true },
+        webPreferences: {
+            nodeIntegration: true
+        },
         show: false
     })
     windows.workerPly2stl = new BrowserWindow({
-        webPreferences: { nodeIntegration: true },
+        webPreferences: {
+            nodeIntegration: true
+        },
         show: false
     })
     windows.workerStl2bmp = new BrowserWindow({
-        webPreferences: { nodeIntegration: true },
+        webPreferences: {
+            nodeIntegration: true
+        },
         show: false
     })
     windows.workerPrinting = new BrowserWindow({
-        webPreferences: { nodeIntegration: true },
+        webPreferences: {
+            nodeIntegration: true
+        },
         show: false
     })
     windows.workerDownload.loadFile('./html/worker-download.html')
@@ -196,11 +213,21 @@ ipcMain.on('swap-displays', (evt, arg) => {
     // console.log(typeof windows)
 
     // Make sure there are two windows and two monitors
-    if (typeof(windows.main) != undefined && typeof(windows.preview) != undefined && require('electron').screen.getAllDisplays().length == 2) {
+    if (typeof(windows.main) != undefined && typeof(windows.preview) != undefined && require('electron')
+        .screen.getAllDisplays()
+        .length == 2) {
         var mainWindowBounds = windows.main.getBounds()
-        var mainDisplay = require('electron').screen.getDisplayNearestPoint({ x: mainWindowBounds.x, y: mainWindowBounds.x })
+        var mainDisplay = require('electron')
+            .screen.getDisplayNearestPoint({
+                x: mainWindowBounds.x,
+                y: mainWindowBounds.x
+            })
         var secondaryWindowBounds = windows.preview.getBounds()
-        var secondaryDisplay = require('electron').screen.getDisplayNearestPoint({ x: secondaryWindowBounds.x, y: secondaryWindowBounds.x })
+        var secondaryDisplay = require('electron')
+            .screen.getDisplayNearestPoint({
+                x: secondaryWindowBounds.x,
+                y: secondaryWindowBounds.x
+            })
         window.main.setBounds(secondaryDisplay.bounds)
         window.preview.setBounds(mainDisplay.bounds)
     }
@@ -211,12 +238,18 @@ function logDebug(arg) {
     var timestamp = new Date()
     if (isInDebugEnv) {
         console.log("[DEBUG:" + timestamp.getFullYear() +
-            String(timestamp.getMonth() + 1).padStart(2, '0') +
-            String(timestamp.getDate()).padStart(2, '0') + "@" +
-            String(timestamp.getHours()).padStart(2, '0') + ":" +
-            String(timestamp.getMinutes()).padStart(2, '0') + ":" +
-            String(timestamp.getSeconds()).padStart(2, '0') + "." +
-            String(timestamp.getMilliseconds()).padStart(3, 0) + "] " + arg)
+            String(timestamp.getMonth() + 1)
+            .padStart(2, '0') +
+            String(timestamp.getDate())
+            .padStart(2, '0') + "@" +
+            String(timestamp.getHours())
+            .padStart(2, '0') + ":" +
+            String(timestamp.getMinutes())
+            .padStart(2, '0') + ":" +
+            String(timestamp.getSeconds())
+            .padStart(2, '0') + "." +
+            String(timestamp.getMilliseconds())
+            .padStart(3, 0) + "] " + arg)
     }
 }
 

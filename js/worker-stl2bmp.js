@@ -1,1 +1,4 @@
-const { ipcRenderer, remote } = require('electron')
+const {
+    ipcRenderer,
+    remote
+} = require('electron')

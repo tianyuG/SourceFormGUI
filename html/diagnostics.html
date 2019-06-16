@@ -2,109 +2,113 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <title>SourceForm Diagnostics</title>
-  <!-- Load special keybinding settings -->
-  <script src="../utils/keybindings.js"></script>
-  <!-- Load common functions -->
-  <script src="../utils/common.js"></script>
-  <link rel="stylesheet" type="text/css" href="../css/disable-text-selection.css">
-  <style>
-    .collapsible {
-      background-color: #777;
-      color: white;
-      cursor: pointer;
-      padding: 18px;
-      width: 100%;
-      border: none;
-      text-align: left;
-      outline: none;
-      font-size: 15px;
-    }
+    <meta charset="UTF-8">
+    <title>SourceForm Diagnostics</title>
+    <!-- Load special keybinding settings -->
+    <script src="../utils/keybindings.js"></script>
+    <!-- Load common functions -->
+    <script src="../utils/common.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/disable-text-selection.css">
+    <style>
+        .collapsible {
+            background-color: #777;
+            color: white;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+        }
 
-    .active,
-    .collapsible:hover {
-      background-color: #555;
-    }
+        .active,
+        .collapsible:hover {
+            background-color: #555;
+        }
 
-    .content {
-      padding: 0 18px;
-      display: none;
-      overflow: hidden;
-      background-color: #f1f1f1;
-    }
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f1f1f1;
+        }
 
-    .bold-item {
-      font-weight: bold;
-    }
+        .bold-item {
+            font-weight: bold;
+        }
 
-    .italic-item {
-      font-style: italic;
-    }
+        .italic-item {
+            font-style: italic;
+        }
 
-    .err-msg {
-      padding-left: 20px;
-    }
-  </style>
+        .err-msg {
+            padding-left: 20px;
+        }
+    </style>
 </head>
 
 <body>
-  <h1>Diagnostics</h1>
-  <button onclick="window.history.back();">Back</button>
-  <h2>Network</h2>
-  <button class="collapsible">Total number of available network interfaces:
-    <script>
-      document.write(Object.keys(require('os').networkInterfaces()).length);
-    </script></button>
+    <h1>Diagnostics</h1>
+    <button onclick="window.history.back();">Back</button>
+    <h2>Network</h2>
+    <button class="collapsible">Total number of available network interfaces:
+        <script>
+            document.write(Object.keys(require('os')
+                    .networkInterfaces())
+                .length);
+        </script></button>
     <!-- <div class="content" id="network-info-content"><script>document.write(JSON.stringify(require('os').networkInterfaces()));</script></div> -->
     <div class="content" id="network-info-content"></div>
     <h2>Display</h2>
     <button class="collapsible">Total number of available displays:
-      <script>
-        document.write(Object.keys(require('electron').remote.getGlobal(
-          'displays')).length);
+        <script>
+            document.write(Object.keys(require('electron')
+                    .remote.getGlobal(
+                        'displays'))
+                .length);
         </script></button>
-        <!-- <div class="content" id="network-info-content"><script>document.write(JSON.stringify(require('os').networkInterfaces()));</script></div> -->
-        <div class="content" id="display-content"></div>
-        <h2>Runtime Environment</h2>
-        Node.js: <script>
-          document.write(process.versions.node)
-        </script>,
-        Chrome: <script>
-          document.write(process.versions.chrome)
-        </script>,
-        Electron: <script>
-          document.write(process.versions.electron)
-        </script>.
-        <h2>Dependencies</h2>
-        <h3>AutoHotKey</h3>
-        <p id="ahk-installation-status">Checking...</p>
-        <h3>imagemagick</h3>
-        <p id="imagemagick-installation-status">Checking...</p>
-        <h3>Python 2.7</h3>
-        <p id="python27-installation-status">Checking...</p>
-        <button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
-        <button onclick="require('electron').remote.app.quit();">Quit</button>
-      </div>
-      <!-- END-TEST -->
-      <script>
+    <!-- <div class="content" id="network-info-content"><script>document.write(JSON.stringify(require('os').networkInterfaces()));</script></div> -->
+    <div class="content" id="display-content"></div>
+    <h2>Runtime Environment</h2>
+    Node.js: <script>
+        document.write(process.versions.node)
+    </script>,
+    Chrome: <script>
+        document.write(process.versions.chrome)
+    </script>,
+    Electron: <script>
+        document.write(process.versions.electron)
+    </script>.
+    <h2>Dependencies</h2>
+    <h3>AutoHotKey</h3>
+    <p id="ahk-installation-status">Checking...</p>
+    <h3>imagemagick</h3>
+    <p id="imagemagick-installation-status">Checking...</p>
+    <h3>Python 2.7</h3>
+    <p id="python27-installation-status">Checking...</p>
+    <button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
+    <button onclick="require('electron').remote.app.quit();">Quit</button>
+    </div>
+    <!-- END-TEST -->
+    <script>
         require('../js/diagnostics.js')
 
         var coll = document.getElementsByClassName("collapsible");
         var i;
 
         for (i = 0; i < coll.length; i++) {
-          coll[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var content = this.nextElementSibling;
-            if (content.style.display === "block") {
-              content.style.display = "none";
-            } else {
-              content.style.display = "block";
-            }
-          });
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
         }
-      </script>
-    </body>
+    </script>
+</body>
 
-    </html>
+</html>

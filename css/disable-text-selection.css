@@ -3,12 +3,14 @@
  * So the front end would behave more like a native app
  */
 
-*, *::after, *::before {
-	-webkit-user-select: none;
-	-user-select: none;
-	-webkit-user-drag: none;
-	-user-drag: none;
-	-webkit-app-region: no-drag;
-	-app-region: no-drag;
-	cursor: default;
+*,
+*::after,
+*::before {
+    -webkit-user-select: none;
+    -user-select: none;
+    -webkit-user-drag: none;
+    -user-drag: none;
+    -webkit-app-region: no-drag;
+    -app-region: no-drag;
+    cursor: default;
 }

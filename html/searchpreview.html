@@ -2,34 +2,34 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <title>SourceForm Preview</title>
-  <!-- Load common functions -->
-  <script src="../utils/common.js"></script>
-  <link rel="stylesheet" type="text/css" href="../css/disable-text-selection.css">
+    <meta charset="UTF-8">
+    <title>SourceForm Preview</title>
+    <!-- Load common functions -->
+    <script src="../utils/common.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/disable-text-selection.css">
 </head>
 
 <body>
-  <div class="preview-container">
-    <div class="preview-header">
-      <span class="preview-header">We found these images of </span>
-      <span class="preview-header" id="preview-search-query" style="font-style: italic;"></span>
+    <div class="preview-container">
+        <div class="preview-header">
+            <span class="preview-header">We found these images of </span>
+            <span class="preview-header" id="preview-search-query" style="font-style: italic;"></span>
+        </div>
+        <div id="preview-grid"></div>
+        <div class="preview-confirmation-container">
+            <h2>Are most of those images directly related to the model you want us to print?</h2>
+            <div class="preview-confirmation-buttons-container">
+                <button id="preview-no">No, I want to change my search to something else</button>
+                <button id="preview-yes">Looks alright to me, go ahead and print it out</button>
+            </div>
+        </div>
     </div>
-    <div id="preview-grid"></div>
-    <div class="preview-confirmation-container">
-      <h2>Are most of those images directly related to the model you want us to print?</h2>
-      <div class="preview-confirmation-buttons-container">
-       <button id="preview-no">No, I want to change my search to something else</button>
-       <button id="preview-yes">Looks alright to me, go ahead and print it out</button>
-     </div>
-   </div>
- </div>
- <button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
- <button onclick="require('electron').remote.app.quit();">Quit</button>
-</div>
-<script>
-  require("../js/searchpreview.js")
-</script>
+    <button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
+    <button onclick="require('electron').remote.app.quit();">Quit</button>
+    </div>
+    <script>
+        require("../js/searchpreview.js")
+    </script>
 </body>
 
 </html>

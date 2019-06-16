@@ -48,6 +48,7 @@
     border: none;
     min-width: unset;
 }
+
 .virtual-keyboard .key.sizer {
     min-width: unset;
 }
@@ -64,6 +65,7 @@
     display: flex;
     justify-content: center;
 }
+
 .virtual-keyboard .key.space {
     flex: unset;
     width: 20rem;
