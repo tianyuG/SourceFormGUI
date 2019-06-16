@@ -1090,6 +1090,11 @@ ev-emitter@^1.0.0, ev-emitter@^1.0.1, ev-emitter@^1.0.2:
   resolved "https://registry.yarnpkg.com/ev-emitter/-/ev-emitter-1.1.1.tgz#8f18b0ce5c76a5d18017f71c0a795c65b9138f2a"
   integrity sha512-ipiDYhdQSCZ4hSbX4rMW+XzNKMD1prg/sTvoVmSLkuQ1MVlwjJQQA+sW8tMYR3BLUr9KjodFV4pvzunvRhd33Q==
 
+eventemitter3@^3.1.0, eventemitter3@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.2.tgz#2d3d48f9c346698fce83a85d7d664e98535df6e7"
+  integrity sha512-tvtQIeLVHjDkJYnzf2dgVMxfuSGJeM/7UCG17TT4EumTfNtF+0nebF/4zWOIkCreAbtNqhGEboB6BWrwqNaw4Q==
+
 execa@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/execa/-/execa-0.7.0.tgz#944becd34cc41ee32a63a9faf27ad5a65fc59777"
@@ -1502,7 +1507,7 @@ got@^9.6.0:
     to-readable-stream "^1.0.0"
     url-parse-lax "^3.0.0"
 
-graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6:
+graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6:
   version "4.1.15"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.15.tgz#ffb703e1066e8a0eeaa4c8b80ba9253eeefbfb00"
   integrity sha512-6uHUhOPEBgQ24HM+r6b/QwWfZq+yiFcipKFrOFiBEnWdy5sdzYoi+pJeQaPI5qOLRFqWmAXUPQNsielzdLoecA==
@@ -2587,6 +2592,21 @@ p-locate@^3.0.0:
   integrity sha512-x+12w/To+4GFfgJhBEpiDcLozRJGegY+Ei7/z0tSLkMmxGZNybVMSfWj9aJn8Z5Fc7dBUNJOOVgPv2H7IwulSQ==
   dependencies:
     p-limit "^2.0.0"
+
+p-queue@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-6.0.2.tgz#34ab9f1fe43b26ec6da2a94cae6b3c3cdcaecfde"
+  integrity sha512-KDmybfRp7PQXk6mRDCtbFWc1E6qUyIXLdmiCQbnKY8+DM0+PodWYLT4dPT/T4x4G+w4PHZXvMB3dZfLEI2vaFA==
+  dependencies:
+    eventemitter3 "^3.1.0"
+    p-timeout "^3.1.0"
+
+p-timeout@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/p-timeout/-/p-timeout-3.1.0.tgz#198c1f503bb973e9b9727177a276c80afd6851f3"
+  integrity sha512-C27DYI+tCroT8J8cTEyySGydl2B7FlxrGNF5/wmMbl1V+jeehUCzEE/BVgzRebdm2K3ZitKOKx8YbdFumDyYmw==
+  dependencies:
+    p-finally "^1.0.0"
 
 p-try@^2.0.0:
   version "2.2.0"

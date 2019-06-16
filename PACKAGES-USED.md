@@ -16,3 +16,6 @@
 | 							| or MPL v2	 		 | Yes			| No 				| -  		| -       | - 														 |
 | is-ip						| MIT 				 | Yes 			| No 				| No 		| 3.0.0   | https://github.com/sindresorhus/is-ip					 |
 | three.js					| MIT 				 | Yes			| No 				| No 		| 0.105.2 | https://github.com/mrdoob/three.js 						 |
+| eventemitter3				| MIT				 | Yes 			| No 				| No 		| 3.1.2   | https://github.com/primus/eventemitter3					 |
+| p-queue 					| MIT				 | Yes 			| No				| No		| 6.0.2   | https://github.com/sindresorhus/p-queue					 |
+| graceful-fs				| ISC 				 | Yes 			| No 				| No 		| 4.1.15  | https://github.com/isaacs/node-graceful-fs 				 |
