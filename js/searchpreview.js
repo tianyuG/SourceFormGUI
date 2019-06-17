@@ -36,7 +36,17 @@ ipcRenderer.once('search-query-relay', (event, message) => {
 
 	var ret = checkAgainstExisting(message)
 
-	if (checkAgainstExisting(message)[0]) {
+	if (ret.length > 0) {
+		var nid = ret[0].id
+		var ndate = ret[0].updated
+
+		for (var entry in ret) {
+			if (Date.parse(ret[entry].updated) > ndate) {
+					nid = ret[entry].id
+					ndate = ret[entry].updated
+			}
+		}
+		// TODO: Create an overlay to alert user a model already exists. Ask if they just want to print it out
 		document.getElementById("preview-search-query")
 			.innerHTML = "EXISTS " + message
 	}
@@ -88,9 +98,9 @@ abortButton.addEventListener('click', function() {
 	ipcRenderer.send('preview-aborted', searchResult)
 })
 
-// continueButton.addEventListener('click', function() {
-// 	var ret = 
-// })
+continueButton.addEventListener('click', function() {
+	// var ret = 
+})
 
 async function getPhotoPreviewURLs(query) {
 	try {
@@ -174,14 +184,15 @@ function checkAgainstExisting(term) {
 
 	var jsonObj = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../carousel/content.json")));
 	// logDebug(JSON.stringify(jsonObj))
+	var retArr = []
 
 	for (var entry in jsonObj) {
 		logDebug(JSON.stringify(jsonObj[entry]))
 		if (jsonObj[entry].sanitised_title == sanitised) {
 			logDebug("FOUND json entry")
-			return new Array(true, entry.path, entry.updated)
+			retArr.unshift({"id": entry, "path": jsonObj[entry].path, "updated": jsonObj[entry].updated})
 		}
 	}
-
-	return new Array(false, "", "")
+	logDebug(JSON.stringify(retArr))
+	return retArr
 }
