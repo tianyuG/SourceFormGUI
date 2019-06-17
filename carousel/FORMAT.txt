@@ -1,21 +1,21 @@
 The format of this JSON file (content.json):
 
 {
-	"0000" : {											<- [1]
-		"title" : "Statue of Liberty",					<- [2]
-		"thumbnail" : "imgs\0000.jpg",					<- [3]
-		"path" : "C:\\Users\\test\\projects\\liberty",	<- [4]
-		"updated" : 1318289051,							<- [5]
-		"accessed" : 1318289051,						<- [6]
-		"image_count" : 500								<- [7]
+	"0000" : {											             <- [1]
+		"title"           : "Statue of Liberty",			         <- [2]
+		"sanitised_title" : "statue-of-liberty",					 <- [3]
+		"path"            : "C:\\Users\\test\\projects\\liberty",	 <- [4]
+		"updated"         : "2009-06-29T11:11:55Z",					 <- [5]
+		"accessed"        : "2009-06-29T11:11:55Z", 			     <- [6]
+		"image_count"     : 500								         <- [7]
 	},
 	[[...]]
 }
 
 [1]:	(obj) ID of the model described in this stacked JSON file. 
 			Ideally sequential, but not identical.
-[2]:	(str) Title of the model
-[3]:	(str) The _relative_ path to the thumbnail of this model.
+[2]:	(str) Title of the model.
+[3]:	(str) The sanitised title. a-z, A-Z, 0-9, with '-' substituting spaces.
 [4]:	(str) The _absolute_ path to the folder that contains the pointcloud file
 			(fused.ply) and the downloaded images. For best performance,
 			this path should not be a network location.

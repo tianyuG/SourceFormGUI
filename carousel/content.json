@@ -1,3 +1,18 @@
 {
-
+	"0000":{
+		"title": "Statue of Liberty",
+		"sanitised_title": "statue-of-liberty",
+		"path": "C:\\Users\\test\\projects\\liberty",
+		"updated": "2009-06-29T11:11:55Z",
+		"accessed": "2009-06-29T11:11:55Z",
+		"image_count": 500
+	},
+	"0001":{
+		"title": "Test",
+		"sanitised_title": "test",
+		"path": "C:\\Users\\test\\projects\\liberty",
+		"updated": "2009-06-29T11:11:55Z",
+		"accessed": "2009-06-29T11:11:55Z",
+		"image_count": 500
+	}
 }

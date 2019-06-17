@@ -13,3 +13,9 @@ var flickr = new Flickr(require('electron')
 ipcRenderer.on('worker-download-search', (event, message) => {
 
 })
+
+function searchFor(term) {
+
+}
+
+function downloadImages()
