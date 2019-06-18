@@ -67,24 +67,38 @@ require('electron')
 		//   ipcRenderer.send('setup-start-sourceform-button-clicked')
 		// });
 
-		const imagepathcurr = document.getElementById('imagepath-current');
-		const imagepathbtn = document.getElementById('imagepath-button');
-		const ply2stlcurr = document.getElementById('ply2stl-current');
-		const ply2stlbtn = document.getElementById('ply2stl-button');
-		const stl2bmpcurr = document.getElementById('stl2bmp-current');
-		const stl2bmpbtn = document.getElementById('stl2bmp-button');
-		const printerscriptcurr = document.getElementById('printerscript-current');
-		const printerscriptbtn = document.getElementById('printerscript-button');
-		const numofimgscurr = document.getElementById('numofimgs-current');
-		const numofimgsbtn = document.getElementById('numofimgs-button');
-		const numofimgsinput = document.getElementById('numofimgs-input')
-		const numofimgsbtncnfm = document.getElementById('numofimgs-button-confirm');
-		const remoteipcurr = document.getElementById('remoteip-current');
-		const remoteipbtn = document.getElementById('remoteip-button');
-		const remoteipinput = document.getElementById('remoteip-input')
-		const remoteipbtncnfm = document.getElementById('remoteip-button-confirm');
-		const remoteipwarning = document.getElementById('remoteip-warning');
+		const flickrkeycurr        = document.getElementById('flickrkey-current');
+		const flickrkeybtn         = document.getElementById('flickrkey-button');
+		const flickrkeybtnreset    = document.getElementById('flickrkey-button-reset');
+		const flickrkeyinput       = document.getElementById('flickrkey-input')
+		const flickrkeybtncnfm     = document.getElementById('flickrkey-button-confirm');
+		const flickrsecretcurr     = document.getElementById('flickrsecret-current');
+		const flickrsecretbtn      = document.getElementById('flickrsecret-button');
+		const flickrsecretbtnreset = document.getElementById('flickrsecret-button-reset');
+		const flickrsecretinput    = document.getElementById('flickrsecret-input')
+		const flickrsecretbtncnfm  = document.getElementById('flickrsecret-button-confirm');
+		const imagepathcurr        = document.getElementById('imagepath-current');
+		const imagepathbtn         = document.getElementById('imagepath-button');
+		const ply2stlcurr          = document.getElementById('ply2stl-current');
+		const ply2stlbtn           = document.getElementById('ply2stl-button');
+		const stl2bmpcurr          = document.getElementById('stl2bmp-current');
+		const stl2bmpbtn           = document.getElementById('stl2bmp-button');
+		const printerscriptcurr    = document.getElementById('printerscript-current');
+		const printerscriptbtn     = document.getElementById('printerscript-button');
+		const numofimgscurr        = document.getElementById('numofimgs-current');
+		const numofimgsbtn         = document.getElementById('numofimgs-button');
+		const numofimgsinput       = document.getElementById('numofimgs-input')
+		const numofimgsbtncnfm     = document.getElementById('numofimgs-button-confirm');
+		const remoteipcurr         = document.getElementById('remoteip-current');
+		const remoteipbtn          = document.getElementById('remoteip-button');
+		const remoteipinput        = document.getElementById('remoteip-input')
+		const remoteipbtncnfm      = document.getElementById('remoteip-button-confirm');
+		const remoteipwarning      = document.getElementById('remoteip-warning');
 
+		flickrkeycurr.innerHTML = require('electron')
+			.remote.getGlobal('flickrKey')
+		flickrsecretcurr.innerHTML = require('electron')
+			.remote.getGlobal('flickrSecret')
 		imagepathcurr.innerHTML = require('electron')
 			.remote.getGlobal('imagePath')
 		ply2stlcurr.innerHTML = require('electron')
@@ -97,6 +111,66 @@ require('electron')
 			.remote.getGlobal('numberOfImagesPerModel')
 		remoteipcurr.innerHTML = require('electron')
 			.remote.getGlobal('remoteIP')
+
+		flickrkeybtn.addEventListener('click', () => {
+			flickrkeyinput.style.display = "inline"
+			flickrkeybtn.style.display = "none"
+			flickrkeybtncnfm.style.display = "inline"
+		});
+
+		flickrkeybtnreset.addEventListener('click', () => {
+			flickrkeybtn.style.display = "inline"
+			flickrkeybtncnfm.style.display = "none"
+			flickrkeyinput.style.display = "none"
+			ipcRenderer.send("reset-flickrkey")
+			flickrkeycurr.innerHTML = require('electron')
+				.remote.getGlobal('flickrKey')
+		});
+
+		flickrkeybtncnfm.addEventListener('click', () => {
+			flickrkeybtn.style.display = "inline"
+			flickrkeybtncnfm.style.display = "none"
+			flickrkeyinput.style.display = "none"
+			ipcRenderer.send("set-flickrkey", flickrkeyinput.value)
+			flickrkeycurr.innerHTML = require('electron')
+				.remote.getGlobal('flickrKey')
+		});
+
+		flickrsecretbtn.addEventListener('click', () => {
+			flickrsecretinput.style.display = "inline"
+			flickrsecretbtn.style.display = "none"
+			flickrsecretbtncnfm.style.display = "inline"
+		});
+
+		flickrsecretbtnreset.addEventListener('click', () => {
+			flickrsecretbtn.style.display = "inline"
+			flickrsecretbtncnfm.style.display = "none"
+			flickrsecretinput.style.display = "none"
+			ipcRenderer.send("reset-flickrsecret")
+			flickrsecretcurr.innerHTML = require('electron')
+				.remote.getGlobal('flickrSecret')
+		});
+
+		flickrsecretbtncnfm.addEventListener('click', () => {
+			flickrsecretbtn.style.display = "inline"
+			flickrsecretbtncnfm.style.display = "none"
+			flickrsecretinput.style.display = "none"
+			ipcRenderer.send("set-flickrsecret", flickrsecretinput.value)
+			flickrsecretcurr.innerHTML = require('electron')
+				.remote.getGlobal('flickrSecret')
+		});
+
+		flickrsecretinput.addEventListener("keyup", () => {
+			if (event.keyCode == 13) {
+				flickrsecretbtncnfm.click()
+			}
+		})
+
+		flickrkeyinput.addEventListener("keyup", () => {
+			if (event.keyCode == 13) {
+				flickrkeybtncnfm.click()
+			}
+		})
 
 		// Add button to change imagePath
 		imagepathbtn.addEventListener('click', () => {
@@ -181,7 +255,6 @@ require('electron')
 				numofimgscurr.innerHTML = require('electron')
 					.remote.getGlobal('numberOfImagesPerModel')
 			}
-
 		});
 
 		numofimgsinput.addEventListener("keyup", () => {

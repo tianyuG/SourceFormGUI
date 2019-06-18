@@ -16,32 +16,34 @@ const windows = {}
  */
 
 // Define if the program is run in debug environment (windowed)
-global.isInDebugEnv = process.argv.includes('--debugenv')
+global.isInDebugEnv           = process.argv.includes('--debugenv')
 
 // Define if the program is run in debug environment (fullscreen)
 global.isInFullscreenDebugEnv = process.argv.includes('--fdebugenv')
 
 // Define Flickr API key and secret
-global.flickrKey = "d8961cd658655c19ee5ae158b9a191dc"
-global.flickrSecret = "b9eb42d1426b41f2"
+global.flickrKey              = "d8961cd658655c19ee5ae158b9a191dc"
+global.flickrSecret           = "b9eb42d1426b41f2"
+global.flickrKey_default      = "d8961cd658655c19ee5ae158b9a191dc"
+global.flickrSecret_default   = "b9eb42d1426b41f2"
 
 // Define where the downloaded images are
-global.imagePath = ""
+global.imagePath              = ""
 
 // Define where the script for converting PLY point cloud to STL model is
-global.PLY2STLScriptPath = ""
+global.PLY2STLScriptPath      = ""
 
 // Define where the script for converting STL model to BMP bitmap is
-global.STL2BMPScriptPath = ""
+global.STL2BMPScriptPath      = ""
 
 // Define where the Arduino script for controlling the printer is
-global.printerScriptPath = ""
+global.printerScriptPath      = ""
 
 // Define number of images to be downloaded per model
 global.numberOfImagesPerModel = 500
 
 // Define the IP address for the modelling computer
-global.remoteIP = "192.168.1.10"
+global.remoteIP               = "192.168.1.10"
 
 /*
  * END: GLOBAL VARIABLES
@@ -276,6 +278,22 @@ ipcMain.on('preview-aborted', function(event, data) {
 		windows.main.webContents.once('dom-ready', () => {
 				windows.main.webContents.send('select-all-input', data);
 		})
+});
+
+ipcMain.on('set-flickrKey', function(event, data) {
+		flickrKey = data;
+});
+
+ipcMain.on('set-flickrSecret', function(event, data) {
+		flickrSecret = data;
+});
+
+ipcMain.on('reset-flickrKey', function(event, data) {
+		flickrKey = flickrKey_default;
+});
+
+ipcMain.on('reset-flickrSecret', function(event, data) {
+		flickrSecret = flickrSecret_default;
 });
 
 /*

@@ -29,6 +29,29 @@
   </div> -->
 	<h2>Step 2: Confirm Settings</h2>
 	<p>IMPORTANT NOTE: Changing settings in this section will not affect the step of a job that is currently being worked on. For example, if a model is being requested and images of the model are being downloaded, changing the setting for the 'number of images to be downloaded per model' will have no effect. Instead, it will affect subsequent models.</p>
+	<div id="flickrkey-selector">
+		<span>Flickr Key: </span>
+		<span id="flickrkey-current"></span>
+		<input type="text" id="flickrkey-input" style="display: none;" />
+		<button id="flickrkey-button">Change</button>
+		<button id="flickrkey-button-confirm" style="display: none;">Confirm</button>
+		<span style="display: inline-block; width: 50px;">&nbsp;</span>
+		<button id="flickrkey-button-reset">Reset to Default</button>
+	</div>
+	<div id="flickrsecret-selector">
+		<span>Flickr Secret: </span>
+		<span id="flickrsecret-current"></span>
+		<input type="text" id="flickrsecret-input" style="display: none;" />
+		<button id="flickrsecret-button">Change</button>
+		<button id="flickrsecret-button-confirm" style="display: none;">Confirm</button>
+		<span style="display: inline-block; width: 50px;">&nbsp;</span>
+		<button id="flickrsecret-button-reset">Reset to Default</button>
+	</div>
+	<div id="imagepath-selector">
+		<span>Current imagepath: </span>
+		<span id="imagepath-current"></span>
+		<button id="imagepath-button">Change</button>
+	</div>
 	<div id="imagepath-selector">
 		<span>Current imagepath: </span>
 		<span id="imagepath-current"></span>
