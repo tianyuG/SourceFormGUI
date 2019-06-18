@@ -119,21 +119,24 @@ require('electron')
 		});
 
 		flickrkeybtnreset.addEventListener('click', () => {
-			flickrkeybtn.style.display = "inline"
-			flickrkeybtncnfm.style.display = "none"
-			flickrkeyinput.style.display = "none"
-			ipcRenderer.send("reset-flickrkey")
-			flickrkeycurr.innerHTML = require('electron')
-				.remote.getGlobal('flickrKey')
+			flickrkeyinput.style.display = "inline"
+			flickrkeybtn.style.display = "none"
+			flickrkeybtncnfm.style.display = "inline"
+			flickrkeybtnreset.style.display = "none"
+			flickrkeyinput.value = require('electron')
+				.remote.getGlobal('flickrKey_default')
 		});
 
 		flickrkeybtncnfm.addEventListener('click', () => {
 			flickrkeybtn.style.display = "inline"
 			flickrkeybtncnfm.style.display = "none"
 			flickrkeyinput.style.display = "none"
-			ipcRenderer.send("set-flickrkey", flickrkeyinput.value)
-			flickrkeycurr.innerHTML = require('electron')
-				.remote.getGlobal('flickrKey')
+			flickrkeybtnreset.style.display = "inline"
+			if (flickrkeyinput.value.trim != "") {
+				ipcRenderer.send("set-flickrkey", flickrkeyinput.value)
+				flickrkeycurr.innerHTML = require('electron')
+					.remote.getGlobal('flickrKey')
+			}
 		});
 
 		flickrsecretbtn.addEventListener('click', () => {
@@ -143,21 +146,24 @@ require('electron')
 		});
 
 		flickrsecretbtnreset.addEventListener('click', () => {
-			flickrsecretbtn.style.display = "inline"
-			flickrsecretbtncnfm.style.display = "none"
-			flickrsecretinput.style.display = "none"
-			ipcRenderer.send("reset-flickrsecret")
-			flickrsecretcurr.innerHTML = require('electron')
-				.remote.getGlobal('flickrSecret')
+			flickrsecretinput.style.display = "inline"
+			flickrsecretbtn.style.display = "none"
+			flickrsecretbtncnfm.style.display = "inline"
+			flickrsecretbtnreset.style.display = "none"
+			flickrsecretinput.value = require('electron')
+				.remote.getGlobal('flickrSecret_default')
 		});
 
 		flickrsecretbtncnfm.addEventListener('click', () => {
 			flickrsecretbtn.style.display = "inline"
 			flickrsecretbtncnfm.style.display = "none"
 			flickrsecretinput.style.display = "none"
-			ipcRenderer.send("set-flickrsecret", flickrsecretinput.value)
-			flickrsecretcurr.innerHTML = require('electron')
-				.remote.getGlobal('flickrSecret')
+			flickrsecretbtnreset.style.display = "inline"
+			if (flickrsecretinput.value.trim != "") {
+				ipcRenderer.send("set-flickrsecret", flickrsecretinput.value)
+				flickrsecretcurr.innerHTML = require('electron')
+					.remote.getGlobal('flickrSecret')
+			}
 		});
 
 		flickrsecretinput.addEventListener("keyup", () => {

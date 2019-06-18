@@ -280,19 +280,20 @@ ipcMain.on('preview-aborted', function(event, data) {
 		})
 });
 
-ipcMain.on('set-flickrKey', function(event, data) {
+ipcMain.on('set-flickrkey', function(event, data) {
+	logDebug("SETFKEY")
 		flickrKey = data;
 });
 
-ipcMain.on('set-flickrSecret', function(event, data) {
+ipcMain.on('set-flickrsecret', function(event, data) {
 		flickrSecret = data;
 });
 
-ipcMain.on('reset-flickrKey', function(event, data) {
+ipcMain.on('reset-flickrkey', function(event, data) {
 		flickrKey = flickrKey_default;
 });
 
-ipcMain.on('reset-flickrSecret', function(event, data) {
+ipcMain.on('reset-flickrsecret', function(event, data) {
 		flickrSecret = flickrSecret_default;
 });
 
