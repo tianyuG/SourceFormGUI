@@ -37,6 +37,9 @@ global.STL2BMPScriptPath = ""
 // Define where the Arduino script for controlling the printer is
 global.printerScriptPath = ""
 
+// Define number of images to be downloaded per model
+global.numberOfImagesPerModel = 500
+
 // Define the IP address for the modelling computer
 global.remoteIP = "192.168.1.10"
 
@@ -303,12 +306,18 @@ ipcMain.on('set-printerscriptpath', function(event, data) {
 		printerScriptPath = data;
 });
 
+ipcMain.on('set-numofimgs', function(event, data) {
+		numberOfImagesPerModel = parseInt(data, 10);
+});
+
 /*
  * Change remoteIP global variiable
  */
 ipcMain.on('set-remoteip', function(event, data) {
 		remoteIP = data;
 });
+
+
 
 /*
  * Load setup window upon request

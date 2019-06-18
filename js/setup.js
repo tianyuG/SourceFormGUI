@@ -75,6 +75,10 @@ require('electron')
 		const stl2bmpbtn = document.getElementById('stl2bmp-button');
 		const printerscriptcurr = document.getElementById('printerscript-current');
 		const printerscriptbtn = document.getElementById('printerscript-button');
+		const numofimgscurr = document.getElementById('numofimgs-current');
+		const numofimgsbtn = document.getElementById('numofimgs-button');
+		const numofimgsinput = document.getElementById('numofimgs-input')
+		const numofimgsbtncnfm = document.getElementById('numofimgs-button-confirm');
 		const remoteipcurr = document.getElementById('remoteip-current');
 		const remoteipbtn = document.getElementById('remoteip-button');
 		const remoteipinput = document.getElementById('remoteip-input')
@@ -83,6 +87,14 @@ require('electron')
 
 		imagepathcurr.innerHTML = require('electron')
 			.remote.getGlobal('imagePath')
+		ply2stlcurr.innerHTML = require('electron')
+			.remote.getGlobal('PLY2STLScriptPath')
+		stl2bmpcurr.innerHTML = require('electron')
+			.remote.getGlobal('STL2BMPScriptPath')
+		printerscriptcurr.innerHTML = require('electron')
+			.remote.getGlobal('printerScriptPath')
+		numofimgscurr.innerHTML = require('electron')
+			.remote.getGlobal('numberOfImagesPerModel')
 		remoteipcurr.innerHTML = require('electron')
 			.remote.getGlobal('remoteIP')
 
@@ -153,6 +165,30 @@ require('electron')
 			printerscriptcurr.innerHTML = require('electron')
 				.remote.getGlobal('printerScriptPath')
 		});
+
+		numofimgsbtn.addEventListener('click', () => {
+			numofimgsinput.style.display = "inline"
+			numofimgsbtn.style.display = "none"
+			numofimgsbtncnfm.style.display = "inline"
+		});
+
+		numofimgsbtncnfm.addEventListener('click', () => {
+			if (numofimgsinput.value >= 200 && numofimgsinput.value <= 1000) {
+				numofimgsbtn.style.display = "inline"
+				numofimgsbtncnfm.style.display = "none"
+				numofimgsinput.style.display = "none"
+				ipcRenderer.send("set-numofimgs", numofimgsinput.value)
+				numofimgscurr.innerHTML = require('electron')
+					.remote.getGlobal('numberOfImagesPerModel')
+			}
+
+		});
+
+		numofimgsinput.addEventListener("keyup", () => {
+			if (event.keyCode == 13) {
+				numofimgsbtncnfm.click()
+			}
+		})
 
 		// Button to allow editing remoteIP
 		remoteipbtn.addEventListener('click', () => {
