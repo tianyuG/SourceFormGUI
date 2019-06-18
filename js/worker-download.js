@@ -26,7 +26,7 @@ ipcRenderer.on('worker-download-search', (event, message) => {
  * 						 "url_c", "url_l", "url_o"
  */
 function searchFor(term, size, numOfImgs) {
-
+	
 }
 
 function downloadImages()

@@ -11,8 +11,7 @@ const {
 	dialog
 } = remote
 const os = require('os')
-const fs = require('electron')
-	.remote.require('fs')
+const fs = require('graceful-fs')
 
 let win
 
@@ -46,6 +45,7 @@ require('electron')
 
 		const startahkbtn = document.getElementById('start-ahk-button');
 		const stopahkbtn = document.getElementById('stop-ahk-button');
+		// ***DEPRECATED
 		// const topbtn = document.getElementById('top-button');
 		// const btmbtn = document.getElementById('bottom-button');
 		// const startsourceformbtn = document.getElementById('start-sourceform-button');
