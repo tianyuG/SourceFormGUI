@@ -3,8 +3,7 @@ const {
 	remote
 } = require('electron')
 const OS = require('os')
-const fs = require('electron')
-	.remote.require('fs')
+const fs = require('graceful-fs')
 
 function getNetworkInterfaceInfo() {
 	var netint = OS.networkInterfaces();
@@ -90,14 +89,28 @@ function ifFileExists(filepath, elementId, appName, appUrl, errorMsg = null) {
 }
 
 function getLongPathSupport() {
-	require('child_process').exec('reg query HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem /v LongPathsEnabled', (err, stdout, stderr) => {
-		// logDebug(stdout.trim())
-		if (parseInt(stdout.trim().substring(stdout.trim().length - 1, stdout.trim().length - 0)) == 1) {
-			document.getElementById('misc-long-path').innerHTML = "Long path enabled."
-		} else {
-			document.getElementById('misc-long-path').innerHTML = "Long path NOT enabled."
-		}
-		// document.getElementById('misc-long-path').innerHTML = stdout.substring(stdout.length - 1, stdout.length)
-	})
+	require('child_process')
+		.exec('reg query HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem /v LongPathsEnabled', (err, stdout, stderr) => {
+			// logDebug(stdout.trim())
+			if (parseInt(stdout.trim()
+					.substring(stdout.trim()
+						.length - 1, stdout.trim()
+						.length - 0)) == 1) {
+				document.getElementById('misc-long-path')
+					.innerHTML = "Long path enabled."
+			} else {
+				document.getElementById('misc-long-path')
+					.innerHTML = "Long path NOT enabled."
+			}
+			// document.getElementById('misc-long-path').innerHTML = stdout.substring(stdout.length - 1, stdout.length)
+		})
 	// document.getElementById('misc-long-path').innerHTML = require('child_process').exec('reg query HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem /v LongPathsEnabled')
+}
+
+function getGlobalVariables() {
+	var ret = ""
+	var gvWarning = "Electron's remote module caches remote objects, which this section depends. It's generally accurate most of the time but take it with a grain of salt."
+	
+	
+
 }

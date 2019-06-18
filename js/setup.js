@@ -133,7 +133,8 @@ require('electron')
 			flickrkeyinput.style.display = "none"
 			flickrkeybtnreset.style.display = "inline"
 			if (flickrkeyinput.value.trim != "") {
-				ipcRenderer.send("set-flickrkey", flickrkeyinput.value)
+				// ipcRenderer.send("set-flickrkey", flickrkeyinput.value)
+				ipcRenderer.send("set-globalvariable", ["flickrKey", flickrkeyinput.value])
 				flickrkeycurr.innerHTML = require('electron')
 					.remote.getGlobal('flickrKey')
 			}
@@ -160,7 +161,8 @@ require('electron')
 			flickrsecretinput.style.display = "none"
 			flickrsecretbtnreset.style.display = "inline"
 			if (flickrsecretinput.value.trim != "") {
-				ipcRenderer.send("set-flickrsecret", flickrsecretinput.value)
+				// ipcRenderer.send("set-flickrsecret", flickrsecretinput.value)
+				ipcRenderer.send("set-globalvariable", ["flickrSecret", flickrsecretinput.value])
 				flickrsecretcurr.innerHTML = require('electron')
 					.remote.getGlobal('flickrSecret')
 			}
@@ -183,7 +185,8 @@ require('electron')
 			var imgpath = dialog.showOpenDialog({
 				properties: ['openDirectory']
 			})
-			ipcRenderer.send("set-imagepath", imgpath)
+			// ipcRenderer.send("set-imagepath", imgpath)
+			ipcRenderer.send("set-globalvariable", ["imagePath", imgpath])
 			imagepathcurr.innerHTML = require('electron')
 				.remote.getGlobal('imagePath')
 		});
@@ -201,7 +204,8 @@ require('electron')
 					}
 				]
 			})
-			ipcRenderer.send("set-ply2stlscriptpath", ply2stlpath)
+			// ipcRenderer.send("set-ply2stlscriptpath", ply2stlpath)
+			ipcRenderer.send("set-globalvariable", ["PLY2STLScriptPath", ply2stlpath])
 			ply2stlcurr.innerHTML = require('electron')
 				.remote.getGlobal('PLY2STLScriptPath')
 		});
@@ -219,7 +223,8 @@ require('electron')
 					}
 				]
 			})
-			ipcRenderer.send("set-stl2bmpscriptpath", stl2bmppath)
+			// ipcRenderer.send("set-stl2bmpscriptpath", stl2bmppath)
+			ipcRenderer.send("set-globalvariable", ["STL2BMPScriptPath", stl2bmppath])
 			stl2bmpcurr.innerHTML = require('electron')
 				.remote.getGlobal('STL2BMPScriptPath')
 		});
@@ -241,7 +246,8 @@ require('electron')
 					}
 				]
 			})
-			ipcRenderer.send("set-printerscriptpath", printerscriptpath)
+			// ipcRenderer.send("set-printerscriptpath", printerscriptpath)
+			ipcRenderer.send("set-globalvariable", ["printerScriptPath", printerscriptpath])
 			printerscriptcurr.innerHTML = require('electron')
 				.remote.getGlobal('printerScriptPath')
 		});
@@ -257,7 +263,8 @@ require('electron')
 				numofimgsbtn.style.display = "inline"
 				numofimgsbtncnfm.style.display = "none"
 				numofimgsinput.style.display = "none"
-				ipcRenderer.send("set-numofimgs", numofimgsinput.value)
+				// ipcRenderer.send("set-numofimgs", numofimgsinput.value)
+				ipcRenderer.send("set-globalvariable", ["numberOfImagesPerModel", numofimgsinput.value])
 				numofimgscurr.innerHTML = require('electron')
 					.remote.getGlobal('numberOfImagesPerModel')
 			}
@@ -292,7 +299,8 @@ require('electron')
 				remoteipinput.style.display = "none"
 				remoteipbtn.style.display = "inline"
 				remoteipbtncnfm.style.display = "none"
-				ipcRenderer.send("set-remoteip", remoteipinput.value)
+				// ipcRenderer.send("set-remoteip", remoteipinput.value)
+				ipcRenderer.send("set-globalvariable", ["remoteIP", remoteipinput.value.trim()])
 				remoteipcurr.innerHTML = require('electron')
 					.remote.getGlobal('remoteIP')
 			}
