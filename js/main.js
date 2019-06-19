@@ -236,6 +236,10 @@ function logDebug(arg) {
 	}
 }
 
+/*
+ * Loading global settings/variables from disk.
+ * Use remote.getGlobal() to fetch a single global variable.
+ */
 function loadGlobalVariables() {
 	var gvPath = "../configs/globalvariables.json"
 	var gvObj = JSON.parse(fs.readFileSync(path.resolve(__dirname, gvPath)));
@@ -246,6 +250,11 @@ function loadGlobalVariables() {
 	}
 }
 
+/*
+ * Set the global variable with given key-value pair.
+ * Use ipcRenderer.send("set-globalvariable", [key, value]) 
+ * to modify existing global variable.
+ */
 function setGlobalVariable(k, v) {
 	var gvPath = "../configs/globalvariables.json"
 	var gvObj = JSON.parse(fs.readFileSync(path.resolve(__dirname, gvPath)));
