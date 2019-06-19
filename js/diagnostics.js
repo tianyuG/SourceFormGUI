@@ -3,6 +3,7 @@ const {
 	remote
 } = require('electron')
 const OS = require('os')
+const path = require('path')
 const fs = require('graceful-fs')
 
 function getNetworkInterfaceInfo() {
@@ -58,6 +59,8 @@ require('electron')
 		getDisplayInfo();
 		getDependencies();
 		getLongPathSupport();
+		getGlobalVariablesCount();
+		getGlobalVariables();
 	});
 
 // Use `/` instead of `\\` in filepath, even in Windows!
@@ -107,7 +110,25 @@ function getLongPathSupport() {
 function getGlobalVariables() {
 	var ret = ""
 	var gvWarning = "Electron's remote module caches remote objects, which this section depends. It's generally accurate most of the time but take it with a grain of salt."
+	var isDbg = "\"isInDebugEnv\": " + remote.getGlobal("isInDebugEnv")
+	var isFDbg = "\"isInFullscreenDebugEnv\": " + remote.getGlobal("isInFullscreenDebugEnv")
 
-	
+	ret = gvWarning + "<br />" + isDbg + "<br />" + isFDbg + "<br />"
 
+	var gvPath = "../configs/globalvariables.json"
+	var gvObj = JSON.parse(fs.readFileSync(path.resolve(__dirname, gvPath)));
+
+	for (var e in gvObj) {
+		// logDebug(JSON.stringify(e) + ": " + JSON.stringify(gvObj[e]))
+		ret += JSON.stringify(e) + ": " + JSON.stringify(gvObj[e]) + "<br />"
+	}
+
+	document.getElementById('global-variables-content').innerHTML = ret
+}
+
+function getGlobalVariablesCount() {
+	var gvPath = "../configs/globalvariables.json"
+	var gvObj = JSON.parse(fs.readFileSync(path.resolve(__dirname, gvPath)));
+
+	document.getElementById('global-variables-label').innerHTML = "Total tracked global variables: " + (Object.keys(gvObj).length + 2)
 }
