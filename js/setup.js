@@ -13,12 +13,6 @@ const {
 const os = require('os')
 const fs = require('graceful-fs')
 
-let win
-
-function launchAHK() {
-	// TODO
-}
-
 require('electron')
 	.remote.getCurrentWindow()
 	.webContents.once('dom-ready', () => {
@@ -33,40 +27,8 @@ require('electron')
 			}
 		})
 
-		// ***DEPRECATED
-		// if (require('electron').remote.getGlobal('displays').length == 2) {
-		//   document.getElementById('top-button').disabled = false
-		//   document.getElementById('bottom-button').disabled = false
-		// } else {
-		//   document.getElementById('top-button').style.display = "none"
-		//   document.getElementById('bottom-button').style.display = "none"
-		//   document.getElementById('screen-selector-warning').innerHTML = "Unsupported display setup (2 required; " + require('electron').remote.getGlobal('displays').length + " detected)."
-		// }
-
-		const startahkbtn = document.getElementById('start-ahk-button');
-		const stopahkbtn = document.getElementById('stop-ahk-button');
-		// ***DEPRECATED
-		// const topbtn = document.getElementById('top-button');
-		// const btmbtn = document.getElementById('bottom-button');
-		// const startsourceformbtn = document.getElementById('start-sourceform-button');
-		// startahkbtn.addEventListener('click', () => {
-		//   ipcRenderer.send('setup-start-ahk-button-clicked')
-		// });
-		// stopahkbtn.addEventListener('click', () => {
-		//   ipcRenderer.send('setup-stop-ahk-button-clicked')
-		// });
-		// topbtn.addEventListener('click', () => {
-		//   ipcRenderer.send('setup-top-button-clicked')
-		//   document.getElementById('screen-selector-warning').innerHTML = "You have identified this screen to be the top screen."
-		// });
-		// btmbtn.addEventListener('click', () => {
-		//   ipcRenderer.send('setup-bottom-button-clicked')
-		//   document.getElementById('screen-selector-warning').innerHTML = "You have identified this screen to be the bottom screen."
-		// });
-		// startsourceformbtn.addEventListener('click', () => {
-		//   ipcRenderer.send('setup-start-sourceform-button-clicked')
-		// });
-
+		const startahkbtn          = document.getElementById('start-ahk-button');
+		const stopahkbtn           = document.getElementById('stop-ahk-button');
 		const flickrkeycurr        = document.getElementById('flickrkey-current');
 		const flickrkeybtn         = document.getElementById('flickrkey-button');
 		const flickrkeybtnreset    = document.getElementById('flickrkey-button-reset');
@@ -112,6 +74,10 @@ require('electron')
 		remoteipcurr.innerHTML = require('electron')
 			.remote.getGlobal('remoteIP')
 
+		/*
+		 * XXX: SANITISE INPUT!!!
+		 */
+
 		flickrkeybtn.addEventListener('click', () => {
 			flickrkeyinput.style.display = "inline"
 			flickrkeybtn.style.display = "none"
@@ -133,7 +99,6 @@ require('electron')
 			flickrkeyinput.style.display = "none"
 			flickrkeybtnreset.style.display = "inline"
 			if (flickrkeyinput.value.trim != "") {
-				// ipcRenderer.send("set-flickrkey", flickrkeyinput.value)
 				ipcRenderer.send("set-globalvariable", ["flickrKey", flickrkeyinput.value])
 				flickrkeycurr.innerHTML = require('electron')
 					.remote.getGlobal('flickrKey')
@@ -161,7 +126,6 @@ require('electron')
 			flickrsecretinput.style.display = "none"
 			flickrsecretbtnreset.style.display = "inline"
 			if (flickrsecretinput.value.trim != "") {
-				// ipcRenderer.send("set-flickrsecret", flickrsecretinput.value)
 				ipcRenderer.send("set-globalvariable", ["flickrSecret", flickrsecretinput.value])
 				flickrsecretcurr.innerHTML = require('electron')
 					.remote.getGlobal('flickrSecret')
@@ -185,7 +149,6 @@ require('electron')
 			var imgpath = dialog.showOpenDialog({
 				properties: ['openDirectory']
 			})
-			// ipcRenderer.send("set-imagepath", imgpath)
 			ipcRenderer.send("set-globalvariable", ["imagePath", imgpath])
 			imagepathcurr.innerHTML = require('electron')
 				.remote.getGlobal('imagePath')
@@ -204,7 +167,6 @@ require('electron')
 					}
 				]
 			})
-			// ipcRenderer.send("set-ply2stlscriptpath", ply2stlpath)
 			ipcRenderer.send("set-globalvariable", ["PLY2STLScriptPath", ply2stlpath])
 			ply2stlcurr.innerHTML = require('electron')
 				.remote.getGlobal('PLY2STLScriptPath')
@@ -223,7 +185,6 @@ require('electron')
 					}
 				]
 			})
-			// ipcRenderer.send("set-stl2bmpscriptpath", stl2bmppath)
 			ipcRenderer.send("set-globalvariable", ["STL2BMPScriptPath", stl2bmppath])
 			stl2bmpcurr.innerHTML = require('electron')
 				.remote.getGlobal('STL2BMPScriptPath')
@@ -246,7 +207,6 @@ require('electron')
 					}
 				]
 			})
-			// ipcRenderer.send("set-printerscriptpath", printerscriptpath)
 			ipcRenderer.send("set-globalvariable", ["printerScriptPath", printerscriptpath])
 			printerscriptcurr.innerHTML = require('electron')
 				.remote.getGlobal('printerScriptPath')
@@ -263,7 +223,6 @@ require('electron')
 				numofimgsbtn.style.display = "inline"
 				numofimgsbtncnfm.style.display = "none"
 				numofimgsinput.style.display = "none"
-				// ipcRenderer.send("set-numofimgs", numofimgsinput.value)
 				ipcRenderer.send("set-globalvariable", ["numberOfImagesPerModel", numofimgsinput.value])
 				numofimgscurr.innerHTML = require('electron')
 					.remote.getGlobal('numberOfImagesPerModel')
@@ -299,7 +258,6 @@ require('electron')
 				remoteipinput.style.display = "none"
 				remoteipbtn.style.display = "inline"
 				remoteipbtncnfm.style.display = "none"
-				// ipcRenderer.send("set-remoteip", remoteipinput.value)
 				ipcRenderer.send("set-globalvariable", ["remoteIP", remoteipinput.value.trim()])
 				remoteipcurr.innerHTML = require('electron')
 					.remote.getGlobal('remoteIP')

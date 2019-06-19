@@ -14,39 +14,13 @@ const windows = {}
 
 /*
  * BEGIN: GLOBAL VARIABLES
- * !!!: Remember to add new global variables to `diagnostics.js`
  */
 
 // Define if the program is run in debug environment (windowed)
-global.isInDebugEnv           = process.argv.includes('--debugenv')
+global.isInDebugEnv = process.argv.includes('--debugenv')
 
 // Define if the program is run in debug environment (fullscreen)
 global.isInFullscreenDebugEnv = process.argv.includes('--fdebugenv')
-
-// // Define Flickr API key and secret
-// global.flickrKey              = "d8961cd658655c19ee5ae158b9a191dc"
-// global.flickrSecret           = "b9eb42d1426b41f2"
-// global.flickrKey_default      = "d8961cd658655c19ee5ae158b9a191dc"
-// global.flickrSecret_default   = "b9eb42d1426b41f2"
-
-// // Define where the downloaded images are
-// global.imagePath              = ""
-
-// // Define where the script for converting PLY point cloud to STL model is
-// global.PLY2STLScriptPath      = ""
-
-// // Define where the script for converting STL model to BMP bitmap is
-// global.STL2BMPScriptPath      = ""
-
-// // Define where the Arduino script for controlling the printer is
-// global.printerScriptPath      = ""
-
-// // Define number of images to be downloaded per model
-// global.numberOfImagesPerModel = 500
-
-// // Define the IP address for the modelling computer
-// global.remoteIP               = "192.168.1.10"
-
 /*
  * END: GLOBAL VARIABLES
  */
@@ -305,67 +279,16 @@ ipcMain.on('preview-aborted', function(event, data) {
 	})
 });
 
+/*
+ * Set global variable then write to disk
+ * !!!: This function is not responsible for sanitisation input!
+ */
+
 ipcMain.on('set-globalvariable', function(event, data) {
 	var gvK = data[0]
 	var gvV = data[1]
 	setGlobalVariable(gvK, gvV)
 });
-
-// ipcMain.on('set-flickrkey', function(event, data) {
-// 	logDebug("SETFKEY")
-// 	flickrKey = data;
-// });
-
-// ipcMain.on('set-flickrsecret', function(event, data) {
-// 	flickrSecret = data;
-// });
-
-// ipcMain.on('reset-flickrkey', function(event, data) {
-// 	flickrKey = flickrKey_default;
-// });
-
-// ipcMain.on('reset-flickrsecret', function(event, data) {
-// 	flickrSecret = flickrSecret_default;
-// });
-
-// /*
-//  * Change imagePath global variiable
-//  */
-// ipcMain.on('set-imagepath', function(event, data) {
-// 	imagePath = data;
-// });
-
-// /*
-//  * Change PLY2STLScriptPath global variiable
-//  */
-// ipcMain.on('set-ply2stlscriptpath', function(event, data) {
-// 	PLY2STLScriptPath = data;
-// });
-
-// /*
-//  * Change STL2BMPScriptPath global variiable
-//  */
-// ipcMain.on('set-stl2bmpscriptpath', function(event, data) {
-// 	STL2BMPScriptPath = data;
-// });
-
-// /*
-//  * Change printerScriptPath global variiable
-//  */
-// ipcMain.on('set-printerscriptpath', function(event, data) {
-// 	printerScriptPath = data;
-// });
-
-// ipcMain.on('set-numofimgs', function(event, data) {
-// 	numberOfImagesPerModel = parseInt(data, 10);
-// });
-
-// /*
-//  * Change remoteIP global variiable
-//  */
-// ipcMain.on('set-remoteip', function(event, data) {
-// 	remoteIP = data;
-// });
 
 /*
  * Load setup window upon request

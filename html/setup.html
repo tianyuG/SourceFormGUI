@@ -20,13 +20,6 @@
 		<button id="stop-ahk-button" disabled="true">Stop AHK Script</button>
 		<p id="ahk-installation-status-warning"></p>
 	</div>
-	<!-- <h2>Step 2: Identify Screens</h2>
-  <p>Select which screen this window is being displayed.</p>
-  <div id="screen-selector">
-	<button id="top-button" disabled="true">Top</button>
-	<button id="bottom-button" disabled="true">Bottom</button>
-	<p id="screen-selector-warning"></p>
-  </div> -->
 	<h2>Step 2: Confirm Settings</h2>
 	<p>IMPORTANT NOTE: Changing settings in this section will not affect the step of a job that is currently being worked on. For example, if a model is being requested and images of the model are being downloaded, changing the setting for the 'number of images to be downloaded per model' will have no effect. Instead, it will affect subsequent models.</p>
 	<div id="flickrkey-selector">
@@ -82,13 +75,8 @@
 		<button id="remoteip-button-confirm" style="display: none;">Confirm</button>
 		<p id="remoteip-warning" style="display: none;">Not a valid IP address.</p>
 	</div>
-	<div id="step4">
-		<!-- <h2>Finally: Start SourceForm</h2>
-	<input type="checkbox" id="confirm-sourceform-config" onclick="onCheckboxChange()"><label for="confirm-sourceform-config">Check to confirm that SourceForm has been properly configured.</label><br /> <br />
-	<button id="start-sourceform-button" disabled="true">Start SourceForm</button>
-	<span style="display: inline-block; width: 20px;"></span> -->
+	<div>
 		<button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
-		<!-- <button onclick="require('electron').remote.getCurrentWindow().close();">Quit</button> -->
 		<button onclick="window.history.back();">Back</button>
 	</div>
 	<script>
