@@ -20,7 +20,7 @@
 	display: none;
 	overflow: auto;
 	background-color: #f1f1f1;
-	font-family: monospace;
+	font-family: 'PragmataPro', 'Iosevka', monospace;
 	width: 80vw;
 }
 

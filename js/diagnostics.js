@@ -5,6 +5,7 @@ const {
 const OS = require('os')
 const path = require('path')
 const fs = require('graceful-fs')
+const cproc = require('child_process')
 
 function getNetworkInterfaceInfo() {
 	var netint = OS.networkInterfaces();
@@ -58,7 +59,7 @@ require('electron')
 		getNetworkInterfaceInfo();
 		getDisplayInfo();
 		getDependencies();
-		getLongPathSupport();
+		getPlatform();
 		getGlobalVariablesCount();
 		getGlobalVariables();
 	});
@@ -91,25 +92,9 @@ function ifFileExists(filepath, elementId, appName, appUrl, errorMsg = null) {
 	})
 }
 
-function getLongPathSupport() {
-	require('child_process')
-		.exec('reg query HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem /v LongPathsEnabled', (err, stdout, stderr) => {
-			if (parseInt(stdout.trim()
-					.substring(stdout.trim()
-						.length - 1, stdout.trim()
-						.length - 0)) == 1) {
-				document.getElementById('misc-long-path')
-					.innerHTML = "Long path enabled."
-			} else {
-				document.getElementById('misc-long-path')
-					.innerHTML = "Long path NOT enabled."
-			}
-		})
-}
-
 function getGlobalVariables() {
 	var ret = ""
-	var gvWarning = "Electron's remote module caches remote objects, which this section depends. It's generally accurate most of the time but take it with a grain of salt."
+	var gvWarning = "Electron's remote module caches remote objects, which this section depends on. It's generally accurate most of the time but take it with a grain of salt."
 	var isDbg = "\"isInDebugEnv\": " + remote.getGlobal("isInDebugEnv")
 	var isFDbg = "\"isInFullscreenDebugEnv\": " + remote.getGlobal("isInFullscreenDebugEnv")
 
@@ -124,12 +109,56 @@ function getGlobalVariables() {
 
 	ret += "</p>"
 
-	document.getElementById('global-variables-content').innerHTML = ret
+	document.getElementById('global-variables-content')
+		.innerHTML = ret
 }
 
 function getGlobalVariablesCount() {
 	var gvPath = "../configs/globalvariables.json"
 	var gvObj = JSON.parse(fs.readFileSync(path.resolve(__dirname, gvPath)));
 
-	document.getElementById('global-variables-label').innerHTML = "Total tracked global variables: " + (Object.keys(gvObj).length + 2)
+	document.getElementById('global-variables-label')
+		.innerHTML = "Total tracked global variables: " + (Object.keys(gvObj)
+			.length + 2)
+}
+
+function getPlatform() {
+	var lp = ""
+
+	// cproc.exec('reg query HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem /v LongPathsEnabled', (err, stdout, stderr) => {
+	// 	logDebug(stdout)
+	// 	logDebug(parseInt(stdout.trim()
+	// 		.substring(stdout.trim()
+	// 			.length - 1, stdout.trim()
+	// 			.length - 0)))
+	// 	if (parseInt(stdout.trim()
+	// 			.substring(stdout.trim()
+	// 				.length - 1, stdout.trim()
+	// 				.length - 0)) == 1) {
+	// 		lp = ", long path enabled"
+	// 		logDebug("NEW " + lp)
+	// 	} else {
+	// 		lp = ", long path NOT enabled"
+	// 	}
+	// })
+	// 
+	var lpret = cproc.spawn('reg', ['query', 'HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem', '/v', 'LongPathsEnabled'])
+	lpret.stdout.on('data', (data) => {
+		// logDebug(data)
+		lp = data.toString().trim()
+
+		if (parseInt(lp
+				.substring(lp.length - 1, lp.length - 0)) == 1) {
+			lp = ", long path enabled"
+			logDebug("NEW " + lp)
+		} else {
+			lp = ", long path NOT enabled"
+		}
+
+		// logDebug("NEW2 " + lp)
+
+		document.getElementById('misc-platform-info')
+			.innerHTML = OS.type() + " " + OS.release() + " (" + OS.arch() + ", uptime " + OS.uptime() + lp + ")"
+	})
+
 }

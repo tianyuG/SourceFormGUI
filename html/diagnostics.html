@@ -16,7 +16,7 @@
 	<h1>Diagnostics</h1>
 	<button onclick="window.history.back();">Back</button>
 	<h2>Network</h2>
-	<button class="collapsible">Total number of available network interfaces:
+	<button class="collapsible">Total available network interfaces:
 		<script>
 			document.write(Object.keys(require('os')
 					.networkInterfaces())
@@ -25,7 +25,7 @@
 	</button>
 	<div class="content" id="network-info-content"></div>
 	<h2>Display</h2>
-	<button class="collapsible">Total number of available displays:
+	<button class="collapsible">Total available displays:
 		<script>
 			document.write(Object.keys(require('electron')
 					.remote.getGlobal(
@@ -34,16 +34,7 @@
 		</script>
 	</button>
 	<div class="content" id="display-content"></div>
-	<h2>Runtime Environment</h2>
-	Node.js: <script>
-		document.write(process.versions.node)
-	</script>,
-	Chrome: <script>
-		document.write(process.versions.chrome)
-	</script>,
-	Electron: <script>
-		document.write(process.versions.electron)
-	</script>.
+	
 	<h2>Dependencies</h2>
 	<h3>AutoHotKey</h3>
 	<p id="ahk-installation-status">Checking...</p>
@@ -51,9 +42,7 @@
 	<p id="imagemagick-installation-status">Checking...</p>
 	<h3>Python 2.7</h3>
 	<p id="python27-installation-status">Checking...</p>
-	<h2>Miscellaneous</h2>
-	<h3>Windows long path support (260+ characters) enabled?</h3>
-	<p id="misc-long-path" class="err-msg italic-item"></p>
+	
 	<h2>Global Variables</h2>
 	<button class="collapsible" id="global-variables-label">Total tracked global variables: </button>
 	<div class="content" id="global-variables-content"></div>
@@ -61,9 +50,21 @@
 	<button class="collapsible">(Expand)</button>
 	<div class="content" id="environment-variables-content"></div>
 	<br />
+	<h2>Miscellaneous</h2>
+	<h3>Platform</h3>
+	<p class="err-msg italic-item" id="misc-platform-info"></p>
+	<h3>Runtime Environment</h3>
+	<p class="err-msg italic-item">Node.js: <script>
+		document.write(process.versions.node)
+	</script>, Chrome: <script>
+		document.write(process.versions.chrome)
+	</script>, Electron: <script>
+		document.write(process.versions.electron)
+	</script>.</p>
+
+	<br />
 	<button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
 	<button onclick="require('electron').remote.app.quit();">Quit</button>
-	</div>
 	<!-- END-TEST -->
 	<script>
 		require('../js/diagnostics.js')
