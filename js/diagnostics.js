@@ -113,15 +113,16 @@ function getGlobalVariables() {
 	var isDbg = "\"isInDebugEnv\": " + remote.getGlobal("isInDebugEnv")
 	var isFDbg = "\"isInFullscreenDebugEnv\": " + remote.getGlobal("isInFullscreenDebugEnv")
 
-	ret = gvWarning + "<br />" + isDbg + "<br />" + isFDbg + "<br />"
+	ret = "<p>" + gvWarning + "</p><p>" + isDbg + "<br />" + isFDbg + "<br />"
 
 	var gvPath = "../configs/globalvariables.json"
 	var gvObj = JSON.parse(fs.readFileSync(path.resolve(__dirname, gvPath)));
 
 	for (var e in gvObj) {
-		// logDebug(JSON.stringify(e) + ": " + JSON.stringify(gvObj[e]))
 		ret += JSON.stringify(e) + ": " + JSON.stringify(gvObj[e]) + "<br />"
 	}
+
+	ret += "</p>"
 
 	document.getElementById('global-variables-content').innerHTML = ret
 }

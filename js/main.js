@@ -305,3 +305,7 @@ ipcMain.on('set-globalvariable', function(event, data) {
 ipcMain.on('load-setup-window', function(event, data) {
 	windows.preview.loadFile('./html/setup.html')
 })
+
+ipcMain.on('open-diagnostics', function(event, data) {
+	windows.preview.loadFile('./html/diagnostics.html')
+})

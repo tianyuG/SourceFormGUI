@@ -3,7 +3,7 @@
 	color: white;
 	cursor: pointer;
 	padding: 18px;
-	width: 100%;
+	width: 80vw;
 	border: none;
 	text-align: left;
 	outline: none;
@@ -16,10 +16,12 @@
 }
 
 .content {
-	padding: 0 18px;
+	/* margin: 0 18px; */
 	display: none;
-	overflow: hidden;
+	overflow: auto;
 	background-color: #f1f1f1;
+	font-family: monospace;
+	width: 80vw;
 }
 
 .bold-item {
@@ -32,4 +34,11 @@
 
 .err-msg {
 	padding-left: 20px;
+}
+
+p {
+	padding: 0 18px;
+	width: 76vw;
+	white-space: pre-wrap;
+	word-wrap: break-word;
 }
