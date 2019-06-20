@@ -18,7 +18,7 @@ function getNetworkInterfaceInfo() {
 		document.getElementById("network-info-content")
 			.appendChild(k1);
 		var k2 = document.createElement("p");
-		var c2 = document.createTextNode(JSON.stringify(Object.values(netint)[i]));
+		var c2 = document.createTextNode(JSON.stringify(Object.values(netint)[i], null , 2));
 		k2.appendChild(c2);
 		document.getElementById("network-info-content")
 			.appendChild(k2);
@@ -37,7 +37,7 @@ function getDisplayInfo() {
 		document.getElementById("display-content")
 			.appendChild(k1);
 		var k2 = document.createElement("p");
-		var c2 = document.createTextNode(JSON.stringify(Object.values(disp)[i]));
+		var c2 = document.createTextNode(JSON.stringify(Object.values(disp)[i], null, 2));
 		k2.appendChild(c2);
 		document.getElementById("display-content")
 			.appendChild(k2);
@@ -72,18 +72,18 @@ function ifFileExists(filepath, elementId, appName, appUrl, errorMsg = null) {
 		if (files.length < 1) {
 			if (errorMsg != null) {
 				document.getElementById(elementId)
-					.innerHTML = "Not installed." + "<p class=\"err-msg italic-item\">search path: " + filepath + "<br />" + appName + " can be downloaded from <a href=\"" + appUrl + "\">" + appUrl + "</a>." + "<br />" + errorMsg + "</p>"
+					.innerHTML = "Not installed." + "<p class=\"msg italic-item\">search path: " + filepath + "<br />" + appName + " can be downloaded from <a href=\"" + appUrl + "\">" + appUrl + "</a>." + "<br />" + errorMsg + "</p>"
 			} else {
 				document.getElementById(elementId)
-					.innerHTML = "Not installed." + "<p class=\"err-msg italic-item\">search path: " + filepath + "<br />" + appName + " can be downloaded from <a href=\"" + appUrl + "\">" + appUrl + "</a>.</p>"
+					.innerHTML = "Not installed." + "<p class=\"msg italic-item\">search path: " + filepath + "<br />" + appName + " can be downloaded from <a href=\"" + appUrl + "\">" + appUrl + "</a>.</p>"
 			}
 		} else if (err) {
 			if (errorMsg != null) {
 				document.getElementById(elementId)
-					.innerHTML = "Not installed." + "<p class=\"err-msg italic-item\">search path: " + filepath + "<br />error message: " + err + "<br />" + appName + " can be downloaded from <a href=\"" + appUrl + "\">" + appUrl + "</a>." + "<br />" + errorMsg + "</p>"
+					.innerHTML = "Not installed." + "<p class=\"msg italic-item\">search path: " + filepath + "<br />error message: " + err + "<br />" + appName + " can be downloaded from <a href=\"" + appUrl + "\">" + appUrl + "</a>." + "<br />" + errorMsg + "</p>"
 			} else {
 				document.getElementById(elementId)
-					.innerHTML = "Not installed." + "<p class=\"err-msg italic-item\">search path: " + filepath + "<br />error message: " + err + "<br />" + appName + " can be downloaded from <a href=\"" + appUrl + "\">" + appUrl + "</a>.</p>"
+					.innerHTML = "Not installed." + "<p class=\"msg italic-item\">search path: " + filepath + "<br />error message: " + err + "<br />" + appName + " can be downloaded from <a href=\"" + appUrl + "\">" + appUrl + "</a>.</p>"
 			}
 		} else {
 			document.getElementById(elementId)
