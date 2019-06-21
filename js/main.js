@@ -309,3 +309,12 @@ ipcMain.on('load-setup-window', function(event, data) {
 ipcMain.on('open-diagnostics', function(event, data) {
 	windows.preview.loadFile('./html/diagnostics.html')
 })
+
+ipcMain.on('ld-main', function(event, data) {
+	logDebug(data)
+})
+
+ipcMain.on('worker-download-search-r', function(event, data) {
+	logDebug("DELEGATING " + data)
+	windows.workerDownload.send('worker-download-search', data)
+})

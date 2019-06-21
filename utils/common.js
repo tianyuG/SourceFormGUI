@@ -44,3 +44,8 @@ function concatWith(arr, ch) {
 
 	return ret
 }
+
+// Format debug log in main thread
+function logMain(arg) {
+	require('electron').ipcRenderer.send('ld-main', arg)
+}

@@ -7,7 +7,7 @@ var http = require('http');
 var parse = require('url')
 	.parse;
 var purify = require('dompurify')
-var fs = require('fs')
+var fs = require('graceful-fs')
 var path = require("path")
 
 /*
@@ -56,14 +56,14 @@ ipcRenderer.once('search-query-relay', (event, message) => {
 
 	var result = flickr.photos.search({
 			text: message,
-			extras: "url_n",
+			extras: "url_n, owner_name, description, license",
 			privacy_filter: 1,
 			safe_search: 3,
 			sort: "relevance",
 			per_page: 20
 		})
 		.then(function(res) {
-			// logDebug(JSON.stringify(res.body.photos))
+			logDebug(JSON.stringify(res.body.photos))
 			// console.log('yay!', res.body.photos.photo);
 			// var gridItemCount = res.body.photos.photo.length > 9 ? 9 : res.body.photos.photo.length
 			// var gridId = []
@@ -99,7 +99,8 @@ abortButton.addEventListener('click', function() {
 })
 
 continueButton.addEventListener('click', function() {
-	// var ret = 
+	logMain("TO-DELEGATE")
+	ipcRenderer.send('worker-download-search-r', searchResult)
 })
 
 async function getPhotoPreviewURLs(query) {
