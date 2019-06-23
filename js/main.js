@@ -150,8 +150,9 @@ app.on('ready', () => {
 		webPreferences: {
 			nodeIntegration: true
 		},
-		show: false
+		show: true
 	})
+	windows.workerDownload.webContents.openDevTools()
 	windows.workerPly2stl = new BrowserWindow({
 		webPreferences: {
 			nodeIntegration: true

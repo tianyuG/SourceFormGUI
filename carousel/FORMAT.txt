@@ -5,9 +5,11 @@ The format of this JSON file (content.json):
 		"title"           : "Statue of Liberty",			         <- [2]
 		"sanitised_title" : "statue-of-liberty",					 <- [3]
 		"path"            : "C:\\Users\\test\\projects\\liberty",	 <- [4]
-		"updated"         : "2009-06-29T11:11:55Z",					 <- [5]
-		"accessed"        : "2009-06-29T11:11:55Z", 			     <- [6]
-		"image_count"     : 500								         <- [7]
+		"thumbnail"       : "0000.jpg"                               <- [5]
+		"updated"         : "2009-06-29T11:11:55Z",					 <- [6]
+		"accessed"        : "2009-06-29T11:11:55Z", 			     <- [7]
+		"image_count"     : 500,							         <- [8]
+		"display"         : false                                    <- [9]
 	},
 	[[...]]
 }
@@ -19,12 +21,14 @@ The format of this JSON file (content.json):
 [4]:	(str) The _absolute_ path to the folder that contains the pointcloud file
 			(fused.ply) and the downloaded images. For best performance,
 			this path should not be a network location.
-[5]:	(str) Date and time of the "path" folder when it was last updated.
+[5]:    (str) Name of this thumbnail, stored in the `carousel/imgs` folder.
+[6]:	(str) Date and time of the "path" folder when it was last updated.
 			Use UNIX timestamp.
 			Corresponds to fs.Stats().mtime.
-[6]:	(int) Date and time of the "path" folder when it was last accessed.
+[7]:	(int) Date and time of the "path" folder when it was last accessed.
 			Use UNIX timestamp.
 			Corresponds to fs.Stats().atime.
-[7]:	(int) Total number of images in the "path" folder.
+[8]:	(int) Total number of images in the "path" folder.
 			The image count includes duplicates, and should be a even number.
 			Corresponds to fs.length.
+[9]: 	(bool) If this image should be displayed in the carousel.

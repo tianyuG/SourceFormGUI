@@ -19,24 +19,38 @@ var flickr = new Flickr(require('electron')
 	.remote.getGlobal('flickrKey'))
 
 ipcRenderer.on('worker-download-search', (event, message) => {
-	var t = Date.now()
+	var t = new Date()
+	var t_iso = t.toISOString()
 	var name_o = message.trim()
 	var name_s = purify.sanitize(name_o)
 	var name_f = name_s.trim()
 		.toLowerCase()
 		.replace(/\s+/g, '-')
 
-	var ident = name_f + "_" + t
+	var ident = name_f + "_" + t.getTime()
 	var ident_t = "./" + ident
 	var baseImagePath = path.resolve(remote.getGlobal('imagePath'))
 	var absImagePath = path.resolve(baseImagePath, ident_t)
-	logMain(absImagePath)
+	// logMain(absImagePath)
+	var currImageCount = parseInt(remote.getGlobal('numberOfImagesPerModel'))
 
-	fs.mkdirSync(absImagePath)
-		.then(logMain("[WKR-DL] " + absImagePath + " created."))
-		.catch(err => {
-			logMain(absImagePath + " creation failed: " + err)
-		})
+	// Creating folder
+	fs.mkdir(absImagePath, (err) => {
+		if (err) { logMain("[WK_DLD]" + absImagePath + " creation failed: " + err) }
+			else { logMain("[WK_DLD] created: " + absImagePath) }
+	})
+
+	// Update catalogue
+	let jsonFile = fs.readFileSync(path.resolve(__dirname, "../carousel/content.json"));
+	let jsonObj = JSON.parse(jsonFile)
+	let jsonKeys = Object.keys(jsonObj)
+	let lastIndex = jsonKeys[jsonKeys.length - 1]
+	// logMain(lastIndex)
+	let currIndex = (parseInt(lastIndex, 10) + 1).toString().padStart(4, '0')
+	let currRecord = "{ \"title\": \"" + name_s + "\", \"sanitised_title\": \"" + name_f + "\", \"path\": \"" + absImagePath + "\", \"thumbnail\": " + currIndex + ".jpg\", \"updated\": \"" + t_iso + "\", \"accessed\": \"" + t_iso + "\", \"image_count\": " + currImageCount + ", \"display\": false }"
+	// logMain(currRecord)
+	jsonObj[currIndex] = currRecord
+	// logMain(JSON.stringify(jsonObj))
 
 	searchFor(name_s, "url_l", remote.getGlobal('numberOfImagesPerModel'))
 
