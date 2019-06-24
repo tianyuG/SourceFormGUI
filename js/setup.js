@@ -149,7 +149,7 @@ require('electron')
 			var imgpath = dialog.showOpenDialog({
 				properties: ['openDirectory']
 			})
-			ipcRenderer.send("set-globalvariable", ["imagePath", imgpath])
+			ipcRenderer.send("set-globalvariablepath", ["imagePath", imgpath])
 			imagepathcurr.innerHTML = require('electron')
 				.remote.getGlobal('imagePath')
 		});
@@ -167,7 +167,8 @@ require('electron')
 					}
 				]
 			})
-			ipcRenderer.send("set-globalvariable", ["PLY2STLScriptPath", ply2stlpath])
+			// logMain("[SETUP] " + ply2stlpath)
+			ipcRenderer.send("set-globalvariablepath", ["PLY2STLScriptPath", ply2stlpath])
 			ply2stlcurr.innerHTML = require('electron')
 				.remote.getGlobal('PLY2STLScriptPath')
 		});
@@ -207,7 +208,7 @@ require('electron')
 					}
 				]
 			})
-			ipcRenderer.send("set-globalvariable", ["printerScriptPath", printerscriptpath])
+			ipcRenderer.send("set-globalvariablepath", ["printerScriptPath", printerscriptpath])
 			printerscriptcurr.innerHTML = require('electron')
 				.remote.getGlobal('printerScriptPath')
 		});

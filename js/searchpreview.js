@@ -87,7 +87,7 @@ ipcRenderer.once('search-query-relay', (event, message) => {
 			populateGrid(res.body.photos.photo)
 		})
 		.catch(function(err) {
-			console.error('bonk', err);
+			logMain("[SPREV] image preview failed: " + err);
 		});
 })
 

@@ -263,7 +263,22 @@ function setGlobalVariable(k, v) {
 	if (gvObj.hasOwnProperty(k)) {
 		global[k] = v
 		gvObj[k] = v
-		fs.writeFileSync(path.resolve(__dirname, gvPath), JSON.stringify(gvObj));
+		fs.writeFile(path.resolve(__dirname, gvPath), JSON.stringify(gvObj, null, 2), (err) => {
+			if (err) { logDebug("[MAIN] failed to write global variable to disk: " + err) }
+		});
+	}
+}
+
+function setGlobalVariablePath(k, v) {
+	var gvPath = "../configs/globalvariables.json"
+	var gvObj = JSON.parse(fs.readFileSync(path.resolve(__dirname, gvPath)));
+
+	if (gvObj.hasOwnProperty(k)) {
+		global[k] = v[0]
+		gvObj[k] = v[0]
+		fs.writeFile(path.resolve(__dirname, gvPath), JSON.stringify(gvObj, null, 2), (err) => {
+			if (err) { logDebug("[MAIN] failed to write global variable to disk: " + err) }
+		});
 	}
 }
 
@@ -298,6 +313,12 @@ ipcMain.on('set-globalvariable', function(event, data) {
 	var gvK = data[0]
 	var gvV = data[1]
 	setGlobalVariable(gvK, gvV)
+});
+
+ipcMain.on('set-globalvariablepath', function(event, data) {
+	var gvK = data[0]
+	var gvV = data[1]
+	if (gvV != null) { setGlobalVariablePath(gvK, gvV) }
 });
 
 /*
