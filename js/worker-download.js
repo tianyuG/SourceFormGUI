@@ -76,11 +76,7 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	// populateManifest(currImageCount, perPage, name_s, imageSize, absImagePath)
 	// 	.then(loadImageURLs(currImageCount, perPage, imageSize, absImagePath))
 
-	populateManifest(currImageCount, perPage, name_s, imageSize, absImagePath).then((ret) => {
-		results = ret
-		logMain(results)
-		logMain(ret)
-	})
+	await populateManifest(currImageCount, perPage, name_s, imageSize, absImagePath)
 
 	logMain(JSON.stringify(results))
 	// loadURLs.then(ret => loadImageURLs(currImageCount, perPage, imageSize, absImagePath))
@@ -125,54 +121,76 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 
 })
 
-const populateManifest =  (currImageCount, perPage, name_s, imageSize, absImagePath) => {
+const populateManifest = async (currImageCount, perPage, name_s, imageSize, absImagePath) => {
 	var resultsCount = 0
 	var pagesNeeded = parseInt(currImageCount / perPage) + 2
-	var r = []
+	var res = []
+	var promises = []
 
 	for (var i = 1; i < pagesNeeded; i++) {
 		var result = flickr.photos.search({
-				text: name_s,
-				extras: imageSize + ", owner_name, description, license",
-				privacy_filter: 1,
-				safe_search: 3,
-				sort: "relevance",
-				per_page: perPage,
-				page: i
-			})
-			.then(function(res) {
-				resultsCount += Object.keys(res.body.photos.photo)
-					.length
-				// logDebug(JSON.stringify(res.body))
-				logDebug("[WK_DLD] images in manifests: " + resultsCount)
-				// logDebug(JSON.stringify(res.body.photos.photo))
-				for (var o in res.body.photos.photo) {
-					r.push(JSON.stringify(res.body.photos.photo[o][imageSize]))
-					// logDebug(JSON.stringify(res.body.photos.photo[o][imageSize]))
-				}
-				pageIndex = res.body.photos.page
-				var manifestRelPath = "./manifest_" + pageIndex + ".json"
-				// logMain(manifestRelPath)
-				// fsp.writeFile(path.resolve(absImagePath, manifestRelPath), JSON.stringify(res.body.photos, null, 2), (err) => {
-				// 	if (err) {
-				// 		logMain("[WK_DLD] failed to populate manifest: " + err)
-				// 	} else {
-				// 		// logDebug(JSON.stringify(res.body.photos))
-				// 		// results.push(res.body.photos.photo)
-				// 	} }
-				fs.writeFile(path.resolve(absImagePath, manifestRelPath), JSON.stringify(res.body.photos, null, 2))
-			})
-			.catch(function(err) {
-				logMain("[WK_DLD] failed to populate manifest: " + err);
-			})
+			text: name_s,
+			extras: imageSize + ", owner_name, description, license",
+			privacy_filter: 1,
+			safe_search: 3,
+			sort: "relevance",
+			per_page: perPage,
+			page: i
+		})
+		// .then(function(res) {
+		// 	resultsCount += Object.keys(res.body.photos.photo)
+		// 		.length
+		// 	// logDebug(JSON.stringify(res.body))
+		// 	logDebug("[WK_DLD] images in manifests: " + resultsCount)
+		// 	// logDebug(JSON.stringify(res.body.photos.photo))
+		// 	for (var o in res.body.photos.photo) {
+		// 		r.push(JSON.stringify(res.body.photos.photo[o][imageSize]))
+		// 		// logDebug(JSON.stringify(res.body.photos.photo[o][imageSize]))
+		// 	}
+		// 	pageIndex = res.body.photos.page
+		// 	var manifestRelPath = "./manifest_" + pageIndex + ".json"
+		// 	// logMain(manifestRelPath)
+		// 	// fsp.writeFile(path.resolve(absImagePath, manifestRelPath), JSON.stringify(res.body.photos, null, 2), (err) => {
+		// 	// 	if (err) {
+		// 	// 		logMain("[WK_DLD] failed to populate manifest: " + err)
+		// 	// 	} else {
+		// 	// 		// logDebug(JSON.stringify(res.body.photos))
+		// 	// 		// results.push(res.body.photos.photo)
+		// 	// 	} }
+		// 	fs.writeFile(path.resolve(absImagePath, manifestRelPath), JSON.stringify(res.body.photos, null, 2))
+		// })
+		// .catch(function(err) {
+		// 	logMain("[WK_DLD] failed to populate manifest: " + err);
+		// })
+
+		promises.push(result)
 		// logDebug("responses   " + results)
 		// 
 		// return Promise.resolve()
 	}
-	// logMain(JSON.stringify(result))
+	res = await Promise.all(promises)
+	// resultsCount += Object.keys(res.body.photos.photo)
+	// 	.length
+	logDebug(JSON.stringify(res))
+	// logDebug("[WK_DLD] images in manifests: " + resultsCount)
+	// logDebug(JSON.stringify(res.body.photos.photo))
+	// for (var o in res.body.photos.photo) {
+	// 	r.push(JSON.stringify(res.body.photos.photo[o][imageSize]))
+	// 	// logDebug(JSON.stringify(res.body.photos.photo[o][imageSize]))
+	// }
+	// pageIndex = res.body.photos.page
+	// var manifestRelPath = "./manifest_" + pageIndex + ".json"
+	// logMain(manifestRelPath)
+	// fsp.writeFile(path.resolve(absImagePath, manifestRelPath), JSON.stringify(res.body.photos, null, 2), (err) => {
+	// 	if (err) {
+	// 		logMain("[WK_DLD] failed to populate manifest: " + err)
+	// 	} else {
+	// 		// logDebug(JSON.stringify(res.body.photos))
+	// 		// results.push(res.body.photos.photo)
+	// 	} }
+	// fs.writeFile(path.resolve(absImagePath, manifestRelPath), JSON.stringify(res.body.photos, null, 2))
 
-	return Promise.resolve(r)
-	// return Promise.resolve()
+
 }
 
 const loadImageURLs = async (currImageCount, perPage, imageSize, absImagePath) => {
