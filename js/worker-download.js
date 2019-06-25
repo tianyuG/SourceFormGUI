@@ -76,7 +76,7 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	// populateManifest(currImageCount, perPage, name_s, imageSize, absImagePath)
 	// 	.then(loadImageURLs(currImageCount, perPage, imageSize, absImagePath))
 
-	await populateManifest(currImageCount, perPage, name_s, imageSize, absImagePath)
+	results = await populateManifest(currImageCount, perPage, name_s, imageSize, absImagePath)
 
 	logMain(JSON.stringify(results))
 	// loadURLs.then(ret => loadImageURLs(currImageCount, perPage, imageSize, absImagePath))
@@ -126,6 +126,7 @@ const populateManifest = async (currImageCount, perPage, name_s, imageSize, absI
 	var pagesNeeded = parseInt(currImageCount / perPage) + 2
 	var res = []
 	var promises = []
+	var urls = []
 
 	for (var i = 1; i < pagesNeeded; i++) {
 		var result = flickr.photos.search({
@@ -171,7 +172,21 @@ const populateManifest = async (currImageCount, perPage, name_s, imageSize, absI
 	res = await Promise.all(promises)
 	// resultsCount += Object.keys(res.body.photos.photo)
 	// 	.length
-	logDebug(JSON.stringify(res))
+	// logDebug(JSON.stringify(res))
+
+	for (var resobj in res) {
+		pageIndex = res[resobj].body.photos.page
+		var manifestRelPath = "./manifest_" + pageIndex + ".json"
+		await fs.writeFile(path.resolve(absImagePath, manifestRelPath), JSON.stringify(res[resobj].body.photos, null, 2))
+		// logDebug(JSON.stringify(res[resobj].body.photos.photo))
+		for (var imgobj in res[resobj].body.photos.photo) {
+			// logDebug(JSON.stringify(res[resobj].body.photos.photo[imgobj][imageSize]))
+			var ret = res[resobj].body.photos.photo[imgobj][imageSize]
+			if (typeof ret != "undefined") {
+				urls.push(ret)
+			}
+		}
+	}
 	// logDebug("[WK_DLD] images in manifests: " + resultsCount)
 	// logDebug(JSON.stringify(res.body.photos.photo))
 	// for (var o in res.body.photos.photo) {
@@ -189,32 +204,33 @@ const populateManifest = async (currImageCount, perPage, name_s, imageSize, absI
 	// 		// results.push(res.body.photos.photo)
 	// 	} }
 	// fs.writeFile(path.resolve(absImagePath, manifestRelPath), JSON.stringify(res.body.photos, null, 2))
-
-
+	var urlsRelPath = "./urls.json"
+	await fs.writeFile(path.resolve(absImagePath, urlsRelPath), JSON.stringify(urls, null, 2))
+	return urls
 }
 
-const loadImageURLs = async (currImageCount, perPage, imageSize, absImagePath) => {
-	var pagesNeeded = parseInt(currImageCount / perPage) + 2
-	var results = []
-	var result
-	for (var i = 1; i < pagesNeeded; i++) {
-		var manifestRelPath = "./manifest_" + i + ".json"
-		logDebug("[WK_DLD] Not this async issue again")
-		try {
-			// result = fs.readFileSync(path.resolve(absImagePath, manifestRelPath))
-			result = await fs.readFileSync(path.resolve(absImagePath, manifestRelPath))
-		} catch (err) {
-			logMain("[WK_DLD] failed to read manifest " + manifestRelPath + " :" + err)
-		}
+// const loadImageURLs = async (currImageCount, perPage, imageSize, absImagePath) => {
+// 	var pagesNeeded = parseInt(currImageCount / perPage) + 2
+// 	var results = []
+// 	var result
+// 	for (var i = 1; i < pagesNeeded; i++) {
+// 		var manifestRelPath = "./manifest_" + i + ".json"
+// 		logDebug("[WK_DLD] Not this async issue again")
+// 		try {
+// 			// result = fs.readFileSync(path.resolve(absImagePath, manifestRelPath))
+// 			result = await fs.readFileSync(path.resolve(absImagePath, manifestRelPath))
+// 		} catch (err) {
+// 			logMain("[WK_DLD] failed to read manifest " + manifestRelPath + " :" + err)
+// 		}
 
-		if (typeof result == "undefined") {
-			logMain("[WK_DLD] failed to read manifest " + manifestRelPath + ": undefined")
-		} else {
-			for (var o in result.photo) {
-				results.push(o[imageSize])
-			}
-		}
-	}
+// 		if (typeof result == "undefined") {
+// 			logMain("[WK_DLD] failed to read manifest " + manifestRelPath + ": undefined")
+// 		} else {
+// 			for (var o in result.photo) {
+// 				results.push(o[imageSize])
+// 			}
+// 		}
+// 	}
 
-	return results
-}
+// 	return results
+// }
