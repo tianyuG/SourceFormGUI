@@ -13,7 +13,8 @@ var parse = require('url')
 	.parse;
 var purify = require('dompurify')
 var path = require("path")
-var fs = require('graceful-fs')
+var fs = require('fs')
+	.promises
 
 var flickr = new Flickr(require('electron')
 	.remote.getGlobal('flickrKey'))
@@ -37,16 +38,18 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	var currImageCount = parseInt(remote.getGlobal('numberOfImagesPerModel'))
 
 	// Creating folder
-	fs.mkdir(absImagePath, (err) => {
-		if (err) {
-			logMain("[WK_DLD] failed to create folder " + absImagePath + ": " + err)
-		} else {
-			logMain("[WK_DLD] created folder: " + absImagePath)
-		}
-	})
+	// fs.mkdir(absImagePath, (err) => {
+	// 	if (err) {
+	// 		logMain("[WK_DLD] failed to create folder " + absImagePath + ": " + err)
+	// 	} else {
+	// 		logMain("[WK_DLD] created folder: " + absImagePath)
+	// 	}
+	// })
+	await fs.mkdir(absImagePath)
 
 	// Update catalogue
-	let jsonFile = fs.readFileSync(path.resolve(__dirname, "../carousel/content.json"));
+	// let jsonFile = fs.readFileSync(path.resolve(__dirname, "../carousel/content.json"));
+	let jsonFile = await fs.readFile(path.resolve(__dirname, "../carousel/content.json"));
 	let jsonObj = JSON.parse(jsonFile)
 	let jsonKeys = Object.keys(jsonObj)
 	let lastIndex = jsonKeys[jsonKeys.length - 1]
@@ -59,20 +62,29 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	jsonObj[currIndex] = JSON.parse(currRecord)
 	// jsonObj[currIndex] = currRecord
 
-	fs.writeFile(path.resolve(__dirname, "../carousel/content.json"), JSON.stringify(jsonObj, null, 2), (err) => {
-		if (err) {
-			logMain("[WK_DLD] Could not update carousel content: " + err)
-		}
-	});
-
+	// fsp.writeFile(path.resolve(__dirname, "../carousel/content.json"), JSON.stringify(jsonObj, null, 2), (err) => {
+	// 	if (err) {
+	// 		logMain("[WK_DLD] Could not update carousel content: " + err)
+	// 	}
+	// })
+	await fs.writeFile(path.resolve(__dirname, "../carousel/content.json"), JSON.stringify(jsonObj, null, 2))
 	// Populate manifest with search results
 	var results = []
 	var imageSize = "url_n"
 	var perPage = require('electron')
 		.remote.getGlobal('imagesPerPage')
-	await populateManifest(currImageCount, perPage, name_s, imageSize, absImagePath)
-	// loadImageURLs(currImageCount, perPage, absImagePath)
-	
+	// populateManifest(currImageCount, perPage, name_s, imageSize, absImagePath)
+	// 	.then(loadImageURLs(currImageCount, perPage, imageSize, absImagePath))
+
+	populateManifest(currImageCount, perPage, name_s, imageSize, absImagePath).then((ret) => {
+		results = ret
+		logMain(results)
+		logMain(ret)
+	})
+
+	logMain(JSON.stringify(results))
+	// loadURLs.then(ret => loadImageURLs(currImageCount, perPage, imageSize, absImagePath))
+
 	// var resultsCount = 0
 	// var perPage = require('electron')
 	// 	.remote.getGlobal('imagesPerPage')
@@ -113,9 +125,10 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 
 })
 
-const populateManifest = async (currImageCount, perPage, name_s, imageSize, absImagePath, callback) => {
+const populateManifest =  (currImageCount, perPage, name_s, imageSize, absImagePath) => {
 	var resultsCount = 0
 	var pagesNeeded = parseInt(currImageCount / perPage) + 2
+	var r = []
 
 	for (var i = 1; i < pagesNeeded; i++) {
 		var result = flickr.photos.search({
@@ -132,34 +145,58 @@ const populateManifest = async (currImageCount, perPage, name_s, imageSize, absI
 					.length
 				// logDebug(JSON.stringify(res.body))
 				logDebug("[WK_DLD] images in manifests: " + resultsCount)
+				// logDebug(JSON.stringify(res.body.photos.photo))
+				for (var o in res.body.photos.photo) {
+					r.push(JSON.stringify(res.body.photos.photo[o][imageSize]))
+					// logDebug(JSON.stringify(res.body.photos.photo[o][imageSize]))
+				}
 				pageIndex = res.body.photos.page
 				var manifestRelPath = "./manifest_" + pageIndex + ".json"
 				// logMain(manifestRelPath)
-				fs.writeFile(path.resolve(absImagePath, manifestRelPath), JSON.stringify(res.body.photos, null, 2), (err) => {
-					if (err) {
-						logMain("[WK_DLD] failed to populate manifest: " + err)
-					} else {
-						// results.push(res.body.photos.photo)
-					}
-				})
+				// fsp.writeFile(path.resolve(absImagePath, manifestRelPath), JSON.stringify(res.body.photos, null, 2), (err) => {
+				// 	if (err) {
+				// 		logMain("[WK_DLD] failed to populate manifest: " + err)
+				// 	} else {
+				// 		// logDebug(JSON.stringify(res.body.photos))
+				// 		// results.push(res.body.photos.photo)
+				// 	} }
+				fs.writeFile(path.resolve(absImagePath, manifestRelPath), JSON.stringify(res.body.photos, null, 2))
 			})
 			.catch(function(err) {
 				logMain("[WK_DLD] failed to populate manifest: " + err);
-			});
+			})
 		// logDebug("responses   " + results)
+		// 
+		// return Promise.resolve()
 	}
+	// logMain(JSON.stringify(result))
+
+	return Promise.resolve(r)
+	// return Promise.resolve()
 }
 
-const loadImageURLs = async (currImageCount, perPage, absImagePath) => {
+const loadImageURLs = async (currImageCount, perPage, imageSize, absImagePath) => {
 	var pagesNeeded = parseInt(currImageCount / perPage) + 2
+	var results = []
+	var result
 	for (var i = 1; i < pagesNeeded; i++) {
 		var manifestRelPath = "./manifest_" + i + ".json"
-		await fs.readFile(path.resolve(absImagePath, manifestRelPath), (err, data) => {
-			if (err) {
-				logDebug("[WK_DLD] failed to load image url: " + err)
-			} else {
-				logDebug(data)
+		logDebug("[WK_DLD] Not this async issue again")
+		try {
+			// result = fs.readFileSync(path.resolve(absImagePath, manifestRelPath))
+			result = await fs.readFileSync(path.resolve(absImagePath, manifestRelPath))
+		} catch (err) {
+			logMain("[WK_DLD] failed to read manifest " + manifestRelPath + " :" + err)
+		}
+
+		if (typeof result == "undefined") {
+			logMain("[WK_DLD] failed to read manifest " + manifestRelPath + ": undefined")
+		} else {
+			for (var o in result.photo) {
+				results.push(o[imageSize])
 			}
-		})
+		}
 	}
+
+	return results
 }
