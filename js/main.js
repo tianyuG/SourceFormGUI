@@ -7,7 +7,8 @@ const {
 } = require('electron')
 const url = require('url')
 const path = require('path')
-const fs = require('fs').promises
+const fs = require('fs')
+	.promises
 const VirtualKeyboard = require('electron-virtual-keyboard')
 const {
 	download
@@ -154,16 +155,16 @@ app.on('ready', () => {
 		webPreferences: {
 			nodeIntegration: true
 		},
-		show: true
+		show: false
 	})
-	windows.workerDownload.webContents.openDevTools()
+	// windows.workerDownload.webContents.openDevTools()
 	windows.workerDownloadHelper = new BrowserWindow({
 		webPreferences: {
 			nodeIntegration: true
 		},
-		show: true
+		show: false
 	})
-	windows.workerDownloadHelper.webContents.openDevTools()
+	// windows.workerDownloadHelper.webContents.openDevTools()
 	windows.workerPly2stl =
 		new BrowserWindow({
 			webPreferences: {
@@ -235,25 +236,44 @@ app.on('ready', () => {
 		// 	windows.workerDownloadHelper.webContents.send('image-download-request-complete', d.getSavePath())
 		// })
 
-		logDebug("TST " + data.url[0] + " " + path.basename(data.url[0]))
+		// logDebug("TST " + data.url[0] + " " + path.basename(data.url[0]))
 		for (var u in dlUrlArr) {
-			var r = axios({
-				method: 'get',
-				url: dlUrlArr[u],
-				responseType: 'arraybuffer'
-			})
+			try {
+				var r = axios({
+					method: 'get',
+					url: dlUrlArr[u],
+					responseType: 'arraybuffer'
+				})
+			} catch (err) {
+				if (err) {
+					logDebug("[MAIN] image download failed: " + err)
+				}
+			}
 			promises.push(r)
 			// result = await Promise.resolve(r)
 			// var elN = "./" + path.basename(dlUrlArr[u])
 			// await fs.writeFile(path.resolve(dlDir, elN), result.data)
 		}
-		resArr = await Promise.all(promises)
+		logDebug("Delegated promises")
+		try {
+			resArr = await Promise.all(promises)
+		} catch (err) {
+			if (err) {
+				logDebug("[MAIN] promise resolution failed: " + err)
+			}
+		}
 		logDebug("Resolved promises")
 		for (var el in resArr) {
 			// var elN = "./" + path.basename(resArr[el].config.url)
-			await fs.writeFile(path.resolve(dlDir, "./" + path.basename(resArr[el].config.url)), resArr[el].data).then(() => {
-				logDebug(el)
-			})
+			await fs.writeFile(path.resolve(dlDir, "./" + path.basename(resArr[el].config.url)), resArr[el].data)
+				.then(() => {
+					logDebug(el)
+				})
+				.catch((err) => {
+					if (err) {
+						logDebug("[MAIN] image save failed: " + err)
+					}
+				})
 		}
 		// var r = axios({
 		// 	method: 'get',
@@ -434,7 +454,7 @@ ipcMain.on('ld-main', function(event, data) {
 
 ipcMain.on('worker-download-search-r', function(event, data) {
 	logDebug("DELEGATING " + data)
-	windows.workerDownload.send('worker-download-search', data)
+	windows.workerDownloadHelper.send('worker-download-search', data)
 })
 
 // ipcMain.on('image-download-request', function(event, data) {
