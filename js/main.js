@@ -328,7 +328,7 @@ ipcMain.on('swap-displays', (evt, arg) => {
 })
 
 // Format debug log
-function logDebug(arg) {
+const logDebug = (arg) => {
 	var timestamp = new Date()
 	if (isInDebugEnv) {
 		console.log("[DEBUG:" + timestamp.getFullYear() +
@@ -351,7 +351,7 @@ function logDebug(arg) {
  * Loading global settings/variables from disk.
  * Use remote.getGlobal() to fetch a single global variable.
  */
-async function loadGlobalVariables() {
+const loadGlobalVariables = async () => {
 	var gvPath = "../configs/globalvariables.json"
 	var gvObj = JSON.parse(await fs.readFile(path.resolve(__dirname, gvPath)));
 
@@ -366,7 +366,7 @@ async function loadGlobalVariables() {
  * Use ipcRenderer.send("set-globalvariable", [key, value]) 
  * to modify existing global variable.
  */
-async function setGlobalVariable(k, v) {
+const setGlobalVariable = async (k, v) => {
 	var gvPath = "../configs/globalvariables.json"
 	var gvObj = JSON.parse(await fs.readFile(path.resolve(__dirname, gvPath)));
 
@@ -381,7 +381,7 @@ async function setGlobalVariable(k, v) {
 	}
 }
 
-async function setGlobalVariablePath(k, v) {
+const setGlobalVariablePath = async (k, v) => {
 	var gvPath = "../configs/globalvariables.json"
 	var gvObj = JSON.parse(await fs.readFile(path.resolve(__dirname, gvPath)));
 
@@ -401,7 +401,6 @@ async function setGlobalVariablePath(k, v) {
  */
 ipcMain.on('search-committed', function(event, data) {
 	windows.main.loadFile('./html/searchpreview.html')
-	logDebug("SEND " + data)
 	windows.main.webContents.once('dom-ready', () => {
 		windows.main.webContents.send('search-query-relay', data);
 	})
@@ -412,7 +411,6 @@ ipcMain.on('search-committed', function(event, data) {
  */
 ipcMain.on('preview-aborted', function(event, data) {
 	windows.main.loadFile('./html/index.html')
-	// logDebug("SEND " + data)
 	windows.main.webContents.once('dom-ready', () => {
 		windows.main.webContents.send('select-all-input', data);
 	})
@@ -453,16 +451,6 @@ ipcMain.on('ld-main', function(event, data) {
 })
 
 ipcMain.on('worker-download-search-r', function(event, data) {
-	logDebug("DELEGATING " + data)
+	// logDebug("DELEGATING " + data)
 	windows.workerDownloadHelper.send('worker-download-search', data)
 })
-
-// ipcMain.on('image-download-request', function(event, data) {
-// 	data.properties.onProgress = (p) => {
-// 		windows.workerDownloadHelper.webContents.send('image-download-request-progress', p)
-// 	}
-// 	download(windows.workerDownloadHelper, data.url, data.properties)
-// 		.then((d) => {
-// 			windows.workerDownloadHelper.webContents.send('image-download-request-complete', d.getSavePath())
-// 		})
-// })

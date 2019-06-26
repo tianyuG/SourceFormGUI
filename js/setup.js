@@ -28,35 +28,35 @@ require('electron')
 			}
 		})
 
-		const startahkbtn = document.getElementById('start-ahk-button');
-		const stopahkbtn = document.getElementById('stop-ahk-button');
-		const flickrkeycurr = document.getElementById('flickrkey-current');
-		const flickrkeybtn = document.getElementById('flickrkey-button');
-		const flickrkeybtnreset = document.getElementById('flickrkey-button-reset');
-		const flickrkeyinput = document.getElementById('flickrkey-input')
-		const flickrkeybtncnfm = document.getElementById('flickrkey-button-confirm');
-		const flickrsecretcurr = document.getElementById('flickrsecret-current');
-		const flickrsecretbtn = document.getElementById('flickrsecret-button');
+		const startahkbtn          = document.getElementById('start-ahk-button');
+		const stopahkbtn           = document.getElementById('stop-ahk-button');
+		const flickrkeycurr        = document.getElementById('flickrkey-current');
+		const flickrkeybtn         = document.getElementById('flickrkey-button');
+		const flickrkeybtnreset    = document.getElementById('flickrkey-button-reset');
+		const flickrkeyinput       = document.getElementById('flickrkey-input')
+		const flickrkeybtncnfm     = document.getElementById('flickrkey-button-confirm');
+		const flickrsecretcurr     = document.getElementById('flickrsecret-current');
+		const flickrsecretbtn      = document.getElementById('flickrsecret-button');
 		const flickrsecretbtnreset = document.getElementById('flickrsecret-button-reset');
-		const flickrsecretinput = document.getElementById('flickrsecret-input')
-		const flickrsecretbtncnfm = document.getElementById('flickrsecret-button-confirm');
-		const imagepathcurr = document.getElementById('imagepath-current');
-		const imagepathbtn = document.getElementById('imagepath-button');
-		const ply2stlcurr = document.getElementById('ply2stl-current');
-		const ply2stlbtn = document.getElementById('ply2stl-button');
-		const stl2bmpcurr = document.getElementById('stl2bmp-current');
-		const stl2bmpbtn = document.getElementById('stl2bmp-button');
-		const printerscriptcurr = document.getElementById('printerscript-current');
-		const printerscriptbtn = document.getElementById('printerscript-button');
-		const numofimgscurr = document.getElementById('numofimgs-current');
-		const numofimgsbtn = document.getElementById('numofimgs-button');
-		const numofimgsinput = document.getElementById('numofimgs-input')
-		const numofimgsbtncnfm = document.getElementById('numofimgs-button-confirm');
-		const remoteipcurr = document.getElementById('remoteip-current');
-		const remoteipbtn = document.getElementById('remoteip-button');
-		const remoteipinput = document.getElementById('remoteip-input')
-		const remoteipbtncnfm = document.getElementById('remoteip-button-confirm');
-		const remoteipwarning = document.getElementById('remoteip-warning');
+		const flickrsecretinput    = document.getElementById('flickrsecret-input')
+		const flickrsecretbtncnfm  = document.getElementById('flickrsecret-button-confirm');
+		const imagepathcurr        = document.getElementById('imagepath-current');
+		const imagepathbtn         = document.getElementById('imagepath-button');
+		const ply2stlcurr          = document.getElementById('ply2stl-current');
+		const ply2stlbtn           = document.getElementById('ply2stl-button');
+		const stl2bmpcurr          = document.getElementById('stl2bmp-current');
+		const stl2bmpbtn           = document.getElementById('stl2bmp-button');
+		const printerscriptcurr    = document.getElementById('printerscript-current');
+		const printerscriptbtn     = document.getElementById('printerscript-button');
+		const numofimgscurr        = document.getElementById('numofimgs-current');
+		const numofimgsbtn         = document.getElementById('numofimgs-button');
+		const numofimgsinput       = document.getElementById('numofimgs-input')
+		const numofimgsbtncnfm     = document.getElementById('numofimgs-button-confirm');
+		const remoteipcurr         = document.getElementById('remoteip-current');
+		const remoteipbtn          = document.getElementById('remoteip-button');
+		const remoteipinput        = document.getElementById('remoteip-input')
+		const remoteipbtncnfm      = document.getElementById('remoteip-button-confirm');
+		const remoteipwarning      = document.getElementById('remoteip-warning');
 
 		flickrkeycurr.innerHTML = require('electron')
 			.remote.getGlobal('flickrKey')
