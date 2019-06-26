@@ -40,7 +40,7 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	// Creating folder
 	await fs.mkdir(absImagePath)
 
-	// Update catalogue
+	
 	let jsonFile = await fs.readFile(path.resolve(__dirname, "../carousel/content.json"))
 	let jsonObj = JSON.parse(jsonFile)
 	let jsonKeys = Object.keys(jsonObj)
@@ -63,12 +63,14 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	var extraPageCount = require('electron').remote.getGlobal("extraPageCount")
 	results = await populateManifest(currImageCount, perPage, name_s, imageSize, absImagePath, extraPageCount)
 
+	// Update catalogue
 	let currRecord = "{ \"title\": \"" + name_s + "\", \"sanitised_title\": \"" + name_f + "\", \"path\": \"" + absImagePath.replace(/\\+/g, "\\\\") + "\", \"thumbnail\": \"" + currIndex + ".jpg\", \"updated\": \"" + t_iso + "\", \"accessed\": \"" + t_iso + "\", \"image_count\": " + results.length + ", \"display\": false }"
 	logMain(currRecord)
 	jsonObj[currIndex] = JSON.parse(currRecord)
 	await fs.writeFile(path.resolve(__dirname, "../carousel/content.json"), JSON.stringify(jsonObj, null, 2))
 	// logMain(JSON.stringify(results))
 
+	// 
 })
 
 /*

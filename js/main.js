@@ -9,6 +9,7 @@ const url = require('url')
 const path = require('path')
 const fs = require('graceful-fs')
 const VirtualKeyboard = require('electron-virtual-keyboard')
+const dl = require('electron-dl')
 
 const windows = {}
 
@@ -153,6 +154,12 @@ app.on('ready', () => {
 		show: true
 	})
 	windows.workerDownload.webContents.openDevTools()
+	windows.workerDownloadHelper = new BrowserWindow({
+		webPreferences: {
+			nodeIntegration: true
+		},
+		show: false
+	})
 	windows.workerPly2stl = new BrowserWindow({
 		webPreferences: {
 			nodeIntegration: true
@@ -264,7 +271,9 @@ function setGlobalVariable(k, v) {
 		global[k] = v
 		gvObj[k] = v
 		fs.writeFile(path.resolve(__dirname, gvPath), JSON.stringify(gvObj, null, 2), (err) => {
-			if (err) { logDebug("[MAIN] failed to write global variable to disk: " + err) }
+			if (err) {
+				logDebug("[MAIN] failed to write global variable to disk: " + err)
+			}
 		});
 	}
 }
@@ -277,7 +286,9 @@ function setGlobalVariablePath(k, v) {
 		global[k] = v[0]
 		gvObj[k] = v[0]
 		fs.writeFile(path.resolve(__dirname, gvPath), JSON.stringify(gvObj, null, 2), (err) => {
-			if (err) { logDebug("[MAIN] failed to write global variable to disk: " + err) }
+			if (err) {
+				logDebug("[MAIN] failed to write global variable to disk: " + err)
+			}
 		});
 	}
 }
@@ -318,7 +329,9 @@ ipcMain.on('set-globalvariable', function(event, data) {
 ipcMain.on('set-globalvariablepath', function(event, data) {
 	var gvK = data[0]
 	var gvV = data[1]
-	if (gvV != null) { setGlobalVariablePath(gvK, gvV) }
+	if (gvV != null) {
+		setGlobalVariablePath(gvK, gvV)
+	}
 });
 
 /*
@@ -339,4 +352,14 @@ ipcMain.on('ld-main', function(event, data) {
 ipcMain.on('worker-download-search-r', function(event, data) {
 	logDebug("DELEGATING " + data)
 	windows.workerDownload.send('worker-download-search', data)
+})
+
+ipcMain.on('image-download-request', function(event, data) {
+	info.properties.onProgress = (p) => {
+		windows.workerDownloadHelper.webContents.send('image-download-request-progress', p)
+	}
+	dl(windows.workerDownloadHelper, data.url, data.properties)
+		.then((d) => {
+			windows.workerDownloadHelper.webContents.send('image-download-request-processed', d.getSavePath())
+		})
 })
