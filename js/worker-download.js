@@ -40,7 +40,6 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	// Creating folder
 	await fs.mkdir(absImagePath)
 
-	
 	let jsonFile = await fs.readFile(path.resolve(__dirname, "../carousel/content.json"))
 	let jsonObj = JSON.parse(jsonFile)
 	let jsonKeys = Object.keys(jsonObj)
@@ -60,7 +59,8 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	// the size required. The extraPageCount is used to get more images than 
 	// required so it would not be off by too much. The lowest it can go should
 	// be 1.
-	var extraPageCount = require('electron').remote.getGlobal("extraPageCount")
+	var extraPageCount = require('electron')
+		.remote.getGlobal("extraPageCount")
 	results = await populateManifest(currImageCount, perPage, name_s, imageSize, absImagePath, extraPageCount)
 
 	// Update catalogue
@@ -70,7 +70,13 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	await fs.writeFile(path.resolve(__dirname, "../carousel/content.json"), JSON.stringify(jsonObj, null, 2))
 	// logMain(JSON.stringify(results))
 
-	// 
+	ipcRenderer.send('image-download-request', {
+		url: results,
+		properties: {
+			directory: absImagePath,
+		}
+	})
+	// 	
 })
 
 /*

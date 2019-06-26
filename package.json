@@ -16,6 +16,7 @@
     "virtual-keyboard": "^1.29.1"
   },
   "devDependencies": {
+    "axios": "^0.19.0",
     "electron": "^5.0.3",
     "electron-builder": "^20.43.0",
     "electron-dl": "^1.14.0",

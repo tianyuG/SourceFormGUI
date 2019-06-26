@@ -20,3 +20,4 @@
 | p-queue                     | MIT                  | Yes            | No                  | No          | 6.0.2     | https://github.com/sindresorhus/p-queue                    |
 | graceful-fs                 | ISC                  | Yes            | No                  | No          | 4.1.15    | https://github.com/isaacs/node-graceful-fs                 |
 | electron-dl                 | MIT                  | Yes            | No                  | No          | 1.14.0    | https://github.com/sindresorhus/electron-dl                |
+| axios                       | MIT	                 | Yes            | No                  | No          | 0.18.1    | https://github.com/axios/axios                             |

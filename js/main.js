@@ -7,9 +7,12 @@ const {
 } = require('electron')
 const url = require('url')
 const path = require('path')
-const fs = require('graceful-fs')
+const fs = require('fs').promises
 const VirtualKeyboard = require('electron-virtual-keyboard')
-const dl = require('electron-dl')
+const {
+	download
+} = require('electron-dl')
+const axios = require('axios')
 
 const windows = {}
 
@@ -158,14 +161,16 @@ app.on('ready', () => {
 		webPreferences: {
 			nodeIntegration: true
 		},
-		show: false
+		show: true
 	})
-	windows.workerPly2stl = new BrowserWindow({
-		webPreferences: {
-			nodeIntegration: true
-		},
-		show: false
-	})
+	windows.workerDownloadHelper.webContents.openDevTools()
+	windows.workerPly2stl =
+		new BrowserWindow({
+			webPreferences: {
+				nodeIntegration: true
+			},
+			show: false
+		})
 	windows.workerStl2bmp = new BrowserWindow({
 		webPreferences: {
 			nodeIntegration: true
@@ -179,6 +184,7 @@ app.on('ready', () => {
 		show: false
 	})
 	windows.workerDownload.loadFile('./html/worker-download.html')
+	windows.workerDownloadHelper.loadFile('./html/worker-downloadhelper.html')
 	windows.workerPly2stl.loadFile('./html/worker-ply2stl.html')
 	windows.workerStl2bmp.loadFile('./html/worker-stl2bmp.html')
 	windows.workerPrinting.loadFile('./html/worker-printing.html')
@@ -186,6 +192,83 @@ app.on('ready', () => {
 	// windows.workerDownload.on('closed', () => {
 	//     windows.workerdownload = null
 	// })
+	// 
+	// 
+	// 
+	ipcMain.on('image-download-request', async function(event, data) {
+		// console.log(data)
+		const dlDir = data.properties.directory
+		const dlUrlArr = data.url
+		var promises = []
+		var resArr = []
+		// logDebug(data.url)
+		// dlUrlArr.map((u) => {
+		// 	// logDebug(u)
+		// 	await download(windows.workerDownloadHelper, u, {
+		// 		directory: dlDir
+		// 	})
+		// })
+		// const promises = dlUrlArr.map(u => {
+		// 	download(windows.workerDownloadHelper, u, {
+		// 		directory: dlDir
+		// 	})
+		// })
+		// 
+
+		// for (var u in dlUrlArr) {
+		// 	logDebug(dlUrlArr[u])
+		// 	promises.push(
+		// 		download(windows.workerDownloadHelper, dlUrlArr[u], {
+		// 			directory: dlDir
+		// 		})
+		// 	)
+		// }
+
+		// await Promise.all(promises)
+
+		// await Promise.all(promises)
+		// data.properties.onProgress = (p) => {
+		// 	windows.main.webContents.send('image-download-request-progress', p)
+		// }
+		// await download(windows.main, data.url, data.properties)
+		// .then((d) => {
+		// 	windows.workerDownloadHelper.webContents.send('image-download-request-complete', d.getSavePath())
+		// })
+
+		logDebug("TST " + data.url[0] + " " + path.basename(data.url[0]))
+		for (var u in dlUrlArr) {
+			var r = axios({
+				method: 'get',
+				url: dlUrlArr[u],
+				responseType: 'arraybuffer'
+			})
+			promises.push(r)
+			// result = await Promise.resolve(r)
+			// var elN = "./" + path.basename(dlUrlArr[u])
+			// await fs.writeFile(path.resolve(dlDir, elN), result.data)
+		}
+		resArr = await Promise.all(promises)
+		logDebug("Resolved promises")
+		for (var el in resArr) {
+			// var elN = "./" + path.basename(resArr[el].config.url)
+			await fs.writeFile(path.resolve(dlDir, "./" + path.basename(resArr[el].config.url)), resArr[el].data).then(() => {
+				logDebug(el)
+			})
+		}
+		// var r = axios({
+		// 	method: 'get',
+		// 	url: data.url[0],
+		// 	responseType: 'arraybuffer'
+		// })
+		// promises.push(r)
+		// var res = await Promise.resolve(r)
+
+		// var name = "./" + path.basename(data.url[0])
+		// console.log(res)
+		// await fs.writeFile(path.resolve(dlDir, name), res.data)
+		// 
+		logDebug("Done!")
+	})
 })
 
 // Quit when all windows are closed.
@@ -248,9 +331,9 @@ function logDebug(arg) {
  * Loading global settings/variables from disk.
  * Use remote.getGlobal() to fetch a single global variable.
  */
-function loadGlobalVariables() {
+async function loadGlobalVariables() {
 	var gvPath = "../configs/globalvariables.json"
-	var gvObj = JSON.parse(fs.readFileSync(path.resolve(__dirname, gvPath)));
+	var gvObj = JSON.parse(await fs.readFile(path.resolve(__dirname, gvPath)));
 
 	for (var e in gvObj) {
 		logDebug(JSON.stringify(e) + ": " + JSON.stringify(gvObj[e]))
@@ -263,9 +346,9 @@ function loadGlobalVariables() {
  * Use ipcRenderer.send("set-globalvariable", [key, value]) 
  * to modify existing global variable.
  */
-function setGlobalVariable(k, v) {
+async function setGlobalVariable(k, v) {
 	var gvPath = "../configs/globalvariables.json"
-	var gvObj = JSON.parse(fs.readFileSync(path.resolve(__dirname, gvPath)));
+	var gvObj = JSON.parse(await fs.readFile(path.resolve(__dirname, gvPath)));
 
 	if (gvObj.hasOwnProperty(k)) {
 		global[k] = v
@@ -278,9 +361,9 @@ function setGlobalVariable(k, v) {
 	}
 }
 
-function setGlobalVariablePath(k, v) {
+async function setGlobalVariablePath(k, v) {
 	var gvPath = "../configs/globalvariables.json"
-	var gvObj = JSON.parse(fs.readFileSync(path.resolve(__dirname, gvPath)));
+	var gvObj = JSON.parse(await fs.readFile(path.resolve(__dirname, gvPath)));
 
 	if (gvObj.hasOwnProperty(k)) {
 		global[k] = v[0]
@@ -354,12 +437,12 @@ ipcMain.on('worker-download-search-r', function(event, data) {
 	windows.workerDownload.send('worker-download-search', data)
 })
 
-ipcMain.on('image-download-request', function(event, data) {
-	info.properties.onProgress = (p) => {
-		windows.workerDownloadHelper.webContents.send('image-download-request-progress', p)
-	}
-	dl(windows.workerDownloadHelper, data.url, data.properties)
-		.then((d) => {
-			windows.workerDownloadHelper.webContents.send('image-download-request-processed', d.getSavePath())
-		})
-})
+// ipcMain.on('image-download-request', function(event, data) {
+// 	data.properties.onProgress = (p) => {
+// 		windows.workerDownloadHelper.webContents.send('image-download-request-progress', p)
+// 	}
+// 	download(windows.workerDownloadHelper, data.url, data.properties)
+// 		.then((d) => {
+// 			windows.workerDownloadHelper.webContents.send('image-download-request-complete', d.getSavePath())
+// 		})
+// })
