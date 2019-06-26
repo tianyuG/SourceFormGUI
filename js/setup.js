@@ -16,8 +16,8 @@ const fs = require('fs')
 
 require('electron')
 	.remote.getCurrentWindow()
-	.webContents.once('dom-ready', async () => {
-		await fs.access(`C:\\Program Files\\AutoHotkey\\AutoHotkey.exe`, (err) => {
+	.webContents.once('dom-ready', () => {
+		fs.access(`C:\\Program Files\\AutoHotkey\\AutoHotkey.exe`, (err) => {
 			if (err) {
 				document.getElementById('start-ahk-button')
 					.style.display = "none"
