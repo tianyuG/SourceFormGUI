@@ -76,7 +76,6 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 			directory: absImagePath,
 		}
 	})
-	// 	
 })
 
 /*

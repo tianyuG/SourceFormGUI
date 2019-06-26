@@ -4,7 +4,7 @@ const {
 } = require('electron')
 const OS = require('os')
 const path = require('path')
-const fs = require('graceful-fs')
+const fs = require('fs').promises
 const cproc = require('child_process')
 
 function getNetworkInterfaceInfo() {
@@ -92,7 +92,7 @@ function ifFileExists(filepath, elementId, appName, appUrl, errorMsg = null) {
 	})
 }
 
-function getGlobalVariables() {
+async function getGlobalVariables() {
 	var ret = ""
 	var gvWarning = "Electron's remote module caches remote objects, which this section depends on. It's generally accurate most of the time but take it with a grain of salt."
 	var isDbg = "\"isInDebugEnv\": " + remote.getGlobal("isInDebugEnv")
@@ -101,7 +101,7 @@ function getGlobalVariables() {
 	ret = "<p>" + gvWarning + "</p><p>" + isDbg + "<br />" + isFDbg + "<br />"
 
 	var gvPath = "../configs/globalvariables.json"
-	var gvObj = JSON.parse(fs.readFileSync(path.resolve(__dirname, gvPath)));
+	var gvObj = JSON.parse(await fs.readFile(path.resolve(__dirname, gvPath)));
 
 	for (var e in gvObj) {
 		ret += JSON.stringify(e) + ": " + JSON.stringify(gvObj[e]) + "<br />"
@@ -113,9 +113,9 @@ function getGlobalVariables() {
 		.innerHTML = ret
 }
 
-function getGlobalVariablesCount() {
+async function getGlobalVariablesCount() {
 	var gvPath = "../configs/globalvariables.json"
-	var gvObj = JSON.parse(fs.readFileSync(path.resolve(__dirname, gvPath)));
+	var gvObj = JSON.parse(await fs.readFile(path.resolve(__dirname, gvPath)));
 
 	document.getElementById('global-variables-label')
 		.innerHTML = "Total tracked global variables: " + (Object.keys(gvObj)

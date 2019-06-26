@@ -23,7 +23,6 @@
     "electron-localshortcut": "^3.1.0",
     "electron-reload": "^1.4.0",
     "eventemitter3": "^3.1.2",
-    "graceful-fs": "^4.1.15",
     "p-queue": "^6.0.2",
     "python-bridge": "^1.1.0",
     "three": "^0.105.2"

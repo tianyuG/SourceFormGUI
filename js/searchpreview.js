@@ -7,7 +7,8 @@ var http = require('http');
 var parse = require('url')
 	.parse;
 var purify = require('dompurify')
-var fs = require('graceful-fs')
+var fs = require('fs')
+	.promises
 var path = require("path")
 
 /*
@@ -42,8 +43,8 @@ ipcRenderer.once('search-query-relay', (event, message) => {
 
 		for (var entry in ret) {
 			if (Date.parse(ret[entry].updated) > ndate) {
-					nid = ret[entry].id
-					ndate = ret[entry].updated
+				nid = ret[entry].id
+				ndate = ret[entry].updated
 			}
 		}
 		// TODO: Create an overlay to alert user a model already exists. Ask if they just want to print it out
@@ -176,14 +177,14 @@ function populateGrid(photos) {
 /*
  * Check search term against existing models
  */
-function checkAgainstExisting(term) {
+async function checkAgainstExisting(term) {
 	const sanitised = purify.sanitize(term)
 		.trim()
 		.toLowerCase()
 		.replace(/\s+/g, '-')
 	logDebug(sanitised)
 
-	var jsonObj = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../carousel/content.json")));
+	var jsonObj = JSON.parse(await fs.readFile(path.resolve(__dirname, "../carousel/content.json")));
 	// logDebug(JSON.stringify(jsonObj))
 	var retArr = []
 
@@ -191,7 +192,11 @@ function checkAgainstExisting(term) {
 		logDebug(JSON.stringify(jsonObj[entry]))
 		if (jsonObj[entry].sanitised_title == sanitised) {
 			logDebug("FOUND json entry")
-			retArr.unshift({"id": entry, "path": jsonObj[entry].path, "updated": jsonObj[entry].updated})
+			retArr.unshift({
+				"id": entry,
+				"path": jsonObj[entry].path,
+				"updated": jsonObj[entry].updated
+			})
 		}
 	}
 	logDebug(JSON.stringify(retArr))
