@@ -9,6 +9,8 @@
   "printerScriptPath": "",
   "numberOfImagesPerModel": 500,
   "imagesPerPage": 100,
+  "extraPageCount": 2,
+  "imageSize": "url_z",
   "remoteIP": "192.168.1.10",
   "openDiagnostics": "e.ctrlKey && e.altKey && e.key === 'D'",
   "openDiagnostics_remarks": "Ctrl-Shift-Alt-D to open diagnostics window. Modifying `openDiagnostics` variable will not change the keyboard shortcut."
