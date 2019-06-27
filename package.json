@@ -25,6 +25,7 @@
     "eventemitter3": "^3.1.2",
     "p-queue": "^6.0.2",
     "python-bridge": "^1.1.0",
+    "ssh2": "^0.8.4",
     "three": "^0.105.2"
   },
   "scripts": {

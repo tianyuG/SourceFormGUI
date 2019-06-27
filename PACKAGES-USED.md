@@ -19,3 +19,4 @@
 | eventemitter3               | MIT                  | Yes            | No                  | No          | 3.1.2     | https://github.com/primus/eventemitter3                    |
 | p-queue                     | MIT                  | Yes            | No                  | No          | 6.0.2     | https://github.com/sindresorhus/p-queue                    |
 | axios                       | MIT	                 | Yes            | No                  | No          | 0.18.1    | https://github.com/axios/axios                             |
+| ssh2                        | MIT                  | Yes            | No                  | No          | 0.8.4     | https://github.com/mscdex/ssh2                             |
