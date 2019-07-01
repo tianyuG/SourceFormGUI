@@ -15,6 +15,7 @@ var purify = require('dompurify')
 var path = require("path")
 var fs = require('fs')
 	.promises
+var ssh = require('ssh2')
 
 var flickr = new Flickr(require('electron')
 	.remote.getGlobal('flickrKey'))
@@ -28,13 +29,14 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 		.toLowerCase()
 		.replace(/\s+/g, '-')
 		.replace(/\\+/g, '')
+		.replace(/\"+/g, '')
 
 	var ident = name_f + "_" + t.getTime()
 	var ident_t = "./" + ident
 	var baseImagePath = path.resolve(remote.getGlobal('imagePath')
 		.toString())
 	var absImagePath = path.resolve(baseImagePath, ident_t)
-	// logMain(absImagePath)
+	logMain(absImagePath)
 	var currImageCount = parseInt(remote.getGlobal('numberOfImagesPerModel'))
 
 	// Creating folder
@@ -64,7 +66,7 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	results = await populateManifest(currImageCount, perPage, name_s, imageSize, absImagePath, extraPageCount)
 
 	// Update catalogue
-	let currRecord = "{ \"title\": \"" + name_s + "\", \"sanitised_title\": \"" + name_f + "\", \"path\": \"" + absImagePath.replace(/\\+/g, "\\\\") + "\", \"thumbnail\": \"" + currIndex + ".jpg\", \"updated\": \"" + t_iso + "\", \"accessed\": \"" + t_iso + "\", \"image_count\": " + results.length + ", \"display\": false }"
+	let currRecord = "{ \"title\": \"" + name_s.replace(/\"+/g, "\\\"") + "\", \"sanitised_title\": \"" + name_f + "\", \"path\": \"" + absImagePath.replace(/\\+/g, "\\\\") + "\", \"thumbnail\": \"" + currIndex + ".jpg\", \"updated\": \"" + t_iso + "\", \"accessed\": \"" + t_iso + "\", \"image_count\": " + results.length + ", \"display\": false }"
 	logMain(currRecord)
 	jsonObj[currIndex] = JSON.parse(currRecord)
 	await fs.writeFile(path.resolve(__dirname, "../carousel/content.json"), JSON.stringify(jsonObj, null, 2))
@@ -122,3 +124,16 @@ const populateManifest = async (currImageCount, perPage, name_s, imageSize, absI
 	await fs.writeFile(path.resolve(absImagePath, urlsRelPath), JSON.stringify(urls, null, 2))
 	return urls
 }
+
+// const createRemoteFolders = async (projectName) => {
+// 	var remoteIp = require('electron').remote.getGlobal('remoteIP')
+// 	var remotePath = require('electron').remote.getGlobal
+
+// 	var Client = ssh.Client()
+// 	var conn = new Client()
+
+// 	conn.on('ready', () => {
+// 		logDebug('[WK-DLD] ssh2 client ready.')
+// 		// conn.exec
+// 	})
+// }

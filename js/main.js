@@ -451,6 +451,6 @@ ipcMain.on('ld-main', function(event, data) {
 })
 
 ipcMain.on('worker-download-search-r', function(event, data) {
-	// logDebug("DELEGATING " + data)
+	logDebug("DELEGATING " + data)
 	windows.workerDownloadHelper.send('worker-download-search', data)
 })

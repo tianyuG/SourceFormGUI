@@ -7,12 +7,12 @@
   "PLY2STLScriptPath": "C:\\Users\\Tianyu\\Documents\\My Web Sites\\WebSite1\\bkg-blu.jpg",
   "STL2BMPScriptPath": "",
   "printerScriptPath": "",
-  "numberOfImagesPerModel": 300,
+  "numberOfImagesPerModel": 400,
   "imagesPerPage": 100,
   "extraPageCount": 2,
   "imageSize": "url_z",
   "remoteIP": "192.168.1.10",
-  "remotePath": "C:\\Users\\SourceForm\\Desktop\\SFProc"
+  "remotePath": "C:\\Users\\SourceForm\\Desktop\\SFProc",
   "openDiagnostics": "e.ctrlKey && e.altKey && e.key === 'D'",
   "openDiagnostics_remarks": "Ctrl-Shift-Alt-D to open diagnostics window. Modifying `openDiagnostics` variable will not change the keyboard shortcut."
 }

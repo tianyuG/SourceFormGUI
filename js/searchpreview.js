@@ -66,7 +66,7 @@ abortButton.addEventListener('click', function() {
 })
 
 continueButton.addEventListener('click', function() {
-	// logMain("TO-DELEGATE")
+	logMain("TO-DELEGATE")
 	ipcRenderer.send('worker-download-search-r', searchResult)
 })
 
