@@ -237,17 +237,28 @@ app.on('ready', () => {
 		// })
 
 		// logDebug("TST " + data.url[0] + " " + path.basename(data.url[0]))
+		// const httpc = axios.create()
+		const CancelToken = axios.CancelToken
+		const source = []
+		// httpc.defaults.timeout = 1000
 		for (var u in dlUrlArr) {
 			try {
+				source[u] = CancelToken.source()
 				var r = axios({
 					method: 'get',
 					url: dlUrlArr[u],
-					responseType: 'arraybuffer'
+					responseType: 'arraybuffer',
+					cancelToken: source[u].token
 				})
+				// setTimeout(() => {
+				// 	source[u].cancel()
+				// 	logDebug("[MAIN] Cancelled: #" + u + " (" + dlUrlArr[u] + ")")
+				// }, 15000)
 			} catch (err) {
-				if (err) {
+				source[u].cancel()
+				// if (err) {
 					logDebug("[MAIN] image download failed: " + err)
-				}
+				// }
 			}
 			promises.push(r)
 			// result = await Promise.resolve(r)
