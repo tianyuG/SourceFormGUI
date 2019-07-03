@@ -200,6 +200,7 @@ app.on('ready', () => {
 			dlTimeout = global.downloadTimeout
 		}
 		const source = []
+		const promises = []
 		fs.writeFile(path.resolve(dlDir, "./dlLog.txt"), "ERROR-LOG\n")
 			.catch((err) => {
 				logDebug("[MAIN] log saving failed: " + err)
@@ -208,33 +209,38 @@ app.on('ready', () => {
 			source[i] = CancelToken.source()
 		}
 
-		dlUrlArr.map((u) => {
-			axios({
-					method: 'get',
-					url: dlUrlArr[u],
-					responseType: 'arraybuffer',
-					cancelToken: source[u].token,
-					timeout: dlTimeout
-				})
-				.then((res) => {
-					logDebug("[MAIN] Writing image #" + u + ": " + dlUrlArr[u])
-					fs.writeFile(path.resolve(dlDir, "./" + path.basename(res.config.url)), res.data)
-						.catch((err) => {
-							fs.appendFile(path.resolve(dlDir, "./dlLog.txt"), "[MAIN] image #" + u + " (" + dlUrlArr[u] + ") save failed (fsWrite): " + err.code + ": " + err.message + "\n")
-								.catch((err) => {
-									logDebug("[MAIN] log saving failed: " + err)
-								})
-							logDebug("[MAIN] image save failed: " + err)
-						})
-				})
-				.catch((err) => {
-					fs.appendFile(path.resolve(dlDir, "./dlLog.txt"), "[MAIN] image #" + u + " (" + dlUrlArr[u] + ") save failed (axios): " + err.code + ": " + err.message + "\n")
-						.catch((err) => {
-							logDebug("[MAIN] log saving failed: " + err)
-						})
-					logDebug("[MAIN] AXIOS download failed: " + err)
-				})
-		})
+		for (var u in dlUrlArr) {
+			promises.push(new Promise((resolve, reject) => {
+				axios({
+						method: 'get',
+						url: dlUrlArr[u],
+						responseType: 'arraybuffer',
+						cancelToken: source[u].token,
+						timeout: dlTimeout
+					})
+					.then((res) => {
+						// logDebug("[MAIN] Writing image #" + u + ": " + dlUrlArr[u])
+						fs.writeFile(path.resolve(dlDir, "./" + path.basename(res.config.url)), res.data)
+							.catch((err) => {
+								fs.appendFile(path.resolve(dlDir, "./dlLog.txt"), "[MAIN] image #" + u + " (" + dlUrlArr[u] + ") save failed (fsWrite): " + err.code + ": " + err.message + "\n")
+									.catch((err) => {
+										logDebug("[MAIN] log saving failed: " + err)
+									})
+								logDebug("[MAIN] image save failed: " + err)
+							})
+						resolve()
+					})
+					.catch((err) => {
+						fs.appendFile(path.resolve(dlDir, "./dlLog.txt"), "[MAIN] image #" + u + " (" + dlUrlArr[u] + ") save failed (axios): " + err.code + ": " + err.message + "\n")
+							.catch((err) => {
+								logDebug("[MAIN] log saving failed: " + err)
+							})
+						logDebug("[MAIN] AXIOS download failed: " + err)
+						resolve()
+					})
+			}))
+		}
+
 		// for (var u in dlUrlArr) {
 		// 	axios({
 		// 			method: 'get',
@@ -263,10 +269,15 @@ app.on('ready', () => {
 		// 		})
 		// }
 
-		logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
-		logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
-		logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
-		logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
+		Promise.all(promises)
+			.then(() => {
+
+				// TODO: SIGNAL DOWNLOAD COMPLETE
+				logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
+				logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
+				logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
+				logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
+			})
 	})
 })
 
