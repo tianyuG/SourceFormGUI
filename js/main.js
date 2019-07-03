@@ -190,19 +190,17 @@ app.on('ready', () => {
 	windows.workerStl2bmp.loadFile('./html/worker-stl2bmp.html')
 	windows.workerPrinting.loadFile('./html/worker-printing.html')
 
-	// windows.workerDownload.on('closed', () => {
-	//     windows.workerdownload = null
-	// })
-	// 
-	// 
-	// 
 	ipcMain.on('image-download-request', function(event, data) {
 		// console.log(data)
 		const dlDir = data.properties.directory
 		const dlUrlArr = data.url
 		const CancelToken = axios.CancelToken
+		var dlTimeout = 15000
+		if (global.downloadTimeout != null) {
+			dlTimeout = global.downloadTimeout
+		}
 		const source = []
-		fs.writeFile(path.resolve(dlDir, "./dlLog.txt"), "LOG\n")
+		fs.writeFile(path.resolve(dlDir, "./dlLog.txt"), "ERROR-LOG\n")
 			.catch((err) => {
 				logDebug("[MAIN] log saving failed: " + err)
 			})
@@ -210,13 +208,13 @@ app.on('ready', () => {
 			source[i] = CancelToken.source()
 		}
 
-		for (var u in dlUrlArr) {
+		dlUrlArr.map((u) => {
 			axios({
 					method: 'get',
 					url: dlUrlArr[u],
 					responseType: 'arraybuffer',
 					cancelToken: source[u].token,
-					timeout: 15000
+					timeout: dlTimeout
 				})
 				.then((res) => {
 					logDebug("[MAIN] Writing image #" + u + ": " + dlUrlArr[u])
@@ -236,7 +234,39 @@ app.on('ready', () => {
 						})
 					logDebug("[MAIN] AXIOS download failed: " + err)
 				})
-		}
+		})
+		// for (var u in dlUrlArr) {
+		// 	axios({
+		// 			method: 'get',
+		// 			url: dlUrlArr[u],
+		// 			responseType: 'arraybuffer',
+		// 			cancelToken: source[u].token,
+		// 			timeout: dlTimeout
+		// 		})
+		// 		.then((res) => {
+		// 			logDebug("[MAIN] Writing image #" + u + ": " + dlUrlArr[u])
+		// 			fs.writeFile(path.resolve(dlDir, "./" + path.basename(res.config.url)), res.data)
+		// 				.catch((err) => {
+		// 					fs.appendFile(path.resolve(dlDir, "./dlLog.txt"), "[MAIN] image #" + u + " (" + dlUrlArr[u] + ") save failed (fsWrite): " + err.code + ": " + err.message + "\n")
+		// 						.catch((err) => {
+		// 							logDebug("[MAIN] log saving failed: " + err)
+		// 						})
+		// 					logDebug("[MAIN] image save failed: " + err)
+		// 				})
+		// 		})
+		// 		.catch((err) => {
+		// 			fs.appendFile(path.resolve(dlDir, "./dlLog.txt"), "[MAIN] image #" + u + " (" + dlUrlArr[u] + ") save failed (axios): " + err.code + ": " + err.message + "\n")
+		// 				.catch((err) => {
+		// 					logDebug("[MAIN] log saving failed: " + err)
+		// 				})
+		// 			logDebug("[MAIN] AXIOS download failed: " + err)
+		// 		})
+		// }
+
+		logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
+		logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
+		logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
+		logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
 	})
 })
 
@@ -245,6 +275,12 @@ app.on('window-all-closed', () => {
 	app.quit()
 })
 
+/*
+ *
+ * IPC CALLS
+ * 
+ */
+
 // Run AHK script on demand
 ipcMain.on('start-ahk-button-clicked', (evt, arg) => {
 	app.quit()
@@ -252,8 +288,6 @@ ipcMain.on('start-ahk-button-clicked', (evt, arg) => {
 
 // Swap monitors on demand
 ipcMain.on('swap-displays', (evt, arg) => {
-	// console.log(windows.main.getBounds().x)
-	// console.log(typeof windows)
 
 	// Make sure there are two windows and two monitors
 	if (typeof(windows.main) != undefined && typeof(windows.preview) != undefined && require('electron')
@@ -275,6 +309,71 @@ ipcMain.on('swap-displays', (evt, arg) => {
 		window.preview.setBounds(mainDisplay.bounds)
 	}
 })
+
+/*
+ * Relaying search query to preview window
+ */
+ipcMain.on('search-committed', function(event, data) {
+	windows.main.loadFile('./html/searchpreview.html')
+	windows.main.webContents.once('dom-ready', () => {
+		windows.main.webContents.send('search-query-relay', data);
+	})
+});
+
+/*
+ * Moving from preview back to main screen
+ */
+ipcMain.on('preview-aborted', function(event, data) {
+	windows.main.loadFile('./html/index.html')
+	windows.main.webContents.once('dom-ready', () => {
+		windows.main.webContents.send('select-all-input', data);
+	})
+});
+
+/*
+ * Set global variable then write to disk
+ * !!!: This function is not responsible for sanitisation input!
+ */
+
+ipcMain.on('set-globalvariable', function(event, data) {
+	var gvK = data[0]
+	var gvV = data[1]
+	setGlobalVariable(gvK, gvV)
+});
+
+ipcMain.on('set-globalvariablepath', function(event, data) {
+	var gvK = data[0]
+	var gvV = data[1]
+	if (gvV != null) {
+		setGlobalVariablePath(gvK, gvV)
+	}
+});
+
+/*
+ * Load setup window upon request
+ */
+ipcMain.on('load-setup-window', function(event, data) {
+	windows.preview.loadFile('./html/setup.html')
+})
+
+ipcMain.on('open-diagnostics', function(event, data) {
+	windows.preview.loadFile('./html/diagnostics.html')
+})
+
+ipcMain.on('ld-main', function(event, data) {
+	logDebug(data)
+})
+
+ipcMain.on('worker-download-search-r', function(event, data) {
+	logDebug("[MAIN] delegating image download: " + data)
+	windows.workerDownloadHelper.send('worker-download-search', data)
+})
+
+/*
+ *
+ * FUNCTIONS
+ * 
+ */
 
 // Format debug log
 const logDebug = (arg) => {
@@ -344,62 +443,3 @@ const setGlobalVariablePath = async (k, v) => {
 		});
 	}
 }
-
-/*
- * Relaying search query to preview window
- */
-ipcMain.on('search-committed', function(event, data) {
-	windows.main.loadFile('./html/searchpreview.html')
-	windows.main.webContents.once('dom-ready', () => {
-		windows.main.webContents.send('search-query-relay', data);
-	})
-});
-
-/*
- * Moving from preview back to main screen
- */
-ipcMain.on('preview-aborted', function(event, data) {
-	windows.main.loadFile('./html/index.html')
-	windows.main.webContents.once('dom-ready', () => {
-		windows.main.webContents.send('select-all-input', data);
-	})
-});
-
-/*
- * Set global variable then write to disk
- * !!!: This function is not responsible for sanitisation input!
- */
-
-ipcMain.on('set-globalvariable', function(event, data) {
-	var gvK = data[0]
-	var gvV = data[1]
-	setGlobalVariable(gvK, gvV)
-});
-
-ipcMain.on('set-globalvariablepath', function(event, data) {
-	var gvK = data[0]
-	var gvV = data[1]
-	if (gvV != null) {
-		setGlobalVariablePath(gvK, gvV)
-	}
-});
-
-/*
- * Load setup window upon request
- */
-ipcMain.on('load-setup-window', function(event, data) {
-	windows.preview.loadFile('./html/setup.html')
-})
-
-ipcMain.on('open-diagnostics', function(event, data) {
-	windows.preview.loadFile('./html/diagnostics.html')
-})
-
-ipcMain.on('ld-main', function(event, data) {
-	logDebug(data)
-})
-
-ipcMain.on('worker-download-search-r', function(event, data) {
-	logDebug("DELEGATING " + data)
-	windows.workerDownloadHelper.send('worker-download-search', data)
-})
