@@ -11,6 +11,7 @@
   "imagesPerPage": 100,
   "extraPageCount": 2,
   "imageSize": "url_z",
+  "downloadTimeout": 15000,
   "remoteIP": "192.168.1.10",
   "remotePath": "C:\\Users\\SourceForm\\Desktop\\SFProc",
   "openDiagnostics": "e.ctrlKey && e.altKey && e.key === 'D'",

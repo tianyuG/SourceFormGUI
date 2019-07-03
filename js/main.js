@@ -196,109 +196,47 @@ app.on('ready', () => {
 	// 
 	// 
 	// 
-	ipcMain.on('image-download-request', async function(event, data) {
+	ipcMain.on('image-download-request', function(event, data) {
 		// console.log(data)
 		const dlDir = data.properties.directory
 		const dlUrlArr = data.url
-		var promises = []
-		var resArr = []
-		// logDebug(data.url)
-		// dlUrlArr.map((u) => {
-		// 	// logDebug(u)
-		// 	await download(windows.workerDownloadHelper, u, {
-		// 		directory: dlDir
-		// 	})
-		// })
-		// const promises = dlUrlArr.map(u => {
-		// 	download(windows.workerDownloadHelper, u, {
-		// 		directory: dlDir
-		// 	})
-		// })
-		// 
-
-		// for (var u in dlUrlArr) {
-		// 	logDebug(dlUrlArr[u])
-		// 	promises.push(
-		// 		download(windows.workerDownloadHelper, dlUrlArr[u], {
-		// 			directory: dlDir
-		// 		})
-		// 	)
-		// }
-
-		// await Promise.all(promises)
-
-		// await Promise.all(promises)
-		// data.properties.onProgress = (p) => {
-		// 	windows.main.webContents.send('image-download-request-progress', p)
-		// }
-		// await download(windows.main, data.url, data.properties)
-		// .then((d) => {
-		// 	windows.workerDownloadHelper.webContents.send('image-download-request-complete', d.getSavePath())
-		// })
-
-		// logDebug("TST " + data.url[0] + " " + path.basename(data.url[0]))
-		// const httpc = axios.create()
 		const CancelToken = axios.CancelToken
 		const source = []
-		// httpc.defaults.timeout = 1000
+		fs.writeFile(path.resolve(dlDir, "./dlLog.txt"), "LOG\n")
+			.catch((err) => {
+				logDebug("[MAIN] log saving failed: " + err)
+			})
+		for (var i = 0; i < dlUrlArr.length; i++) {
+			source[i] = CancelToken.source()
+		}
+
 		for (var u in dlUrlArr) {
-			try {
-				source[u] = CancelToken.source()
-				var r = axios({
+			axios({
 					method: 'get',
 					url: dlUrlArr[u],
 					responseType: 'arraybuffer',
-					cancelToken: source[u].token
+					cancelToken: source[u].token,
+					timeout: 15000
 				})
-				// setTimeout(() => {
-				// 	source[u].cancel()
-				// 	logDebug("[MAIN] Cancelled: #" + u + " (" + dlUrlArr[u] + ")")
-				// }, 15000)
-			} catch (err) {
-				source[u].cancel()
-				// if (err) {
-					logDebug("[MAIN] image download failed: " + err)
-				// }
-			}
-			promises.push(r)
-			// result = await Promise.resolve(r)
-			// var elN = "./" + path.basename(dlUrlArr[u])
-			// await fs.writeFile(path.resolve(dlDir, elN), result.data)
-		}
-		logDebug("Delegated promises")
-		try {
-			resArr = await Promise.all(promises)
-		} catch (err) {
-			if (err) {
-				logDebug("[MAIN] promise resolution failed: " + err)
-			}
-		}
-		logDebug("Resolved promises")
-		for (var el in resArr) {
-			// var elN = "./" + path.basename(resArr[el].config.url)
-			await fs.writeFile(path.resolve(dlDir, "./" + path.basename(resArr[el].config.url)), resArr[el].data)
-				.then(() => {
-					logDebug(el)
+				.then((res) => {
+					logDebug("[MAIN] Writing image #" + u + ": " + dlUrlArr[u])
+					fs.writeFile(path.resolve(dlDir, "./" + path.basename(res.config.url)), res.data)
+						.catch((err) => {
+							fs.appendFile(path.resolve(dlDir, "./dlLog.txt"), "[MAIN] image #" + u + " (" + dlUrlArr[u] + ") save failed (fsWrite): " + err.code + ": " + err.message + "\n")
+								.catch((err) => {
+									logDebug("[MAIN] log saving failed: " + err)
+								})
+							logDebug("[MAIN] image save failed: " + err)
+						})
 				})
 				.catch((err) => {
-					if (err) {
-						logDebug("[MAIN] image save failed: " + err)
-					}
+					fs.appendFile(path.resolve(dlDir, "./dlLog.txt"), "[MAIN] image #" + u + " (" + dlUrlArr[u] + ") save failed (axios): " + err.code + ": " + err.message + "\n")
+						.catch((err) => {
+							logDebug("[MAIN] log saving failed: " + err)
+						})
+					logDebug("[MAIN] AXIOS download failed: " + err)
 				})
 		}
-		// var r = axios({
-		// 	method: 'get',
-		// 	url: data.url[0],
-		// 	responseType: 'arraybuffer'
-		// })
-		// promises.push(r)
-		// var res = await Promise.resolve(r)
-
-		// var name = "./" + path.basename(data.url[0])
-		// console.log(res)
-		// await fs.writeFile(path.resolve(dlDir, name), res.data)
-		// 
-		logDebug("Done!")
 	})
 })
 
