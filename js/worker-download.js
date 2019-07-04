@@ -125,15 +125,41 @@ const populateManifest = async (currImageCount, perPage, name_s, imageSize, absI
 	return urls
 }
 
-// const createRemoteFolders = async (projectName) => {
-// 	var remoteIp = require('electron').remote.getGlobal('remoteIP')
-// 	var remotePath = require('electron').remote.getGlobal
+const createRemoteFolders = async (projectName) => {
+	var remoteIp = require('electron')
+		.remote.getGlobal('remoteIP')
+	var remotePath = require('electron')
+		.remote.getGlobal
 
-// 	var Client = ssh.Client()
-// 	var conn = new Client()
+	var Client = ssh.Client()
+	var conn = new Client()
 
-// 	conn.on('ready', () => {
-// 		logDebug('[WK-DLD] ssh2 client ready.')
-// 		// conn.exec
-// 	})
-// }
+	conn.on('ready', () => {
+		logDebug('[WK-DLD] ssh2 client ready.')
+
+		conn.on('ready', () => {
+			conn.sftp((err, sftp) => {
+				if (err) {
+					logMain("[WK-DLD] ssh2 - sftp failed: " + err)
+				}
+
+				var rmtProjPath = path.resolve(require('electron')
+					.remote.getGlobal('remotePath'), "./" + projectName)
+				sftp.mkdir(rmtProjPath, (err) => {
+					logMain("[WK-DLD] ssh2 - mkdir project folder failed: " + err)
+				})
+				sftp.mkdir(path.resolve(rmtProjPath, "./sparse"), (err) => {
+					logMain("[WK-DLD] ssh2 - mkdir sparse folder failed: " + err)
+				})
+				sftp.mkdir(path.resolve(rmtProjPath, "./dense"), (err) => {
+					logMain("[WK-DLD] ssh2 - mkdir dense folder failed: " + err)
+				})
+			})
+		}).connect({
+			host: require('electron').remote.getGlobal('remoteIP'),
+			port: 22,
+			username: 'SourceForm',
+			privateKey: require('fs').fs.readFileSync(path.resolve(__dirname, "./configs/id_rsa"));
+		})
+	})
+}

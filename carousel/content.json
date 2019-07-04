@@ -28,25 +28,5 @@
     "accessed": "2019-07-01T19:47:30.746Z",
     "image_count": 491,
     "display": false
-  },
-  "0003": {
-    "title": "baseball",
-    "sanitised_title": "baseball",
-    "path": "C:\\Users\\Tianyu\\Documents\\SOURCEFORM_TEST\\baseball_1562175283948",
-    "thumbnail": "0003.jpg",
-    "updated": "2019-07-03T17:34:43.948Z",
-    "accessed": "2019-07-03T17:34:43.948Z",
-    "image_count": 487,
-    "display": false
-  },
-  "0004": {
-    "title": "bmw m3",
-    "sanitised_title": "bmw-m3",
-    "path": "C:\\Users\\Tianyu\\Documents\\SOURCEFORM_TEST\\bmw-m3_1562175333357",
-    "thumbnail": "0004.jpg",
-    "updated": "2019-07-03T17:35:33.357Z",
-    "accessed": "2019-07-03T17:35:33.357Z",
-    "image_count": 494,
-    "display": false
   }
 }
