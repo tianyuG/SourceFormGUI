@@ -147,7 +147,7 @@ require('electron')
 
 		// Add button to change imagePath
 		imagepathbtn.addEventListener('click', () => {
-			var imgpath = dialog.showOpenDialog({
+			let imgpath = dialog.showOpenDialog({
 				properties: ['openDirectory']
 			})
 			ipcRenderer.send("set-globalvariablepath", ["imagePath", imgpath])
@@ -156,7 +156,7 @@ require('electron')
 		});
 
 		ply2stlbtn.addEventListener('click', () => {
-			var ply2stlpath = dialog.showOpenDialog({
+			let ply2stlpath = dialog.showOpenDialog({
 				properties: ['openFile'],
 				filters: [{
 						name: 'Python (*.py)',
@@ -175,7 +175,7 @@ require('electron')
 		});
 
 		stl2bmpbtn.addEventListener('click', () => {
-			var stl2bmppath = dialog.showOpenDialog({
+			let stl2bmppath = dialog.showOpenDialog({
 				properties: ['openFile'],
 				filters: [{
 						name: 'Python (*.py)',
@@ -193,7 +193,7 @@ require('electron')
 		});
 
 		printerscriptbtn.addEventListener('click', () => {
-			var printerscriptpath = dialog.showOpenDialog({
+			let printerscriptpath = dialog.showOpenDialog({
 				properties: ['openFile'],
 				filters: [{
 						name: 'Arduino (*.ino)',

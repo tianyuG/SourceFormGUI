@@ -16,6 +16,7 @@ const {
 const axios = require('axios')
 
 const windows = {}
+const gvPath = "../configs/globalvariables.json"
 
 /*
  * BEGIN: GLOBAL VARIABLES
@@ -195,7 +196,7 @@ app.on('ready', () => {
 		const dlDir = data.properties.directory
 		const dlUrlArr = data.url
 		const CancelToken = axios.CancelToken
-		var dlTimeout = 15000
+		let dlTimeout = 15000
 		if (global.downloadTimeout != null) {
 			dlTimeout = global.downloadTimeout
 		}
@@ -205,11 +206,11 @@ app.on('ready', () => {
 			.catch((err) => {
 				logDebug("[MAIN] log saving failed: " + err)
 			})
-		for (var i = 0; i < dlUrlArr.length; i++) {
+		for (let i = 0; i < dlUrlArr.length; i++) {
 			source[i] = CancelToken.source()
 		}
 
-		for (var u in dlUrlArr) {
+		for (let u in dlUrlArr) {
 			promises.push(new Promise((resolve, reject) => {
 				axios({
 						method: 'get',
@@ -276,14 +277,14 @@ ipcMain.on('swap-displays', (evt, arg) => {
 	if (typeof(windows.main) != undefined && typeof(windows.preview) != undefined && require('electron')
 		.screen.getAllDisplays()
 		.length == 2) {
-		var mainWindowBounds = windows.main.getBounds()
-		var mainDisplay = require('electron')
+		let mainWindowBounds = windows.main.getBounds()
+		let mainDisplay = require('electron')
 			.screen.getDisplayNearestPoint({
 				x: mainWindowBounds.x,
 				y: mainWindowBounds.x
 			})
-		var secondaryWindowBounds = windows.preview.getBounds()
-		var secondaryDisplay = require('electron')
+		let secondaryWindowBounds = windows.preview.getBounds()
+		let secondaryDisplay = require('electron')
 			.screen.getDisplayNearestPoint({
 				x: secondaryWindowBounds.x,
 				y: secondaryWindowBounds.x
@@ -319,14 +320,14 @@ ipcMain.on('preview-aborted', function(event, data) {
  */
 
 ipcMain.on('set-globalvariable', function(event, data) {
-	var gvK = data[0]
-	var gvV = data[1]
+	let gvK = data[0]
+	let gvV = data[1]
 	setGlobalVariable(gvK, gvV)
 });
 
 ipcMain.on('set-globalvariablepath', function(event, data) {
-	var gvK = data[0]
-	var gvV = data[1]
+	let gvK = data[0]
+	let gvV = data[1]
 	if (gvV != null) {
 		setGlobalVariablePath(gvK, gvV)
 	}
@@ -360,7 +361,7 @@ ipcMain.on('worker-download-search-r', function(event, data) {
 
 // Format debug log
 const logDebug = (arg) => {
-	var timestamp = new Date()
+	let timestamp = new Date()
 	if (isInDebugEnv) {
 		console.log("[DEBUG:" + timestamp.getFullYear() +
 			String(timestamp.getMonth() + 1)
@@ -383,10 +384,9 @@ const logDebug = (arg) => {
  * Use remote.getGlobal() to fetch a single global variable.
  */
 const loadGlobalVariables = async () => {
-	var gvPath = "../configs/globalvariables.json"
-	var gvObj = JSON.parse(await fs.readFile(path.resolve(__dirname, gvPath)));
+	let gvObj = JSON.parse(await fs.readFile(path.resolve(__dirname, gvPath)));
 
-	for (var e in gvObj) {
+	for (let e in gvObj) {
 		logDebug(JSON.stringify(e) + ": " + JSON.stringify(gvObj[e]))
 		global[e] = gvObj[e]
 	}
@@ -398,8 +398,7 @@ const loadGlobalVariables = async () => {
  * to modify existing global variable.
  */
 const setGlobalVariable = async (k, v) => {
-	var gvPath = "../configs/globalvariables.json"
-	var gvObj = JSON.parse(await fs.readFile(path.resolve(__dirname, gvPath)));
+	let gvObj = JSON.parse(await fs.readFile(path.resolve(__dirname, gvPath)));
 
 	if (gvObj.hasOwnProperty(k)) {
 		global[k] = v
@@ -413,8 +412,7 @@ const setGlobalVariable = async (k, v) => {
 }
 
 const setGlobalVariablePath = async (k, v) => {
-	var gvPath = "../configs/globalvariables.json"
-	var gvObj = JSON.parse(await fs.readFile(path.resolve(__dirname, gvPath)));
+	let gvObj = JSON.parse(await fs.readFile(path.resolve(__dirname, gvPath)));
 
 	if (gvObj.hasOwnProperty(k)) {
 		global[k] = v[0]

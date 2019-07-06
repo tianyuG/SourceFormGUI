@@ -2,8 +2,8 @@ const {
 	ipcRenderer,
 	remote
 } = require('electron')
-var purify = require('dompurify')
-var selectAll = false
+const purify = require('dompurify')
+let selectAll = false
 
 /*
  * On-screen keyboard
@@ -87,7 +87,7 @@ $.fn.keyboard_custom_keys['^shiftIcon$'] = {
 }
 
 // Load keyboard
-var keyboard = $('input:text')
+let keyboard = $('input:text')
 	.keyboard({
 		// theme: 'theme-black',
 		layout: {
@@ -164,7 +164,7 @@ $(document)
  */
 
 // Initialise carousel
-var carousel = new Swiper('.swiper-container', {
+let carousel = new Swiper('.swiper-container', {
 	direction: 'horizontal',
 	autohight: true,
 	pagination: {
@@ -221,6 +221,3 @@ carousel.on('tap', function() {
 });
 
 // Read `../carousel/content.json` and populate the carousel accordingly. 
-function populateCarousel() {
-
-}

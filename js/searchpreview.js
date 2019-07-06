@@ -2,32 +2,32 @@ const {
 	ipcRenderer,
 	remote
 } = require('electron')
-var Flickr = require('flickr-sdk')
-var http = require('http');
-var parse = require('url')
+const Flickr = require('flickr-sdk')
+const http = require('http');
+const parse = require('url')
 	.parse;
-var purify = require('dompurify')
-var fs = require('fs')
+const purify = require('dompurify')
+const fs = require('fs')
 	.promises
-var path = require("path")
+const path = require("path")
 
 /*
  * Flickr API
  */
-var searchResult = ""
+let searchResult = ""
 
 ipcRenderer.once('search-query-relay', (event, message) => {
 	searchResult = message
 	document.getElementById("preview-search-query")
 		.innerHTML = message
 
-	var ret = checkAgainstExisting(message)
+	let ret = checkAgainstExisting(message)
 
 	if (ret.length > 0) {
-		var nid = ret[0].id
-		var ndate = ret[0].updated
+		let nid = ret[0].id
+		let ndate = ret[0].updated
 
-		for (var entry in ret) {
+		for (let entry in ret) {
 			if (Date.parse(ret[entry].updated) > ndate) {
 				nid = ret[entry].id
 				ndate = ret[entry].updated
@@ -38,10 +38,10 @@ ipcRenderer.once('search-query-relay', (event, message) => {
 			.innerHTML = "EXISTS " + message
 	}
 
-	var flickr = new Flickr(require('electron')
+	let flickr = new Flickr(require('electron')
 		.remote.getGlobal('flickrKey'))
 
-	var result = flickr.photos.search({
+	let result = flickr.photos.search({
 			text: message,
 			extras: "url_n, owner_name, description, license",
 			privacy_filter: 1,
@@ -125,10 +125,10 @@ const constructFlickrImageURL = (photo, size = "") => {
 
 const populateGrid = (photos) => {
 	// logDebug(JSON.stringify(photos))
-	var count = 0
-	for (var i = 0; i < 20; i++) {
+	let count = 0
+	for (let i = 0; i < 20; i++) {
 		if (count < 9 && (photos[i].farm != 0 || photos[i].server != "0")) {
-			var el = document.createElement('img')
+			let el = document.createElement('img')
 			logDebug(JSON.stringify(photos[i]))
 			el.src = constructFlickrImageURL(photos[i], "n")
 			el.id = "grid-item-" + i
@@ -149,11 +149,11 @@ const checkAgainstExisting = async (term) => {
 		.replace(/\s+/g, '-')
 	logDebug(sanitised)
 
-	var jsonObj = JSON.parse(await fs.readFile(path.resolve(__dirname, "../carousel/content.json")));
+	let jsonObj = JSON.parse(await fs.readFile(path.resolve(__dirname, "../carousel/content.json")));
 	// logDebug(JSON.stringify(jsonObj))
-	var retArr = []
+	let retArr = []
 
-	for (var entry in jsonObj) {
+	for (let entry in jsonObj) {
 		logDebug(JSON.stringify(jsonObj[entry]))
 		if (jsonObj[entry].sanitised_title == sanitised) {
 			logDebug("FOUND json entry")
