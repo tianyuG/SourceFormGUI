@@ -7,38 +7,36 @@ const {
 	ipcRenderer,
 	remote
 } = require('electron')
-var Flickr = require('flickr-sdk')
-var http = require('http');
-var parse = require('url')
-	.parse;
-var purify = require('dompurify')
-var path = require("path")
-var fs = require('fs')
-	.promises
-var ssh = require('ssh2')
-var glob = require('glob')
+const Flickr = require('flickr-sdk');
+const http = require('http');
+const parse = require('url').parse;
+const purify = require('dompurify')
+const path = require("path")
+const fs = require('fs').promises
+const ssh = require('ssh2')
+const glob = require('glob')
 
-var flickr = new Flickr(require('electron')
+let flickr = new Flickr(require('electron')
 	.remote.getGlobal('flickrKey'))
 
 ipcRenderer.on('worker-download-search', async (event, message) => {
-	var t = new Date()
-	var t_iso = t.toISOString()
-	var name_o = message.trim()
-	var name_s = purify.sanitize(name_o)
-	var name_f = name_s.trim()
+	let t = new Date()
+	let t_iso = t.toISOString()
+	let name_o = message.trim()
+	let name_s = purify.sanitize(name_o)
+	let name_f = name_s.trim()
 		.toLowerCase()
 		.replace(/\s+/g, '-')
 		.replace(/\\+/g, '')
 		.replace(/\"+/g, '')
 
-	var ident = name_f + "_" + t.getTime()
-	var ident_t = "./" + ident
-	var baseImagePath = path.resolve(remote.getGlobal('imagePath')
+	let ident = name_f + "_" + t.getTime()
+	let ident_t = "./" + ident
+	let baseImagePath = path.resolve(remote.getGlobal('imagePath')
 		.toString())
-	var absImagePath = path.resolve(baseImagePath, ident_t)
+	let absImagePath = path.resolve(baseImagePath, ident_t)
 	logMain(absImagePath)
-	var currImageCount = parseInt(remote.getGlobal('numberOfImagesPerModel'))
+	let currImageCount = parseInt(remote.getGlobal('numberOfImagesPerModel'))
 
 	// Creating folder
 	await fs.mkdir(absImagePath)
@@ -53,16 +51,16 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 		.padStart(4, '0')
 
 	// Populate manifest with search results
-	var results = []
-	var imageSize = require('electron')
+	let results = []
+	let imageSize = require('electron')
 		.remote.getGlobal("imageSize")
-	var perPage = require('electron')
+	let perPage = require('electron')
 		.remote.getGlobal('imagesPerPage')
 	// It is possible for flickr not to return an url because it does not have 
 	// the size required. The extraPageCount is used to get more images than 
 	// required so it would not be off by too much. The lowest it can go should
 	// be 1.
-	var extraPageCount = require('electron')
+	let extraPageCount = require('electron')
 		.remote.getGlobal("extraPageCount")
 	results = await populateManifest(currImageCount, perPage, name_s, imageSize, absImagePath, extraPageCount)
 
@@ -85,14 +83,14 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
  * Async function to fetch manifest list from flickr
  */
 const populateManifest = async (currImageCount, perPage, name_s, imageSize, absImagePath, extraPageCount) => {
-	var resultsCount = 0
-	var pagesNeeded = parseInt(currImageCount / perPage) + extraPageCount
-	var res = []
-	var promises = []
-	var urls = []
+	let resultsCount = 0
+	let pagesNeeded = parseInt(currImageCount / perPage) + extraPageCount
+	let res = []
+	let promises = []
+	let urls = []
 
-	for (var i = 1; i < pagesNeeded; i++) {
-		var result = flickr.photos.search({
+	for (let i = 1; i < pagesNeeded; i++) {
+		let result = flickr.photos.search({
 			text: name_s,
 			extras: imageSize + ", owner_name, description, license",
 			privacy_filter: 1,
@@ -106,40 +104,40 @@ const populateManifest = async (currImageCount, perPage, name_s, imageSize, absI
 	}
 	res = await Promise.all(promises)
 
-	for (var resobj in res) {
+	for (let resobj in res) {
 		pageIndex = res[resobj].body.photos.page
-		var manifestRelPath = "./manifest_" + pageIndex + ".json"
+		let manifestRelPath = "./manifest_" + pageIndex + ".json"
 		await fs.writeFile(path.resolve(absImagePath, manifestRelPath), JSON.stringify(res[resobj].body.photos, null, 2))
 		// logDebug(JSON.stringify(res[resobj].body.photos.photo))
-		for (var imgobj in res[resobj].body.photos.photo) {
+		for (let imgobj in res[resobj].body.photos.photo) {
 			// logDebug(JSON.stringify(res[resobj].body.photos.photo[imgobj][imageSize]))
-			var ret = res[resobj].body.photos.photo[imgobj][imageSize]
+			let ret = res[resobj].body.photos.photo[imgobj][imageSize]
 			if (typeof ret != "undefined") {
 				urls.push(ret)
 			}
 		}
 	}
 
-	// var urlsRelPath = "./urls" + urls.length + ".json"
-	var urlsRelPath = "./" + imageSize + ".json"
+	// let urlsRelPath = "./urls" + urls.length + ".json"
+	let urlsRelPath = "./" + imageSize + ".json"
 	await fs.writeFile(path.resolve(absImagePath, urlsRelPath), JSON.stringify(urls, null, 2))
 	return urls
 }
 
 const transferToRemote = async (projectName, localPath) => {
-	var rmtIP = require('electron')
+	let rmtIP = require('electron')
 		.remote.getGlobal('remoteIP')
-	var rmtPath = require('electron')
+	let rmtPath = require('electron')
 		.remote.getGlobal('remotePath')
-	var rmtProjPath = path.resolve(rmtPath, "./" + projectName)
-	var rmtImgPath = path.resolve(rmtImgPath, "./images")
+	let rmtProjPath = path.resolve(rmtPath, "./" + projectName)
+	let rmtImgPath = path.resolve(rmtImgPath, "./images")
 
-	var Client = ssh.Client()
-	var conn = new Client()
+	let Client = ssh.Client()
+	let conn = new Client()
 
-	var colmapPath = path.resolve(require('electron')
+	let colmapPath = path.resolve(require('electron')
 		.remote.getGlobal('remoteCOLMAPPath'), "./COLMAP.bat")
-	var colmapBatch = ""
+	let colmapBatch = ""
 
 	// Create colmap batch file
 	// feature_extractor
@@ -209,7 +207,7 @@ const transferToRemote = async (projectName, localPath) => {
 
 					glob(path.resolve(localPath, "./*.jpg"), (err, files) => {
 						// for each file...
-						for (var f in files) {
+						for (let f in files) {
 							sftp.fastPut(files[f], rmtImgPath, (err) => {
 								logMain("[WK-DLD] ssh2 - fastPut image failed: " + err)
 							})
