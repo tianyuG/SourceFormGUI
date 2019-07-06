@@ -6,11 +6,11 @@
 
 DOMPurify is a DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML and SVG.
 
-It's also very simple to use and get started with. DOMPurify was [started in February 2014](https://github.com/cure53/DOMPurify/commit/a630922616927373485e0e787ab19e73e3691b2b) and, meanwhile, has reached version 1.0.10.
+It's also very simple to use and get started with. DOMPurify was [started in February 2014](https://github.com/cure53/DOMPurify/commit/a630922616927373485e0e787ab19e73e3691b2b) and, meanwhile, has reached version 1.0.11.
 
 DOMPurify is written in JavaScript and works in all modern browsers (Safari, Opera (15+), Internet Explorer (10+), Edge, Firefox and Chrome - as well as almost anything else using Blink or WebKit). It doesn't break on MSIE6 or other legacy browsers. It either uses [a fall-back](#what-about-older-browsers-like-msie8) or simply does nothing.
 
-Our automated tests cover [25 different browsers](https://github.com/cure53/DOMPurify/blob/master/test/karma.custom-launchers.config.js#L5) right now, more to come. We also cover Node.js v8.0.0, v9.0.0 and v10.0.0, running DOMPurify on [jsdom](https://github.com/tmpvar/jsdom).
+Our automated tests cover [25 different browsers](https://github.com/cure53/DOMPurify/blob/master/test/karma.custom-launchers.config.js#L5) right now, more to come. We also cover Node.js v8.0.0, v9.0.0, v10.0.0 and v11.0.0, running DOMPurify on [jsdom](https://github.com/tmpvar/jsdom).
 
 DOMPurify is written by security people who have vast background in web attacks and XSS. Fear not. For more details please also read about our [Security Goals & Threat Model](https://github.com/cure53/DOMPurify/wiki/Security-Goals-&-Threat-Model). Please, read it. Like, really.
 
@@ -199,7 +199,7 @@ var clean = DOMPurify.sanitize(dirty, {WHOLE_DOCUMENT: true});
 // disable DOM Clobbering protection on output (default is true, handle with care!)
 var clean = DOMPurify.sanitize(dirty, {SANITIZE_DOM: false});
 
-// discard an element's content when the element is removed (default is true)
+// keep an element's content when the element is removed (default is true)
 var clean = DOMPurify.sanitize(dirty, {KEEP_CONTENT: false});
 
 // glue elements like style, script or others to document.body and prevent unintuitive browser behavior in several edge-cases (default is false)
@@ -257,7 +257,7 @@ We support both `yarn` and `npm@5.2` officially while providing lock-files for e
 
 #### Scripts
 
-We rely on npm run-scripts for integrating with out tooling infrastructure. We use ESLint as a pre-commit hook to ensure code consistency. Moreover, to ease formatting we use [prettier](https://github.com/prettier/prettier) while building the `/dist` assets happens through `rollup`.
+We rely on npm run-scripts for integrating with our tooling infrastructure. We use ESLint as a pre-commit hook to ensure code consistency. Moreover, to ease formatting we use [prettier](https://github.com/prettier/prettier) while building the `/dist` assets happens through `rollup`.
 
 These are our npm scripts:
 
