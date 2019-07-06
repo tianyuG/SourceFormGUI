@@ -241,34 +241,6 @@ app.on('ready', () => {
 			}))
 		}
 
-		// for (var u in dlUrlArr) {
-		// 	axios({
-		// 			method: 'get',
-		// 			url: dlUrlArr[u],
-		// 			responseType: 'arraybuffer',
-		// 			cancelToken: source[u].token,
-		// 			timeout: dlTimeout
-		// 		})
-		// 		.then((res) => {
-		// 			logDebug("[MAIN] Writing image #" + u + ": " + dlUrlArr[u])
-		// 			fs.writeFile(path.resolve(dlDir, "./" + path.basename(res.config.url)), res.data)
-		// 				.catch((err) => {
-		// 					fs.appendFile(path.resolve(dlDir, "./dlLog.txt"), "[MAIN] image #" + u + " (" + dlUrlArr[u] + ") save failed (fsWrite): " + err.code + ": " + err.message + "\n")
-		// 						.catch((err) => {
-		// 							logDebug("[MAIN] log saving failed: " + err)
-		// 						})
-		// 					logDebug("[MAIN] image save failed: " + err)
-		// 				})
-		// 		})
-		// 		.catch((err) => {
-		// 			fs.appendFile(path.resolve(dlDir, "./dlLog.txt"), "[MAIN] image #" + u + " (" + dlUrlArr[u] + ") save failed (axios): " + err.code + ": " + err.message + "\n")
-		// 				.catch((err) => {
-		// 					logDebug("[MAIN] log saving failed: " + err)
-		// 				})
-		// 			logDebug("[MAIN] AXIOS download failed: " + err)
-		// 		})
-		// }
-
 		Promise.all(promises)
 			.then(() => {
 
