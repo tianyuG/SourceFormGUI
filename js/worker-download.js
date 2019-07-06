@@ -146,6 +146,7 @@ const transferToRemote = async (projectName, localPath) => {
 
 					var rmtProjPath = path.resolve(require('electron')
 						.remote.getGlobal('remotePath'), "./" + projectName)
+					var rmtImgPath = path.resolve(rmtImgPath, "./images")
 					sftp.mkdir(rmtProjPath, (err) => {
 						logMain("[WK-DLD] ssh2 - mkdir project folder failed: " + err)
 					})
@@ -155,11 +156,20 @@ const transferToRemote = async (projectName, localPath) => {
 					sftp.mkdir(path.resolve(rmtProjPath, "./dense"), (err) => {
 						logMain("[WK-DLD] ssh2 - mkdir dense folder failed: " + err)
 					})
+					sftp.mkdir(rmtImgPath, (err) => {
+						logMain("[WK-DLD] ssh2 - mkdir images folder failed: " + err)
+					})
+
 
 					logMain("[WK-DLD] ssh2 - folders created.")
 
-					glob(path.parse(localPath).dir + "\\*.jpg", (err, files) => {
+					glob(path.resolve(localPath, "./*.jpg"), (err, files) => {
 						// for each file...
+						for (var f in files) {
+							sftp.fastPut(files[f], rmtImgPath, (err) => {
+								logMain("[WK-DLD] ssh2 - fastPut image failed: " + err)
+							})
+						}
 					})
 				})
 			})
@@ -169,7 +179,8 @@ const transferToRemote = async (projectName, localPath) => {
 				port: 22,
 				username: 'SourceForm',
 				privateKey: require('fs')
-					.fs.readFileSync(path.resolve(__dirname, "./configs/id_rsa"));
+					.fs.readFileSync(path.resolve(require('os')
+						.homedir(), "./.ssh/id_rsa"));
 			})
 	})
 }
