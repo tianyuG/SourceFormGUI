@@ -69,7 +69,17 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	results = await populateManifest(currImageCount, perPage, name_s, imageSize, absImagePath, extraPageCount)
 
 	// Update catalogue
-	let currRecord = "{ \"title\": \"" + name_s.replace(/\"+/g, "\\\"") + "\", \"sanitised_title\": \"" + name_f + "\", \"path\": \"" + absImagePath.replace(/\\+/g, "\\\\") + "\", \"thumbnail\": \"" + currIndex + ".jpg\", \"updated\": \"" + t_iso + "\", \"accessed\": \"" + t_iso + "\", \"image_count\": " + results.length + ", \"display\": false }"
+	let currRecord = ""
+	currRecord += "{ "
+	currRecord += "\"title\": \"" + name_s.replace(/\"+/g, "\\\"") + "\", "
+	currRecord += "\"sanitised_title\": \"" + name_f + "\", "
+	currRecord += "\"path\": \"" + absImagePath.replace(/\\+/g, "\\\\") + "\", "
+	currRecord += "\"thumbnail\": \"" + currIndex + ".jpg\", "
+	currRecord += "\"updated\": \"" + t_iso + "\", "
+	currRecord += "\"accessed\": \"" + t_iso + "\", "
+	currRecord += "\"image_count\": " + results.length + ", "
+	currRecord += "\"display\": false"
+	currRecord += " }"
 	logMain(currRecord)
 	jsonObj[currIndex] = JSON.parse(currRecord)
 	await fs.writeFile(path.resolve(__dirname, "../carousel/content.json"), JSON.stringify(jsonObj, null, 2))
