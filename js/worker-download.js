@@ -9,12 +9,16 @@ const {
 } = require('electron')
 const Flickr = require('flickr-sdk');
 const http = require('http');
-const parse = require('url').parse;
+const parse = require('url')
+	.parse;
 const purify = require('dompurify')
 const path = require("path")
-const fs = require('fs').promises
+const fs = require('fs')
+	.promises
 const ssh = require('ssh2')
 const glob = require('glob')
+const Readable = require('stream')
+	.Readable
 
 let flickr = new Flickr(require('electron')
 	.remote.getGlobal('flickrKey'))
@@ -214,6 +218,20 @@ const transferToRemote = async (projectName, localPath) => {
 							// Announce file transfer progress
 						}
 					})
+
+					var readS = new Readable
+					readS.push(colmapBatch)
+					readS.push(null)
+					var writeS = sftp.createWriteStream(path.resolve(rmtProjPath, "./run.bat"))
+					writeS.on('close', () => {
+						logMain("[WK-DLD] ssh2 - createFileStream completed.")
+					})
+					writeS.on('end', () => {
+						logMain("[WK-DLD] ssh2 - sftp conncetion closed on createFileStream.")
+						conn.close()
+					})
+					readS.pipe(writeS)
+
 					// Announce file transfer complete
 				})
 			})
