@@ -229,6 +229,7 @@ const transferToRemote = async (projectName, localPath) => {
 						}
 					})
 
+					// Write batch file to remote
 					var readS = new Readable
 					readS.push(colmapBatch)
 					readS.push(null)
@@ -250,7 +251,7 @@ const transferToRemote = async (projectName, localPath) => {
 				port: 22,
 				username: 'SourceForm',
 				privateKey: require('fs')
-					.fs.readFileSync(path.resolve(require('os')
+					.readFileSync(path.resolve(require('os')
 						.homedir(), "./.ssh/id_rsa"));
 			})
 	})
