@@ -177,7 +177,8 @@ const transferToRemote = async (projectName, localPath) => {
 	colmapBatch += " --image_path " + path.resolve(rmtProjPath, "./images")
 	colmapBatch += " --input_path " + path.resolve(rmtProjPath, "./sparse/0")
 	colmapBatch += " --output_path " + path.resolve(rmtProjPath, "./dense")
-	colmapBatch += " --output_type COLMAP" + " --max_image_size 2000"
+	colmapBatch += " --output_type COLMAP"
+	colmapBatch += " --max_image_size 2000"
 	colmapBatch += " && "
 	// patch_match_stereo
 	colmapBatch += colmapPath + " patch_match_stereo"
