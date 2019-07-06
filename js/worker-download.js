@@ -127,13 +127,61 @@ const populateManifest = async (currImageCount, perPage, name_s, imageSize, absI
 }
 
 const transferToRemote = async (projectName, localPath) => {
-	var remoteIp = require('electron')
+	var rmtIP = require('electron')
 		.remote.getGlobal('remoteIP')
-	var remotePath = require('electron')
-		.remote.getGlobal
+	var rmtPath = require('electron')
+		.remote.getGlobal('remotePath')
+	var rmtProjPath = path.resolve(rmtPath, "./" + projectName)
+	var rmtImgPath = path.resolve(rmtImgPath, "./images")
 
 	var Client = ssh.Client()
 	var conn = new Client()
+
+	var colmapPath = path.resolve(require('electron')
+		.remote.getGlobal('remoteCOLMAPPath'), "./COLMAP.bat")
+	var colmapBatch = ""
+
+	// Create colmap batch file
+	// feature_extractor
+	// NOTE: GPU is disabled in this step or it could crash
+	colmapBatch = colmapPath + " feature_extractor "
+	colmapBatch += "--database_path " + path.resolve(rmtProjPath, "./database.db")
+	colmapBatch += " --image_path " + path.resolve(rmtProjPath, "./images")
+	colmapBatch += " --SiftExtraction.use_gpu 0"
+	colmapBatch += " && "
+	// exhaustive_matcher
+	colmapBatch += colmapPath + " exhaustive_matcher "
+	colmapBatch += "--database_path " + path.resolve(rmtProjPath, "./database.db")
+	colmapBatch += " --SiftMatching.use_gpu 1"
+	colmapBatch += " && "
+	// mapper
+	colmapBatch += colmapPath + " mapper "
+	colmapBatch += "--database_path " + path.resolve(rmtProjPath, "./database.db")
+	colmapBatch += " --image_path " + path.resolve(rmtProjPath, "./images")
+	colmapBatch += " --output_path " + path.resolve(rmtProjPath, "./sparse")
+	colmapBatch += " && "
+	// image_undistorter
+	colmapBatch += colmapPath + " image_undistorter "
+	colmapBatch += " --image_path " + path.resolve(rmtProjPath, "./images")
+	colmapBatch += " --input_path " + path.resolve(rmtProjPath, "./sparse/0")
+	colmapBatch += " --output_path " + path.resolve(rmtProjPath, "./dense")
+	colmapBatch += " --output_type COLMAP" + " --max_image_size 2000"
+	colmapBatch += " && "
+	// patch_match_stereo
+	colmapBatch += colmapPath + " patch_match_stereo "
+	colmapBatch += " --workspace_path " + path.resolve(rmtProjPath, "./dense")
+	colmapBatch += " --PatchMatchStereo.geom_consistency true"
+	colmapBatch += " --PatchMatchStereo.num_iterations 4"
+	colmapBatch += " --PatchMatchStereo.window_step 2"
+	colmapBatch += " --PatchMatchStereo.gpu_index 0,1"
+	colmapBatch += " --PatchMatchStereo.num_samples 10"
+	colmapBatch += " && "
+	// stereo_fusion
+	colmapBatch += colmapPath + " stereo_fusion "
+	colmapBatch += " --workspace_path " + path.resolve(rmtProjPath, "./dense")
+	colmapBatch += " --workspace_format COLMAP"
+	colmapBatch += " --input_type geometric"
+	colmapBatch += " --output_path " + path.resolve(rmtProjPath, "./dense/fused.ply")
 
 	conn.on('ready', () => {
 		logDebug('[WK-DLD] ssh2 client ready for project ' + projectName + ".")
@@ -144,9 +192,6 @@ const transferToRemote = async (projectName, localPath) => {
 						logMain("[WK-DLD] ssh2 - sftp failed: " + err)
 					}
 
-					var rmtProjPath = path.resolve(require('electron')
-						.remote.getGlobal('remotePath'), "./" + projectName)
-					var rmtImgPath = path.resolve(rmtImgPath, "./images")
 					sftp.mkdir(rmtProjPath, (err) => {
 						logMain("[WK-DLD] ssh2 - mkdir project folder failed: " + err)
 					})
@@ -160,7 +205,6 @@ const transferToRemote = async (projectName, localPath) => {
 						logMain("[WK-DLD] ssh2 - mkdir images folder failed: " + err)
 					})
 
-
 					logMain("[WK-DLD] ssh2 - folders created.")
 
 					glob(path.resolve(localPath, "./*.jpg"), (err, files) => {
@@ -169,13 +213,14 @@ const transferToRemote = async (projectName, localPath) => {
 							sftp.fastPut(files[f], rmtImgPath, (err) => {
 								logMain("[WK-DLD] ssh2 - fastPut image failed: " + err)
 							})
+							// Announce file transfer progress
 						}
 					})
+					// Announce file transfer complete
 				})
 			})
 			.connect({
-				host: require('electron')
-					.remote.getGlobal('remoteIP'),
+				host: rmtIP,
 				port: 22,
 				username: 'SourceForm',
 				privateKey: require('fs')
