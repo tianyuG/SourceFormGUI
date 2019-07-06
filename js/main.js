@@ -325,6 +325,12 @@ ipcMain.on('set-globalvariable', function(event, data) {
 	setGlobalVariable(gvK, gvV)
 });
 
+ipcMain.on('set-globalvariableint', function(event, data) {
+	let gvK = data[0]
+	let gvV = data[1]
+	setGlobalVariableInt(gvK, gvV)
+});
+
 ipcMain.on('set-globalvariablepath', function(event, data) {
 	let gvK = data[0]
 	let gvV = data[1]
@@ -403,6 +409,20 @@ const setGlobalVariable = async (k, v) => {
 	if (gvObj.hasOwnProperty(k)) {
 		global[k] = v
 		gvObj[k] = v
+		fs.writeFile(path.resolve(__dirname, gvPath), JSON.stringify(gvObj, null, 2), (err) => {
+			if (err) {
+				logDebug("[MAIN] failed to write global variable to disk: " + err)
+			}
+		});
+	}
+}
+
+const setGlobalVariableInt = async (k, v) => {
+	let gvObj = JSON.parse(await fs.readFile(path.resolve(__dirname, gvPath)));
+
+	if (gvObj.hasOwnProperty(k)) {
+		global[k] = parseInt(v, 10)
+		gvObj[k] = parseInt(v, 10)
 		fs.writeFile(path.resolve(__dirname, gvPath), JSON.stringify(gvObj, null, 2), (err) => {
 			if (err) {
 				logDebug("[MAIN] failed to write global variable to disk: " + err)

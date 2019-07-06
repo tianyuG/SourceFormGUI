@@ -187,7 +187,7 @@ require('electron')
 					}
 				]
 			})
-			ipcRenderer.send("set-globalvariable", ["STL2BMPScriptPath", stl2bmppath])
+			ipcRenderer.send("set-globalvariablepath", ["STL2BMPScriptPath", stl2bmppath])
 			stl2bmpcurr.innerHTML = require('electron')
 				.remote.getGlobal('STL2BMPScriptPath')
 		});
@@ -225,7 +225,7 @@ require('electron')
 				numofimgsbtn.style.display = "inline"
 				numofimgsbtncnfm.style.display = "none"
 				numofimgsinput.style.display = "none"
-				ipcRenderer.send("set-globalvariable", ["numberOfImagesPerModel", numofimgsinput.value])
+				ipcRenderer.send("set-globalvariableint", ["numberOfImagesPerModel", numofimgsinput.value])
 				numofimgscurr.innerHTML = require('electron')
 					.remote.getGlobal('numberOfImagesPerModel')
 			}
