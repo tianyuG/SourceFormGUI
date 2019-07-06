@@ -156,31 +156,31 @@ const transferToRemote = async (projectName, localPath) => {
 	// Create colmap batch file
 	// feature_extractor
 	// NOTE: GPU is disabled in this step or it could crash
-	colmapBatch = colmapPath + " feature_extractor "
-	colmapBatch += "--database_path " + path.resolve(rmtProjPath, "./database.db")
+	colmapBatch = colmapPath + " feature_extractor"
+	colmapBatch += " --database_path " + path.resolve(rmtProjPath, "./database.db")
 	colmapBatch += " --image_path " + path.resolve(rmtProjPath, "./images")
 	colmapBatch += " --SiftExtraction.use_gpu 0"
 	colmapBatch += " && "
 	// exhaustive_matcher
-	colmapBatch += colmapPath + " exhaustive_matcher "
-	colmapBatch += "--database_path " + path.resolve(rmtProjPath, "./database.db")
+	colmapBatch += colmapPath + " exhaustive_matcher"
+	colmapBatch += " --database_path " + path.resolve(rmtProjPath, "./database.db")
 	colmapBatch += " --SiftMatching.use_gpu 1"
 	colmapBatch += " && "
 	// mapper
-	colmapBatch += colmapPath + " mapper "
-	colmapBatch += "--database_path " + path.resolve(rmtProjPath, "./database.db")
+	colmapBatch += colmapPath + " mapper"
+	colmapBatch += " --database_path " + path.resolve(rmtProjPath, "./database.db")
 	colmapBatch += " --image_path " + path.resolve(rmtProjPath, "./images")
 	colmapBatch += " --output_path " + path.resolve(rmtProjPath, "./sparse")
 	colmapBatch += " && "
 	// image_undistorter
-	colmapBatch += colmapPath + " image_undistorter "
+	colmapBatch += colmapPath + " image_undistorter"
 	colmapBatch += " --image_path " + path.resolve(rmtProjPath, "./images")
 	colmapBatch += " --input_path " + path.resolve(rmtProjPath, "./sparse/0")
 	colmapBatch += " --output_path " + path.resolve(rmtProjPath, "./dense")
 	colmapBatch += " --output_type COLMAP" + " --max_image_size 2000"
 	colmapBatch += " && "
 	// patch_match_stereo
-	colmapBatch += colmapPath + " patch_match_stereo "
+	colmapBatch += colmapPath + " patch_match_stereo"
 	colmapBatch += " --workspace_path " + path.resolve(rmtProjPath, "./dense")
 	colmapBatch += " --PatchMatchStereo.geom_consistency true"
 	colmapBatch += " --PatchMatchStereo.num_iterations 4"
@@ -189,7 +189,7 @@ const transferToRemote = async (projectName, localPath) => {
 	colmapBatch += " --PatchMatchStereo.num_samples 10"
 	colmapBatch += " && "
 	// stereo_fusion
-	colmapBatch += colmapPath + " stereo_fusion "
+	colmapBatch += colmapPath + " stereo_fusion"
 	colmapBatch += " --workspace_path " + path.resolve(rmtProjPath, "./dense")
 	colmapBatch += " --workspace_format COLMAP"
 	colmapBatch += " --input_type geometric"
