@@ -166,14 +166,14 @@ app.on('ready', () => {
 		show: false
 	})
 	// windows.workerDownloadHelper.webContents.openDevTools()
-	windows.workerPly2stl =
+	windows.workerModelling =
 		new BrowserWindow({
 			webPreferences: {
 				nodeIntegration: true
 			},
 			show: false
 		})
-	windows.workerStl2bmp = new BrowserWindow({
+	windows.workerModellingHelper = new BrowserWindow({
 		webPreferences: {
 			nodeIntegration: true
 		},
@@ -185,11 +185,18 @@ app.on('ready', () => {
 		},
 		show: false
 	})
+	windows.workerPrintingHelper = new BrowserWindow({
+		webPreferences: {
+			nodeIntegration: true
+		},
+		show: false
+	})
 	windows.workerDownload.loadFile('./html/worker-download.html')
 	windows.workerDownloadHelper.loadFile('./html/worker-downloadhelper.html')
-	windows.workerPly2stl.loadFile('./html/worker-ply2stl.html')
-	windows.workerStl2bmp.loadFile('./html/worker-stl2bmp.html')
+	windows.workerModelling.loadFile('./html/worker-modelling.html')
+	windows.workerModellingHelper.loadFile('./html/worker-modellinghelper.html')
 	windows.workerPrinting.loadFile('./html/worker-printing.html')
+	windows.workerPrintingHelper.loadFile('./html/worker-printinghelper.html')
 
 	ipcMain.on('image-download-request', function(event, data) {
 		// console.log(data)
@@ -357,6 +364,11 @@ ipcMain.on('ld-main', function(event, data) {
 ipcMain.on('worker-download-search-r', function(event, data) {
 	logDebug("[MAIN] delegating image download: " + data)
 	windows.workerDownloadHelper.send('worker-download-search', data)
+})
+
+ipcMain.on('worker-modelling-request-r', function(event, data) {
+	logDebug("[MAIN] delegating modelling request: " + data)
+	windows.workerModellingHelper.send('worker-modelling-request', data)
 })
 
 /*
