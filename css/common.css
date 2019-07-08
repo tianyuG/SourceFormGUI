@@ -1,0 +1,22 @@
+body {
+	background-color: #000000;
+	margin: 80px;
+}
+
+p,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: #ffffff;
+	font-family: sans-serif;
+}
+
+a,
+input,
+button {
+	font-family: sans-serif;
+}

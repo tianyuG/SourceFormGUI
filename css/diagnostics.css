@@ -20,6 +20,7 @@
 	overflow: auto;
 	background-color: #f1f1f1;
 	width: 80vw;
+	color:  #000000;
 }
 
 .bold-item {
@@ -46,4 +47,19 @@ button,
 .mono {
 	font-family: 'Iosevka', monospace;
 	font-size: 14px;
+}
+
+
+p,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+input,
+button {
+	font-family: 'Iosevka', monospace;
 }
