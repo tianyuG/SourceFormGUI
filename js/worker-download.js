@@ -152,7 +152,8 @@ const transferToRemote = async (projectName, localPath) => {
 	let colmapPath = require('electron')
 		.remote.getGlobal('remoteCOLMAPPath')
 	let colmapExecPath = path.join(colmapPath, "COLMAP.bat")
-	let meshlabPath = require('electron').remote.getGlobal(remoteMeshlabPath)
+	let meshlabPath = require('electron')
+		.remote.getGlobal(remoteMeshlabPath)
 	let colmapBatch = ""
 
 	// Create colmap batch file

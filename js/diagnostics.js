@@ -53,6 +53,7 @@ const getDependencies = () => {
 	ifFileExists("C:/Program Files/AutoHotkey/AutoHotkey.exe", "ahk-installation-status", "AHK", "https://www.autohotkey.com/")
 	ifFileExists("C:/Program Files/ImageMagick-*/magick.exe", "imagemagick-installation-status", "imagemagick", "https://imagemagick.org/script/download.php#windows")
 	ifFileExists("C:/Python27/python.exe", "python27-installation-status", "python 2.7", "https://www.python.org/downloads/")
+	ifFileExists("C:/Program Files/VCG/Meshlab/bin/meshlabserver.exe", "meshlab-installation-status", "meshlab", "http://www.meshlab.net/")
 }
 
 require('electron')
