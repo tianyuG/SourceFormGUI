@@ -65,6 +65,7 @@ require('electron')
 		getPlatform();
 		getGlobalVariablesCount();
 		getGlobalVariables();
+		checkLocalJSONFiles();
 	});
 
 // Use `/` instead of `\\` in filepath, even in Windows!
@@ -143,5 +144,26 @@ const getPlatform = () => {
 		document.getElementById('misc-platform-info')
 			.innerHTML = OS.type() + " " + OS.release() + " (" + OS.arch() + ", uptime " + OS.uptime() + lp + ")"
 	})
+}
 
+const checkJSONHealth = async (path, id) => {
+	let jsonObj = await fs.readFile(path)
+	let statObj = await fs.stat(path)
+
+	try {
+		JSON.parse(jsonObj)
+	} catch (err) {
+		if (err) {
+			document.getElementById(id).innerHTML = "Corrupted: " + err + "<br />Size: " + statObj.size
+		}
+	}
+	document.getElementById(id).innerHTML = "Healthy." + "<br />Size: " + statObj.size
+}
+
+const checkLocalJSONFiles = () => {
+	let wd = process.cwd()
+	// Carousel
+	checkJSONHealth(path.resolve(wd, "./carousel/content.json"), "carousel-json-status")
+	// Config
+	checkJSONHealth(path.resolve(wd, "./configs/globalvariables.json"), "globalvariables-json-status")
 }
