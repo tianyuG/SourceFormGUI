@@ -24,6 +24,7 @@ let flickr = new Flickr(require('electron')
 	.remote.getGlobal('flickrKey'))
 
 ipcRenderer.on('worker-download-search', async (event, message) => {
+	// logMain("[WK_DLD] delegated")
 	let t = new Date()
 	let t_iso = t.toISOString()
 	let name_o = message.trim()
@@ -36,10 +37,10 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 
 	let ident = name_f + "_" + t.getTime()
 	let ident_t = "./" + ident
-	let baseImagePath = path.resolve(remote.getGlobal('imagePath')
-		.toString())
+	let baseImagePath = path.resolve(remote.getGlobal('imagePath'))
 	let absImagePath = path.resolve(baseImagePath, ident_t)
-	logMain(absImagePath)
+	// logMain(baseImagePath)
+	// logMain(absImagePath)
 	let currImageCount = parseInt(remote.getGlobal('numberOfImagesPerModel'))
 
 	// Creating folder
@@ -80,7 +81,7 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	currRecord += "\"image_count\": " + results.length + ", "
 	currRecord += "\"display\": false"
 	currRecord += " }"
-	logMain(currRecord)
+	// logMain(currRecord)
 	jsonObj[currIndex] = JSON.parse(currRecord)
 	await fs.writeFile(path.resolve(__dirname, "../carousel/content.json"), JSON.stringify(jsonObj, null, 2))
 	// logMain(JSON.stringify(results))
@@ -88,7 +89,8 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	ipcRenderer.send('image-download-request', {
 		url: results,
 		properties: {
-			directory: absImagePath,
+			// directory: absImagePath,
+			directory: absImagePath
 		}
 	})
 })
@@ -293,7 +295,7 @@ const transferToRemote = async (projectName, localPath) => {
 			username: 'SourceForm',
 			privateKey: require('fs')
 				.readFileSync(path.resolve(require('os')
-					.homedir(), "./.ssh/id_rsa"));
+					.homedir(), "./.ssh/id_rsa"))
 		})
 }
 

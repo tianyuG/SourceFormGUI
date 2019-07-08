@@ -156,6 +156,7 @@ app.on('ready', () => {
 		webPreferences: {
 			nodeIntegration: true
 		},
+		// show: true
 		show: false
 	})
 	// windows.workerDownload.webContents.openDevTools()
@@ -163,6 +164,7 @@ app.on('ready', () => {
 		webPreferences: {
 			nodeIntegration: true
 		},
+		// show: true
 		show: false
 	})
 	// windows.workerDownloadHelper.webContents.openDevTools()

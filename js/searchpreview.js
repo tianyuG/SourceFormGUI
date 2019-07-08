@@ -16,12 +16,12 @@ const path = require("path")
  */
 let searchResult = ""
 
-ipcRenderer.once('search-query-relay', (event, message) => {
+ipcRenderer.once('search-query-relay', async (event, message) => {
 	searchResult = message
 	document.getElementById("preview-search-query")
 		.innerHTML = message
 
-	let ret = checkAgainstExisting(message)
+	let ret = await checkAgainstExisting(message)
 
 	if (ret.length > 0) {
 		let nid = ret[0].id
