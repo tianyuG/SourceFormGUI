@@ -155,6 +155,13 @@ const transferToRemote = async (projectName, localPath) => {
 	let colmapBatch = ""
 
 	// Create colmap batch file
+	// 
+	// Step 1: COLMAP photogrammetry
+	// Step 2: pointcloud.py postprocessing point cloud
+	// Step 3: meshlab ply -> stl
+	// Step 4: stl -> bmps
+	// 
+	// STEP 1
 	// feature_extractor
 	// NOTE: GPU is disabled in this step or it could crash
 	colmapBatch = "echo \"[JOB1] START\" && "
@@ -205,12 +212,20 @@ const transferToRemote = async (projectName, localPath) => {
 	colmapBatch += " && "
 	colmapBatch += "echo \"[JOB1] STEREO_FUSION END\" && "
 	colmapBatch += "echo \"[JOB1] DONE\" && "
+	// 
+	// STEP 2
 	// pointcloud.py
 	colmapBatch += "echo \"[JOB2] START\" && "
 	colmapBatch += "python " + jpath(colmapPath, "pointcloud.py") + " " + jpath(rmtProjPath, "dense", "fused.ply")
-
-	// conn.on('ready', () => {
-	// 	logDebug('[WK-DLD] ssh2 client ready for project ' + projectName + ".")
+	colmapBatch += " && "
+	colmapBatch += "echo \"[JOB2] DONE\""
+	colmapBatch += "echo \"[JOB2] DONE\""
+	// 
+	// STEP 3
+	// meshlab
+	// 
+	// STEP 4
+	// slicing
 
 	conn.on('ready', () => {
 			conn.sftp((err, sftp) => {
@@ -274,7 +289,6 @@ const transferToRemote = async (projectName, localPath) => {
 				.readFileSync(path.resolve(require('os')
 					.homedir(), "./.ssh/id_rsa"));
 		})
-	// })
 }
 
 const jpath = (...p) => {
