@@ -152,6 +152,7 @@ const transferToRemote = async (projectName, localPath) => {
 	let colmapPath = require('electron')
 		.remote.getGlobal('remoteCOLMAPPath')
 	let colmapExecPath = path.join(colmapPath, "COLMAP.bat")
+	let meshlabPath = require('electron').remote.getGlobal(remoteMeshlabPath)
 	let colmapBatch = ""
 
 	// Create colmap batch file
@@ -164,7 +165,7 @@ const transferToRemote = async (projectName, localPath) => {
 	// STEP 1
 	// feature_extractor
 	// NOTE: GPU is disabled in this step or it could crash
-	colmapBatch = "echo \"[JOB1] START\" && "
+	colmapBatch = "echo \"[JOB1] _J_COLMAP START\" && "
 	colmapBatch += colmapExecPath + " feature_extractor"
 	colmapBatch += " --database_path " + jpath(rmtProjPath, "database.db")
 	colmapBatch += " --image_path " + jpath(rmtProjPath, "images")
@@ -211,18 +212,22 @@ const transferToRemote = async (projectName, localPath) => {
 	colmapBatch += " --output_path " + jpath(rmtProjPath, "dense", "fused.ply")
 	colmapBatch += " && "
 	colmapBatch += "echo \"[JOB1] STEREO_FUSION END\" && "
-	colmapBatch += "echo \"[JOB1] DONE\" && "
+	colmapBatch += "echo \"[JOB1] _J_COLMAP DONE\" && "
 	// 
 	// STEP 2
 	// pointcloud.py
-	colmapBatch += "echo \"[JOB2] START\" && "
+	colmapBatch += "echo \"[JOB2] _J_PC START\" && "
 	colmapBatch += "python " + jpath(colmapPath, "pointcloud.py") + " " + jpath(rmtProjPath, "dense", "fused.ply")
 	colmapBatch += " && "
-	colmapBatch += "echo \"[JOB2] DONE\""
-	colmapBatch += "echo \"[JOB2] DONE\""
+	colmapBatch += "echo \"[JOB2] _J_PC DONE\" && "
 	// 
 	// STEP 3
 	// meshlab
+	colmapBatch += "echo \"[JOB3] _J_MESHLAB START\" && "
+	colmapBatch += jpath(meshlabPath, "meshlabserver.exe") + " -i " + jpath(rmtProjPath, "dense", "new_fused.ply") + " -o " + jpath(rmtProjPath, "dense", "new_fused.stl")
+	colmapBatch += " && "
+	// colmapBatch += "echo \"[JOB3] _J_MESHLAB START\" && "
+	colmapBatch += "echo \"[JOB3] _J_MESHLAB DONE\""
 	// 
 	// STEP 4
 	// slicing
@@ -230,29 +235,29 @@ const transferToRemote = async (projectName, localPath) => {
 	conn.on('ready', () => {
 			conn.sftp((err, sftp) => {
 				if (err) {
-					logMain("[WK-DLD] ssh2 - sftp failed: " + err)
+					logMain("[WK_DLD] ssh2 - sftp failed: " + err)
 				}
 
 				sftp.mkdir(rmtProjPath, (err) => {
-					logMain("[WK-DLD] ssh2 - mkdir project folder failed: " + err)
+					logMain("[WK_DLD] ssh2 - mkdir project folder failed: " + err)
 				})
 				sftp.mkdir(path.resolve(rmtProjPath, "./sparse"), (err) => {
-					logMain("[WK-DLD] ssh2 - mkdir sparse folder failed: " + err)
+					logMain("[WK_DLD] ssh2 - mkdir sparse folder failed: " + err)
 				})
 				sftp.mkdir(path.resolve(rmtProjPath, "./dense"), (err) => {
-					logMain("[WK-DLD] ssh2 - mkdir dense folder failed: " + err)
+					logMain("[WK_DLD] ssh2 - mkdir dense folder failed: " + err)
 				})
 				sftp.mkdir(rmtImgPath, (err) => {
-					logMain("[WK-DLD] ssh2 - mkdir images folder failed: " + err)
+					logMain("[WK_DLD] ssh2 - mkdir images folder failed: " + err)
 				})
 
-				logMain("[WK-DLD] ssh2 - folders created.")
+				logMain("[WK_DLD] ssh2 - folders created.")
 
 				glob(path.resolve(localPath, "./*.jpg"), (err, files) => {
 					// for each file...
 					for (let f in files) {
 						sftp.fastPut(files[f], rmtImgPath, (err) => {
-							logMain("[WK-DLD] ssh2 - fastPut image failed: " + err)
+							logMain("[WK_DLD] ssh2 - fastPut image failed: " + err)
 						})
 						// Announce file transfer progress
 					}
@@ -264,10 +269,10 @@ const transferToRemote = async (projectName, localPath) => {
 				readS.push(null)
 				var writeS = sftp.createWriteStream(path.resolve(rmtProjPath, "./run.bat"))
 				writeS.on('close', () => {
-					logMain("[WK-DLD] ssh2 - createFileStream completed.")
+					logMain("[WK_DLD] ssh2 - createFileStream completed.")
 				})
 				writeS.on('end', () => {
-					logMain("[WK-DLD] ssh2 - sftp conncetion closed on createFileStream.")
+					logMain("[WK_DLD] ssh2 - sftp conncetion closed on createFileStream.")
 					conn.close()
 				})
 				readS.pipe(writeS)

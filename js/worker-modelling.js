@@ -19,7 +19,7 @@ ipcRenderer.on('worker-modelling-request', async (event, message) => {
 	let conn = new Client()
 
 	conn.on('ready', () => {
-			conn.exec(path.resolve(rmtPath, "./run.bat"), (err, stream) => {
+			conn.exec(path.join(rmtPath, "run.bat").replace(/\\+/g, '\\\\'), (err, stream) => {
 				if (err) {
 					logMain("[WK_MDL] ssh2 - COLMAP failed: " + err)
 				}
@@ -43,7 +43,7 @@ ipcRenderer.on('worker-modelling-request', async (event, message) => {
 			port: 22,
 			username: 'SourceForm',
 			privateKey: require('fs')
-				.readFileSync(path.resolve(require('os')
-					.homedir(), "./.ssh/id_rsa"));
+				.readFileSync(path.join(require('os')
+					.homedir(), "/.ssh/id_rsa"));
 		})
 })
