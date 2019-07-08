@@ -63,3 +63,7 @@ input,
 button {
 	font-family: 'Iosevka', monospace;
 }
+
+.content p {
+	color: #222222;
+}
