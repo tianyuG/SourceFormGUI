@@ -297,6 +297,7 @@ const transferToRemote = async (projectName, localPath) => {
 		})
 }
 
+// Join path and parse with delimiter for batch files
 const jpath = (...p) => {
 	return path.join(...p)
 		.replace(/\\+/g, '\\\\')

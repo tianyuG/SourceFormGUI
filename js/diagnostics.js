@@ -154,10 +154,12 @@ const checkJSONHealth = async (path, id) => {
 		JSON.parse(jsonObj)
 	} catch (err) {
 		if (err) {
-			document.getElementById(id).innerHTML = "Corrupted: " + err + "<br />Size: " + statObj.size
+			document.getElementById(id)
+				.innerHTML = "Corrupted: " + err + "<br />Size: " + getHumanReadableFileSize(statObj.size, true)
 		}
 	}
-	document.getElementById(id).innerHTML = "Healthy." + "<br />Size: " + statObj.size
+	document.getElementById(id)
+		.innerHTML = "Healthy." + "<br />Size: " + getHumanReadableFileSize(statObj.size, true)
 }
 
 const checkLocalJSONFiles = () => {
@@ -166,4 +168,25 @@ const checkLocalJSONFiles = () => {
 	checkJSONHealth(path.resolve(wd, "./carousel/content.json"), "carousel-json-status")
 	// Config
 	checkJSONHealth(path.resolve(wd, "./configs/globalvariables.json"), "globalvariables-json-status")
+}
+
+const getHumanReadableFileSize = (size, usesSIUnit) => {
+	let baseSize = 1000 
+	let units = ["B", "KB", "MB", "GB", "TB", "PB"]
+	let fsize = size
+	let i = 0
+	if (!usesSIUnit) {
+		baseSize = 1024
+		units = ["B", "KiB", "MiB", "GiB", "TiB", "PiB"]
+	}
+
+	// logDebug(baseSize + " " + units)
+	
+	while (Math.abs(fsize) > baseSize && i < units.length) {
+		fsize /= baseSize
+		i++
+	}
+
+	// logDebug(fsize.toFixed(2) + " " + units[i])
+	return fsize.toFixed(1) + units[i]
 }
