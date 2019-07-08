@@ -196,64 +196,65 @@ const transferToRemote = async (projectName, localPath) => {
 	colmapBatch += " --input_type geometric"
 	colmapBatch += " --output_path " + path.resolve(rmtProjPath, "./dense/fused.ply")
 
+	// conn.on('ready', () => {
+	// 	logDebug('[WK-DLD] ssh2 client ready for project ' + projectName + ".")
+
 	conn.on('ready', () => {
-		logDebug('[WK-DLD] ssh2 client ready for project ' + projectName + ".")
+			conn.sftp((err, sftp) => {
+				if (err) {
+					logMain("[WK-DLD] ssh2 - sftp failed: " + err)
+				}
 
-		conn.on('ready', () => {
-				conn.sftp((err, sftp) => {
-					if (err) {
-						logMain("[WK-DLD] ssh2 - sftp failed: " + err)
-					}
-
-					sftp.mkdir(rmtProjPath, (err) => {
-						logMain("[WK-DLD] ssh2 - mkdir project folder failed: " + err)
-					})
-					sftp.mkdir(path.resolve(rmtProjPath, "./sparse"), (err) => {
-						logMain("[WK-DLD] ssh2 - mkdir sparse folder failed: " + err)
-					})
-					sftp.mkdir(path.resolve(rmtProjPath, "./dense"), (err) => {
-						logMain("[WK-DLD] ssh2 - mkdir dense folder failed: " + err)
-					})
-					sftp.mkdir(rmtImgPath, (err) => {
-						logMain("[WK-DLD] ssh2 - mkdir images folder failed: " + err)
-					})
-
-					logMain("[WK-DLD] ssh2 - folders created.")
-
-					glob(path.resolve(localPath, "./*.jpg"), (err, files) => {
-						// for each file...
-						for (let f in files) {
-							sftp.fastPut(files[f], rmtImgPath, (err) => {
-								logMain("[WK-DLD] ssh2 - fastPut image failed: " + err)
-							})
-							// Announce file transfer progress
-						}
-					})
-
-					// Write batch file to remote
-					var readS = new Readable
-					readS.push(colmapBatch)
-					readS.push(null)
-					var writeS = sftp.createWriteStream(path.resolve(rmtProjPath, "./run.bat"))
-					writeS.on('close', () => {
-						logMain("[WK-DLD] ssh2 - createFileStream completed.")
-					})
-					writeS.on('end', () => {
-						logMain("[WK-DLD] ssh2 - sftp conncetion closed on createFileStream.")
-						conn.close()
-					})
-					readS.pipe(writeS)
-
-					// Announce file transfer complete
+				sftp.mkdir(rmtProjPath, (err) => {
+					logMain("[WK-DLD] ssh2 - mkdir project folder failed: " + err)
 				})
+				sftp.mkdir(path.resolve(rmtProjPath, "./sparse"), (err) => {
+					logMain("[WK-DLD] ssh2 - mkdir sparse folder failed: " + err)
+				})
+				sftp.mkdir(path.resolve(rmtProjPath, "./dense"), (err) => {
+					logMain("[WK-DLD] ssh2 - mkdir dense folder failed: " + err)
+				})
+				sftp.mkdir(rmtImgPath, (err) => {
+					logMain("[WK-DLD] ssh2 - mkdir images folder failed: " + err)
+				})
+
+				logMain("[WK-DLD] ssh2 - folders created.")
+
+				glob(path.resolve(localPath, "./*.jpg"), (err, files) => {
+					// for each file...
+					for (let f in files) {
+						sftp.fastPut(files[f], rmtImgPath, (err) => {
+							logMain("[WK-DLD] ssh2 - fastPut image failed: " + err)
+						})
+						// Announce file transfer progress
+					}
+				})
+
+				// Write batch file to remote
+				var readS = new Readable
+				readS.push(colmapBatch)
+				readS.push(null)
+				var writeS = sftp.createWriteStream(path.resolve(rmtProjPath, "./run.bat"))
+				writeS.on('close', () => {
+					logMain("[WK-DLD] ssh2 - createFileStream completed.")
+				})
+				writeS.on('end', () => {
+					logMain("[WK-DLD] ssh2 - sftp conncetion closed on createFileStream.")
+					conn.close()
+				})
+				readS.pipe(writeS)
+
+				// Announce file transfer complete
+				ipcRenderer.send('worker-download-complete')
+				ipcRenderer.send('worker-modelling-request-r', { projname: projectName, abspath: absImagePath, rmtpath: rmtImgPath })
 			})
-			.connect({
-				host: rmtIP,
-				port: 22,
-				username: 'SourceForm',
-				privateKey: require('fs')
-					.readFileSync(path.resolve(require('os')
-						.homedir(), "./.ssh/id_rsa"));
-			})
-	})
+		}).connect({
+			host: rmtIP,
+			port: 22,
+			username: 'SourceForm',
+			privateKey: require('fs')
+				.readFileSync(path.resolve(require('os')
+					.homedir(), "./.ssh/id_rsa"));
+		})
+	// })
 }
