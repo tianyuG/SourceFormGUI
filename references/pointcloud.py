@@ -5,6 +5,8 @@
 import numpy as np
 from open3d import *
 from pdb import set_trace as st
+import sys
+import os
 
 
 def rotate90(points):
@@ -23,7 +25,8 @@ def rotate90(points):
 if __name__ == "__main__":
 
     print("Load a ply point cloud, print it, and render it")
-    pcd = read_point_cloud("C:\\Users\\sanke\\Desktop\\projects\\Liberty2\\dense\\fused.ply")
+    filepath = os.path.normpath(sys.argv[1])
+    pcd = read_point_cloud(filepath)
     print(pcd)
     draw_geometries([pcd])
     print(np.asarray(pcd.points))
@@ -64,7 +67,7 @@ if __name__ == "__main__":
     new_pcd.points = Vector3dVector(points)
     new_pcd.colors = Vector3dVector(colors)
     new_pcd.normals = Vector3dVector(normals)
-    write_point_cloud("new_pcd3"+".ply", new_pcd)
+    write_point_cloud(os.path.join(os.path.dirname(filepath), r"new_fused.ply"), new_pcd)
     draw_geometries([new_pcd])
     print("")
 

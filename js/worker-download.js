@@ -121,7 +121,7 @@ const populateManifest = async (currImageCount, perPage, name_s, imageSize, absI
 	for (let resobj in res) {
 		pageIndex = res[resobj].body.photos.page
 		let manifestRelPath = "./manifest_" + pageIndex + ".json"
-		await fs.writeFile(path.resolve(absImagePath, manifestRelPath), JSON.stringify(res[resobj].body.photos, null, 2))
+		await fs.writeFile(path.join(absImagePath, manifestRelPath), JSON.stringify(res[resobj].body.photos, null, 2))
 		// logDebug(JSON.stringify(res[resobj].body.photos.photo))
 		for (let imgobj in res[resobj].body.photos.photo) {
 			// logDebug(JSON.stringify(res[resobj].body.photos.photo[imgobj][imageSize]))
@@ -134,7 +134,7 @@ const populateManifest = async (currImageCount, perPage, name_s, imageSize, absI
 
 	// let urlsRelPath = "./urls" + urls.length + ".json"
 	let urlsRelPath = "./" + imageSize + ".json"
-	await fs.writeFile(path.resolve(absImagePath, urlsRelPath), JSON.stringify(urls, null, 2))
+	await fs.writeFile(path.join(absImagePath, urlsRelPath), JSON.stringify(urls, null, 2))
 	return urls
 }
 
@@ -143,58 +143,71 @@ const transferToRemote = async (projectName, localPath) => {
 		.remote.getGlobal('remoteIP')
 	let rmtPath = require('electron')
 		.remote.getGlobal('remotePath')
-	let rmtProjPath = path.resolve(rmtPath, "./" + projectName)
-	let rmtImgPath = path.resolve(rmtImgPath, "./images")
+	let rmtProjPath = path.join(rmtPath, rojectName)
+	let rmtImgPath = path.join(rmtImgPath, "/images")
 
 	let Client = ssh.Client()
 	let conn = new Client()
 
-	let colmapPath = path.resolve(require('electron')
-		.remote.getGlobal('remoteCOLMAPPath'), "./COLMAP.bat")
+	let colmapPath = require('electron')
+		.remote.getGlobal('remoteCOLMAPPath')
+	let colmapExecPath = path.join(colmapPath, "COLMAP.bat")
 	let colmapBatch = ""
 
 	// Create colmap batch file
 	// feature_extractor
 	// NOTE: GPU is disabled in this step or it could crash
-	colmapBatch = colmapPath + " feature_extractor"
-	colmapBatch += " --database_path " + path.resolve(rmtProjPath, "./database.db")
-	colmapBatch += " --image_path " + path.resolve(rmtProjPath, "./images")
+	colmapBatch = "echo \"[JOB1] START\" && "
+	colmapBatch += colmapExecPath + " feature_extractor"
+	colmapBatch += " --database_path " + jpath(rmtProjPath, "database.db")
+	colmapBatch += " --image_path " + jpath(rmtProjPath, "images")
 	colmapBatch += " --SiftExtraction.use_gpu 0"
 	colmapBatch += " && "
+	colmapBatch += "echo \"[JOB1] FEATURE_EXTRACTOR END\" && "
 	// exhaustive_matcher
-	colmapBatch += colmapPath + " exhaustive_matcher"
-	colmapBatch += " --database_path " + path.resolve(rmtProjPath, "./database.db")
+	colmapBatch += colmapExecPath + " exhaustive_matcher"
+	colmapBatch += " --database_path " + jpath(rmtProjPath, "database.db")
 	colmapBatch += " --SiftMatching.use_gpu 1"
 	colmapBatch += " && "
+	colmapBatch += "echo \"[JOB1] EXHAUSTIVE_MATCHER END\" && "
 	// mapper
-	colmapBatch += colmapPath + " mapper"
-	colmapBatch += " --database_path " + path.resolve(rmtProjPath, "./database.db")
-	colmapBatch += " --image_path " + path.resolve(rmtProjPath, "./images")
-	colmapBatch += " --output_path " + path.resolve(rmtProjPath, "./sparse")
+	colmapBatch += colmapExecPath + " mapper"
+	colmapBatch += " --database_path " + jpath(rmtProjPath, "database.db")
+	colmapBatch += " --image_path " + jpath(rmtProjPath, "images")
+	colmapBatch += " --output_path " + jpath(rmtProjPath, "sparse")
 	colmapBatch += " && "
+	colmapBatch += "echo \"[JOB1] MAPPER END\" && "
 	// image_undistorter
-	colmapBatch += colmapPath + " image_undistorter"
-	colmapBatch += " --image_path " + path.resolve(rmtProjPath, "./images")
-	colmapBatch += " --input_path " + path.resolve(rmtProjPath, "./sparse/0")
-	colmapBatch += " --output_path " + path.resolve(rmtProjPath, "./dense")
+	colmapBatch += colmapExecPath + " image_undistorter"
+	colmapBatch += " --image_path " + jpath(rmtProjPath, "images")
+	colmapBatch += " --input_path " + jpath(rmtProjPath, "sparse/0")
+	colmapBatch += " --output_path " + jpath(rmtProjPath, "dense")
 	colmapBatch += " --output_type COLMAP"
 	colmapBatch += " --max_image_size 2000"
 	colmapBatch += " && "
+	colmapBatch += "echo \"[JOB1] IMAGE_UNDISTORTER END\" && "
 	// patch_match_stereo
-	colmapBatch += colmapPath + " patch_match_stereo"
-	colmapBatch += " --workspace_path " + path.resolve(rmtProjPath, "./dense")
+	colmapBatch += colmapExecPath + " patch_match_stereo"
+	colmapBatch += " --workspace_path " + jpath(rmtProjPath, "dense")
 	colmapBatch += " --PatchMatchStereo.geom_consistency true"
 	colmapBatch += " --PatchMatchStereo.num_iterations 4"
 	colmapBatch += " --PatchMatchStereo.window_step 2"
 	colmapBatch += " --PatchMatchStereo.gpu_index 0,1"
 	colmapBatch += " --PatchMatchStereo.num_samples 10"
 	colmapBatch += " && "
+	colmapBatch += "echo \"[JOB1] PATCH_MATCH_STEREO END\" && "
 	// stereo_fusion
-	colmapBatch += colmapPath + " stereo_fusion"
-	colmapBatch += " --workspace_path " + path.resolve(rmtProjPath, "./dense")
+	colmapBatch += colmapExecPath + " stereo_fusion"
+	colmapBatch += " --workspace_path " + jpath(rmtProjPath, "dense")
 	colmapBatch += " --workspace_format COLMAP"
 	colmapBatch += " --input_type geometric"
-	colmapBatch += " --output_path " + path.resolve(rmtProjPath, "./dense/fused.ply")
+	colmapBatch += " --output_path " + jpath(rmtProjPath, "dense", "fused.ply")
+	colmapBatch += " && "
+	colmapBatch += "echo \"[JOB1] STEREO_FUSION END\" && "
+	colmapBatch += "echo \"[JOB1] DONE\" && "
+	// pointcloud.py
+	colmapBatch += "echo \"[JOB2] START\" && "
+	colmapBatch += "python " + jpath(colmapPath, "pointcloud.py") + " " + jpath(rmtProjPath, "dense", "fused.ply")
 
 	// conn.on('ready', () => {
 	// 	logDebug('[WK-DLD] ssh2 client ready for project ' + projectName + ".")
@@ -246,9 +259,14 @@ const transferToRemote = async (projectName, localPath) => {
 
 				// Announce file transfer complete
 				ipcRenderer.send('worker-download-complete')
-				ipcRenderer.send('worker-modelling-request-r', { projname: projectName, abspath: absImagePath, rmtpath: rmtImgPath })
+				ipcRenderer.send('worker-modelling-request-r', {
+					projname: projectName,
+					abspath: absImagePath,
+					rmtpath: rmtImgPath
+				})
 			})
-		}).connect({
+		})
+		.connect({
 			host: rmtIP,
 			port: 22,
 			username: 'SourceForm',
@@ -257,4 +275,9 @@ const transferToRemote = async (projectName, localPath) => {
 					.homedir(), "./.ssh/id_rsa"));
 		})
 	// })
+}
+
+const jpath = (...p) => {
+	return path.join(...p)
+		.replace(/\\+/g, '\\\\')
 }
