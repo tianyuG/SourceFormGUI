@@ -24,7 +24,6 @@ let flickr = new Flickr(require('electron')
 	.remote.getGlobal('flickrKey'))
 
 ipcRenderer.on('worker-download-search', async (event, message) => {
-	// logMain("[WK_DLD] delegated")
 	let t = new Date()
 	let t_iso = t.toISOString()
 	let name_o = message.trim()
@@ -39,8 +38,6 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	let ident_t = "./" + ident
 	let baseImagePath = path.resolve(remote.getGlobal('imagePath'))
 	let absImagePath = path.resolve(baseImagePath, ident_t)
-	// logMain(baseImagePath)
-	// logMain(absImagePath)
 	let currImageCount = parseInt(remote.getGlobal('numberOfImagesPerModel'))
 
 	// Creating folder
@@ -50,7 +47,6 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	let jsonObj = JSON.parse(jsonFile)
 	let jsonKeys = Object.keys(jsonObj)
 	let lastIndex = jsonKeys[jsonKeys.length - 1]
-	// logMain(lastIndex)
 	let currIndex = (parseInt(lastIndex, 10) + 1)
 		.toString()
 		.padStart(4, '0')
@@ -81,10 +77,8 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	currRecord += "\"image_count\": " + results.length + ", "
 	currRecord += "\"display\": false"
 	currRecord += " }"
-	// logMain(currRecord)
 	jsonObj[currIndex] = JSON.parse(currRecord)
 	await fs.writeFile(path.resolve(__dirname, "../carousel/content.json"), JSON.stringify(jsonObj, null, 2))
-	// logMain(JSON.stringify(results))
 
 	ipcRenderer.send('image-download-request', {
 		url: results,
@@ -124,9 +118,7 @@ const populateManifest = async (currImageCount, perPage, name_s, imageSize, absI
 		pageIndex = res[resobj].body.photos.page
 		let manifestRelPath = "./manifest_" + pageIndex + ".json"
 		await fs.writeFile(path.join(absImagePath, manifestRelPath), JSON.stringify(res[resobj].body.photos, null, 2))
-		// logDebug(JSON.stringify(res[resobj].body.photos.photo))
 		for (let imgobj in res[resobj].body.photos.photo) {
-			// logDebug(JSON.stringify(res[resobj].body.photos.photo[imgobj][imageSize]))
 			let ret = res[resobj].body.photos.photo[imgobj][imageSize]
 			if (typeof ret != "undefined") {
 				urls.push(ret)
@@ -229,7 +221,7 @@ const transferToRemote = async (projectName, localPath) => {
 	colmapBatch += "echo \"[JOB3] _J_MESHLAB START\" && "
 	colmapBatch += jpath(meshlabPath, "meshlabserver.exe") + " -i " + jpath(rmtProjPath, "dense", "new_fused.ply") + " -o " + jpath(rmtProjPath, "dense", "new_fused.stl")
 	colmapBatch += " && "
-	// colmapBatch += "echo \"[JOB3] _J_MESHLAB START\" && "
+	// colmapBatch += "echo \"[JOB3] _J_MESHLAB DONE\" && "
 	colmapBatch += "echo \"[JOB3] _J_MESHLAB DONE\""
 	// 
 	// STEP 4
