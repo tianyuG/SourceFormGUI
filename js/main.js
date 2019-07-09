@@ -229,6 +229,7 @@ app.on('ready', () => {
 						timeout: dlTimeout
 					})
 					.then((res) => {
+						// TODO: Announce image downloaded
 						// logDebug("[MAIN] Writing image #" + u + ": " + dlUrlArr[u])
 						fs.writeFile(path.resolve(dlDir, "./" + path.basename(res.config.url)), res.data)
 							.catch((err) => {
@@ -241,11 +242,12 @@ app.on('ready', () => {
 						resolve()
 					})
 					.catch((err) => {
+						// TODO: Announce image download failed
 						fs.appendFile(path.resolve(dlDir, "./dlLog.txt"), "[MAIN] image #" + u + " (" + dlUrlArr[u] + ") save failed (axios): " + err.code + ": " + err.message + "\n")
 							.catch((err) => {
 								logDebug("[MAIN] log saving failed: " + err)
 							})
-						logDebug("[MAIN] AXIOS download failed: " + err)
+						logDebug("[MAIN] image #" + u + "(" + dlUrlArr[u] + ") save failed (axios): " + err.code + ": " + err.message)
 						resolve()
 					})
 			}))
