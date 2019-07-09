@@ -169,10 +169,11 @@ let carousel = new Swiper('.swiper-container', {
 	autohight: true,
 	pagination: {
 		el: '.swiper-pagination',
+		clickable: false
 	},
 	navigation: {
 		nextEl: '.swiper-button-next',
-		prevEl: '.swiper-button-prev',
+		prevEl: '.swiper-button-prev'
 	},
 	slidesPerView: 3,
 	// centeredSlides: true, // DO NOT use, doesn't work as intended
