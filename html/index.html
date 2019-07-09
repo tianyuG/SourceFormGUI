@@ -30,7 +30,9 @@
 <body>
 	<h1>SourceForm</h1>
 	<a href="diagnostics.html">Diagnostics</a>
-	<input type="text" id="searchfield" value="find an object to print..." onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" onselect="checkSearchFieldOnSelect()" />
+	<br />
+	<input type="text" id="searchfield" value="search for a new object" onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" onselect="checkSearchFieldOnSelect()" />
+	<br />
 	<button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
 	<button onclick="require('electron').remote.app.quit();">Quit</button>
 	<!-- TEST -->
@@ -43,10 +45,10 @@
 				<div class="swiper-slide-container">
 					<div class="swiper-slide-bg" id="bg0000">
 						<div class="swiper-slide-alt-wrapper">
-						<div class="swiper-slide-alt">
-							Statue of Liberty
+							<div class="swiper-slide-alt">
+								Statue of Liberty
+							</div>
 						</div>
-					</div>
 					</div>
 				</div>
 			</div>
@@ -54,36 +56,36 @@
 				<div class="swiper-slide-container">
 					<div class="swiper-slide-bg" id="bg0001">
 						<div class="swiper-slide-alt-wrapper">
-						<div class="swiper-slide-alt">
-							David
+							<div class="swiper-slide-alt">
+								David
+							</div>
 						</div>
 					</div>
-					</div>
-					
+
 				</div>
 			</div>
 			<div class="swiper-slide">
 				<div class="swiper-slide-container">
 					<div class="swiper-slide-bg" id="bg0002">
 						<div class="swiper-slide-alt-wrapper">
-						<div class="swiper-slide-alt">
-							World Cup Trophy
+							<div class="swiper-slide-alt">
+								World Cup Trophy
+							</div>
 						</div>
 					</div>
-					</div>
-					
+
 				</div>
 			</div>
 			<div class="swiper-slide">
 				<div class="swiper-slide-container">
 					<div class="swiper-slide-bg" id="bg0003">
 						<div class="swiper-slide-alt-wrapper">
-						<div class="swiper-slide-alt">
-							0003
+							<div class="swiper-slide-alt">
+								0003
+							</div>
 						</div>
 					</div>
-					</div>
-					
+
 				</div>
 			</div>
 		</div>
@@ -92,7 +94,7 @@
 		<!-- Add left and right arrows -->
 		<div class="swiper-button-next"></div>
 		<div class="swiper-button-prev"></div>
-		
+
 	</div>
 	<script>
 		require('../js/index.js')

@@ -1,7 +1,7 @@
 // Remove default content in the searchfield textbox on click
 function checkSearchFieldOnClick() {
 	if (document.getElementById("searchfield")
-		.value === "find an object to print...") {
+		.value === "search for a new object") {
 		document.getElementById("searchfield")
 			.value = "";
 	}
@@ -12,7 +12,7 @@ function checkSearchFieldOnBlur() {
 	if (document.getElementById("searchfield")
 		.value === "") {
 		document.getElementById("searchfield")
-			.value = "find an object to print...";
+			.value = "search for a new object";
 	}
 }
 
@@ -22,5 +22,5 @@ function checkSearchFieldOnSelect() {
 
 function clearSearchField() {
 	document.getElementById("searchfield")
-		.value = "find an object to print...";
+		.value = "search for a new object";
 }
