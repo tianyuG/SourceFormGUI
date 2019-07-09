@@ -12,6 +12,7 @@
 	<script src="../utils/searchfieldHandler.js"></script>
 	<link rel="stylesheet" type="text/css" href="../css/common.css">
 	<link rel="stylesheet" type="text/css" href="../css/disable-text-selection.css">
+	<link rel="stylesheet" type="text/css" href="../css/index.css">
 	<!-- Load onscreen keyboard -->
 	<script>
 		var jQuery = $ = require('jquery');
@@ -22,29 +23,7 @@
 	<link rel="stylesheet" href="../node_modules/swiper/dist/css/swiper.min.css">
 	<script src="../node_modules/swiper/dist/js/swiper.min.js"></script>
 	<style>
-		.swiper-container {
-			width: 80%;
-			height: 300px;
-			margin: 0 auto;
-			/*z-index: -1;*/
-		}
-		/*.swiper-slide img {
-		width: 100%;
-		margin: 0 auto;
-		}*/
-		.swiper-slide img {
-			width: 300px;
-			display: block;
-			margin-left: auto;
-			margin-right: auto;
-		}
-		.swiper-slide-alt {
-			width: 300px;
-			text-align: center;
-			display: none;
-			margin-left: auto;
-			margin-right: auto;
-		}
+
 	</style>
 </head>
 
@@ -61,20 +40,51 @@
 		<div class="swiper-wrapper">
 			<!-- Slides -->
 			<div class="swiper-slide">
-				<img src="../carousel/imgs/0000.jpg" alt="0000" />
-				<div class="swiper-slide-alt">0000</div>
+				<div class="swiper-slide-container">
+					<div class="swiper-slide-bg" id="bg0000">
+						<div class="swiper-slide-alt-wrapper">
+						<div class="swiper-slide-alt">
+							Statue of Liberty
+						</div>
+					</div>
+					</div>
+				</div>
 			</div>
 			<div class="swiper-slide">
-				<img src="../carousel/imgs/0001.jpg" alt="0001" />
-				<div class="swiper-slide-alt">0001</div>
+				<div class="swiper-slide-container">
+					<div class="swiper-slide-bg" id="bg0001">
+						<div class="swiper-slide-alt-wrapper">
+						<div class="swiper-slide-alt">
+							David
+						</div>
+					</div>
+					</div>
+					
+				</div>
 			</div>
 			<div class="swiper-slide">
-				<img src="../carousel/imgs/0002.jpg" alt="0002" />
-				<div class="swiper-slide-alt">0002</div>
+				<div class="swiper-slide-container">
+					<div class="swiper-slide-bg" id="bg0002">
+						<div class="swiper-slide-alt-wrapper">
+						<div class="swiper-slide-alt">
+							World Cup Trophy
+						</div>
+					</div>
+					</div>
+					
+				</div>
 			</div>
 			<div class="swiper-slide">
-				<img src="../carousel/imgs/0003.jpg" alt="0003" />
-				<div class="swiper-slide-alt">0003</div>
+				<div class="swiper-slide-container">
+					<div class="swiper-slide-bg" id="bg0003">
+						<div class="swiper-slide-alt-wrapper">
+						<div class="swiper-slide-alt">
+							0003
+						</div>
+					</div>
+					</div>
+					
+				</div>
 			</div>
 		</div>
 		<div class="swiper-button-next"></div>

@@ -179,29 +179,29 @@ let carousel = new Swiper('.swiper-container', {
 	// slideToClickedSlide: true, // DO NOT use, doesn't work as intended
 	loop: true,
 	// DEBUG: Comment the next four lines to disable autoplay
-	autoplay: {
-		delay: 3000,
-		disableOnInteraction: false,
-	}
+	// autoplay: {
+	// 	delay: 3000,
+	// 	disableOnInteraction: false,
+	// }
 });
 
 // Show the description for the image in the centre of the carousel
 // This works with a carousel that shows three slides at a time
 // This is because the looping actually creates phantom slides... 
-carousel.on('slideChange', function() {
-	logDebug("Carousel - slideChange detected with { previousIndex, activeIndex } == { " + carousel.previousIndex + ", " + carousel.activeIndex + " }.")
-	if (Math.abs(carousel.previousIndex - carousel.activeIndex) > 1) {
-		logDebug("Carousel: slideChange wrapped around. ignoring.")
-	} else if (carousel.previousIndex < carousel.activeIndex) {
-		carousel.slides[carousel.activeIndex].getElementsByClassName("swiper-slide-alt")[0].style.display = "none";
-		carousel.slides[carousel.activeIndex + 1].getElementsByClassName("swiper-slide-alt")[0].style.display = "block";
-		carousel.slides[carousel.activeIndex + 2].getElementsByClassName("swiper-slide-alt")[0].style.display = "none";
-	} else {
-		carousel.slides[carousel.previousIndex - 1].getElementsByClassName("swiper-slide-alt")[0].style.display = "none";
-		carousel.slides[carousel.previousIndex].getElementsByClassName("swiper-slide-alt")[0].style.display = "block";
-		carousel.slides[carousel.previousIndex + 1].getElementsByClassName("swiper-slide-alt")[0].style.display = "none";
-	}
-});
+// carousel.on('slideChange', function() {
+// 	logDebug("Carousel - slideChange detected with { previousIndex, activeIndex } == { " + carousel.previousIndex + ", " + carousel.activeIndex + " }.")
+// 	if (Math.abs(carousel.previousIndex - carousel.activeIndex) > 1) {
+// 		logDebug("Carousel: slideChange wrapped around. ignoring.")
+// 	} else if (carousel.previousIndex < carousel.activeIndex) {
+// 		carousel.slides[carousel.activeIndex].getElementsByClassName("swiper-slide-alt")[0].style.display = "none";
+// 		carousel.slides[carousel.activeIndex + 1].getElementsByClassName("swiper-slide-alt")[0].style.display = "block";
+// 		carousel.slides[carousel.activeIndex + 2].getElementsByClassName("swiper-slide-alt")[0].style.display = "none";
+// 	} else {
+// 		carousel.slides[carousel.previousIndex - 1].getElementsByClassName("swiper-slide-alt")[0].style.display = "none";
+// 		carousel.slides[carousel.previousIndex].getElementsByClassName("swiper-slide-alt")[0].style.display = "block";
+// 		carousel.slides[carousel.previousIndex + 1].getElementsByClassName("swiper-slide-alt")[0].style.display = "none";
+// 	}
+// });
 
 carousel.on('tap', function() {
 	logDebug("Carousel - tap received with { activeIndex, clickedIndex } == { " + carousel.activeIndex + ", " + carousel.clickedIndex + " }.")
