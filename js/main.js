@@ -359,6 +359,9 @@ ipcMain.on('open-diagnostics', function(event, data) {
 	windows.preview.loadFile('./html/diagnostics.html')
 })
 
+/*
+ * Allow other renderers to write to terminal for debugging
+ */
 ipcMain.on('ld-main', function(event, data) {
 	logDebug(data)
 })
@@ -407,7 +410,7 @@ const loadGlobalVariables = async () => {
 	let gvObj = JSON.parse(await fs.readFile(path.resolve(__dirname, gvPath)));
 
 	for (let e in gvObj) {
-		logDebug(JSON.stringify(e) + ": " + JSON.stringify(gvObj[e]))
+		// logDebug(JSON.stringify(e) + ": " + JSON.stringify(gvObj[e]))
 		global[e] = gvObj[e]
 	}
 }
