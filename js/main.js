@@ -211,7 +211,7 @@ app.on('ready', () => {
 		const dlUrlArr = data.url
 		const CancelToken = axios.CancelToken
 		let dlTimeout = 15000
-		if (global.downloadTimeout != null) {
+		if (global.downloadTimeout != null && global.downloadTimeout >= 5000) {
 			dlTimeout = global.downloadTimeout
 		}
 		const source = []
