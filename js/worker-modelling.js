@@ -18,6 +18,7 @@ ipcRenderer.on('worker-modelling-request', async (event, message) => {
 
 	let Client = ssh.Client()
 	let conn = new Client()
+	let rmtIP = require('electron').remote.getGlobal('remoteIP')
 
 	conn.on('ready', () => {
 			// conn.exec(path.join(rmtPath, "run.bat").replace(/\\+/g, '\\\\'), (err, stream) => {

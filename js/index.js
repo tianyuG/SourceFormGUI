@@ -214,4 +214,4 @@ carousel.on('tap', function() {
 	// }
 });
 
-// Read `../carousel/content.json` and populate the carousel accordingly. 
+// Read `../carousel/content.json` and populate the carousel accordingly.

@@ -17,8 +17,8 @@ const fs = require('fs')
 	.promises
 const ssh = require('ssh2')
 const glob = require('glob')
-const Readable = require('stream')
-	.Readable
+// const Readable = require('stream')
+// 	.Readable
 
 let flickr = new Flickr(require('electron')
 	.remote.getGlobal('flickrKey'))
@@ -83,7 +83,6 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	ipcRenderer.send('image-download-request', {
 		url: results,
 		properties: {
-			// directory: absImagePath,
 			directory: absImagePath
 		}
 	})

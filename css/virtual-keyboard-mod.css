@@ -2,10 +2,16 @@
     display: inline-block;
     background: white;
     font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-    font-size: 24px;
+    font-size: 28px;
     user-select: none;
     white-space: nowrap;
     border-radius: .5rem;
+    width: 1760px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin-top: -70px;
+    margin-left: 8px;
+    transform: translateX(-5%);
 }
 
 .virtual-keyboard .layout {
