@@ -98,9 +98,10 @@
 
 #searchfield {
 	height: 98px;
-	width: 100%;
-	border: none;
+	width: 1688px;
+	order: none;
 	border-radius: 16px;
+	border: 0;
 	overflow: hidden;
 	/* background: url('../assets/images/Search.svg') no-repeat scroll 90px 90px; */
 	padding-left: 72px;
