@@ -93,16 +93,9 @@ let keyboard = $('input:text')
 		layout: {
 			'normal': [
 				'1 2 3 4 5 6 7 8 9 0 {backspace}',
-				['q w e r t y u i o p {sp:1}'],
-				['{sp:2} a s d f g h j k l \' {enterIcon}'],
-				['{shiftIcon} {sp:1} z x c v b n m . {sp:2}'],
-				['{hidekey} {selectall} {sp:1} {space} {sp:1} {leftarrow} {rightarrow} {search}']
-			],
-			'shift': [
-				'1 2 3 4 5 6 7 8 9 0  {backspace}',
 				['Q W E R T Y U I O P {sp:1}'],
-				['{sp:2} A S D F G H J K L " {enterIcon}'],
-				['{shiftIcon} {sp:1} Z X C V B N M ? {sp:2}'],
+				['{sp:3} A S D F G H J K L \' {enterIcon}'],
+				['{sp:1} Z X C V B N M . {sp:3}'],
 				['{hidekey} {selectall} {sp:1} {space} {sp:1} {leftarrow} {rightarrow} {search}']
 			]
 		}
