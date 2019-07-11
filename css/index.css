@@ -103,9 +103,21 @@
 	border-radius: 16px;
 	overflow: hidden;
 	/* background: url('../assets/images/Search.svg') no-repeat scroll 90px 90px; */
-	padding-left: 60px;
+	padding-left: 80px;
 	font-size: 27px;
 	font-weight: 700;
 	text-transform: uppercase;
 	color:  #666666;
+}
+
+.searchfield-wrapper {
+	position: relative;
+}
+
+.searchfield-icon {
+	position: absolute;
+	top: 26px;
+	left: 18px;
+	width: 48px;
+	height: 48px;
 }

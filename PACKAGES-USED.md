@@ -21,3 +21,4 @@
 | axios                       | MIT	                 | Yes            | No                  | No          | 0.18.1    | https://github.com/axios/axios                             |
 | ssh2                        | MIT                  | Yes            | No                  | No          | 0.8.4     | https://github.com/mscdex/ssh2                             |
 | glob                        | ISC                  | Yes            | No                  | No          | 7.1.4     | https://github.com/isaacs/node-glob                        |
+| font-awesome                | CC-BY 4.0/ SIL       | Yes            | No                  | No          | 5.9.0     | https://github.com/FortAwesome/Font-Awesome                |

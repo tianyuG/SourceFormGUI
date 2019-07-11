@@ -11,6 +11,7 @@
 	<!-- Load special searchfield textbox handlings -->
 	<script src="../utils/searchfieldHandler.js"></script>
 	<link rel="stylesheet" type="text/css" href="../css/common.css">
+	<link rel="stylesheet" type="text/css" href="../node_modules/@fortawesome/fontawesome-free/css/all.css">
 	<link rel="stylesheet" type="text/css" href="../css/disable-text-selection.css">
 	<link rel="stylesheet" type="text/css" href="../css/index.css">
 	<!-- Load onscreen keyboard -->
@@ -31,7 +32,12 @@
 	<h1>SourceForm</h1>
 	<a href="diagnostics.html">Diagnostics</a>
 	<br />
-	<input type="text" id="searchfield" value="search for a new object" onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" onselect="checkSearchFieldOnSelect()" />
+	<div class="searchfield-wrapper">
+		<!-- <i class="fas fa-search"></i> -->
+		<input type="text" id="searchfield" value="search for a new object" onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" onselect="checkSearchFieldOnSelect()" />
+		<img src="../assets/images/Search.svg" alt="" class="searchfield-icon">
+	</div>
+	
 	<br />
 	<button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
 	<button onclick="require('electron').remote.app.quit();">Quit</button>
@@ -98,6 +104,7 @@
 	</div>
 	<script>
 		require('../js/index.js')
+		require('@fortawesome/fontawesome-free')
 	</script>
 </body>
 
