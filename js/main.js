@@ -27,6 +27,10 @@ global.isInDebugEnv = process.argv.includes('--debugenv')
 
 // Define if the program is run in debug environment (fullscreen)
 global.isInFullscreenDebugEnv = process.argv.includes('--fdebugenv')
+
+// List of current jobs
+// Format: [['name', 'stage', 'elapsed', 'estimate']]
+global.jobs = []
 /*
  * END: GLOBAL VARIABLES
  */
@@ -200,6 +204,7 @@ app.on('ready', () => {
 	windows.workerPrinting.loadFile('./html/worker-printing.html')
 	windows.workerPrintingHelper.loadFile('./html/worker-printinghelper.html')
 
+	// When image download is requested by downloadhelper
 	ipcMain.on('image-download-request', function(event, data) {
 		// console.log(data)
 		const dlDir = data.properties.directory
@@ -261,6 +266,8 @@ app.on('ready', () => {
 				logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
 				logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
 				logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
+
+				windows.workerDownloadHelper.send('worker-download-all-complete', dlDir)
 			})
 	})
 })
@@ -282,6 +289,8 @@ ipcMain.on('start-ahk-button-clicked', (evt, arg) => {
 })
 
 // Swap monitors on demand
+// TODO: There will be three uisplays: one more for the 
+// printer's projector... Need to factor that in
 ipcMain.on('swap-displays', (evt, arg) => {
 
 	// Make sure there are two windows and two monitors
@@ -376,6 +385,11 @@ ipcMain.on('worker-download-search-r', function(event, data) {
 ipcMain.on('worker-modelling-request-r', function(event, data) {
 	logDebug("[MAIN] delegating modelling request: " + data)
 	windows.workerModellingHelper.send('worker-modelling-request', data)
+})
+
+ipcMain.on('worker-printing-request-r', (event, data) => {
+	logDebug("[MAIN] delegating printing request: " + data)
+	windows.workerPrintingHelper.send('worker-printing-request', data)
 })
 
 /*
