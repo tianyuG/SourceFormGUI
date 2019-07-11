@@ -22,7 +22,7 @@ const Readable = require('stream')
 
 let flickr = new Flickr(require('electron')
 	.remote.getGlobal('flickrKey'))
-
+	
 ipcRenderer.on('worker-download-search', async (event, message) => {
 	let t = new Date()
 	let t_iso = t.toISOString()
@@ -149,6 +149,7 @@ const transferToRemote = async (projectName, localPath) => {
 	let meshlabPath = require('electron')
 		.remote.getGlobal(remoteMeshlabPath)
 	let colmapBatch = ""
+	let commands = []
 
 	// Create colmap batch file
 	// 
@@ -157,72 +158,69 @@ const transferToRemote = async (projectName, localPath) => {
 	// Step 3: meshlab ply -> stl
 	// Step 4: stl -> bmps
 	// 
+	// commands[00] <- COLMAP feature_extractor
+	// commands[01] <- COLMAP exhaustive_matcher
+	// commands[02] <- COLMAP mapper
+	// commands[03] <- COLMAP image_undistorter
+	// commands[04] <- COLMAP patch_match_stereo
+	// commands[05] <- COLMAP stereo_fusion
+	// commands[06] <- pointcloud.py (thicken and inverse faces)
+	// commands[07] <- meshlab (ply -> stl)
+	// commands[08] <- slicing (TODO; stl -> bmps)
+	// 
 	// STEP 1
 	// feature_extractor
 	// NOTE: GPU is disabled in this step or it could crash
-	colmapBatch = "echo \"[JOB1] _J_COLMAP START\" && "
-	colmapBatch += colmapExecPath + " feature_extractor"
+	colmapBatch = colmapExecPath + " feature_extractor"
 	colmapBatch += " --database_path " + jpath(rmtProjPath, "database.db")
 	colmapBatch += " --image_path " + jpath(rmtProjPath, "images")
 	colmapBatch += " --SiftExtraction.use_gpu 0"
-	colmapBatch += " && "
-	colmapBatch += "echo \"[JOB1] FEATURE_EXTRACTOR END\" && "
+	commands.push(colmapBatch)
 	// exhaustive_matcher
-	colmapBatch += colmapExecPath + " exhaustive_matcher"
+	colmapBatch = colmapExecPath + " exhaustive_matcher"
 	colmapBatch += " --database_path " + jpath(rmtProjPath, "database.db")
 	colmapBatch += " --SiftMatching.use_gpu 1"
-	colmapBatch += " && "
-	colmapBatch += "echo \"[JOB1] EXHAUSTIVE_MATCHER END\" && "
+	commands.push(colmapBatch)
 	// mapper
-	colmapBatch += colmapExecPath + " mapper"
+	colmapBatch = colmapExecPath + " mapper"
 	colmapBatch += " --database_path " + jpath(rmtProjPath, "database.db")
 	colmapBatch += " --image_path " + jpath(rmtProjPath, "images")
 	colmapBatch += " --output_path " + jpath(rmtProjPath, "sparse")
-	colmapBatch += " && "
-	colmapBatch += "echo \"[JOB1] MAPPER END\" && "
+	commands.push(colmapBatch)
 	// image_undistorter
-	colmapBatch += colmapExecPath + " image_undistorter"
+	colmapBatch = colmapExecPath + " image_undistorter"
 	colmapBatch += " --image_path " + jpath(rmtProjPath, "images")
 	colmapBatch += " --input_path " + jpath(rmtProjPath, "sparse/0")
 	colmapBatch += " --output_path " + jpath(rmtProjPath, "dense")
 	colmapBatch += " --output_type COLMAP"
 	colmapBatch += " --max_image_size 2000"
-	colmapBatch += " && "
-	colmapBatch += "echo \"[JOB1] IMAGE_UNDISTORTER END\" && "
+	commands.push(colmapBatch)
 	// patch_match_stereo
-	colmapBatch += colmapExecPath + " patch_match_stereo"
+	colmapBatch = colmapExecPath + " patch_match_stereo"
 	colmapBatch += " --workspace_path " + jpath(rmtProjPath, "dense")
 	colmapBatch += " --PatchMatchStereo.geom_consistency true"
 	colmapBatch += " --PatchMatchStereo.num_iterations 4"
 	colmapBatch += " --PatchMatchStereo.window_step 2"
 	colmapBatch += " --PatchMatchStereo.gpu_index 0,1"
 	colmapBatch += " --PatchMatchStereo.num_samples 10"
-	colmapBatch += " && "
-	colmapBatch += "echo \"[JOB1] PATCH_MATCH_STEREO END\" && "
+	commands.push(colmapBatch)
 	// stereo_fusion
-	colmapBatch += colmapExecPath + " stereo_fusion"
+	colmapBatch = colmapExecPath + " stereo_fusion"
 	colmapBatch += " --workspace_path " + jpath(rmtProjPath, "dense")
 	colmapBatch += " --workspace_format COLMAP"
 	colmapBatch += " --input_type geometric"
 	colmapBatch += " --output_path " + jpath(rmtProjPath, "dense", "fused.ply")
-	colmapBatch += " && "
-	colmapBatch += "echo \"[JOB1] STEREO_FUSION END\" && "
-	colmapBatch += "echo \"[JOB1] _J_COLMAP DONE\" && "
+	commands.push(colmapBatch)
 	// 
 	// STEP 2
 	// pointcloud.py
-	colmapBatch += "echo \"[JOB2] _J_PC START\" && "
-	colmapBatch += "python " + jpath(colmapPath, "pointcloud.py") + " " + jpath(rmtProjPath, "dense", "fused.ply")
-	colmapBatch += " && "
-	colmapBatch += "echo \"[JOB2] _J_PC DONE\" && "
+	colmapBatch = "python " + jpath(colmapPath, "pointcloud.py") + " " + jpath(rmtProjPath, "dense", "fused.ply")
+	commands.push(colmapBatch)
 	// 
 	// STEP 3
 	// meshlab
-	colmapBatch += "echo \"[JOB3] _J_MESHLAB START\" && "
-	colmapBatch += jpath(meshlabPath, "meshlabserver.exe") + " -i " + jpath(rmtProjPath, "dense", "new_fused.ply") + " -o " + jpath(rmtProjPath, "dense", "new_fused.stl")
-	colmapBatch += " && "
-	// colmapBatch += "echo \"[JOB3] _J_MESHLAB DONE\" && "
-	colmapBatch += "echo \"[JOB3] _J_MESHLAB DONE\""
+	colmapBatch = jpath(meshlabPath, "meshlabserver.exe") + " -i " + jpath(rmtProjPath, "dense", "new_fused.ply") + " -o " + jpath(rmtProjPath, "dense", "new_fused.stl")
+	commands.push(colmapBatch)
 	// 
 	// STEP 4
 	// slicing
@@ -258,26 +256,13 @@ const transferToRemote = async (projectName, localPath) => {
 					}
 				})
 
-				// Write batch file to remote
-				var readS = new Readable
-				readS.push(colmapBatch)
-				readS.push(null)
-				var writeS = sftp.createWriteStream(path.resolve(rmtProjPath, "./run.bat"))
-				writeS.on('close', () => {
-					logMain("[WK_DLD] ssh2 - createFileStream completed.")
-				})
-				writeS.on('end', () => {
-					logMain("[WK_DLD] ssh2 - sftp conncetion closed on createFileStream.")
-					conn.close()
-				})
-				readS.pipe(writeS)
-
 				// Announce file transfer complete
-				ipcRenderer.send('worker-download-complete')
+				ipcRenderer.send('worker-download-transfer-complete')
 				ipcRenderer.send('worker-modelling-request-r', {
 					projname: projectName,
 					abspath: absImagePath,
-					rmtpath: rmtImgPath
+					rmtpath: rmtImgPath,
+					commands: commands
 				})
 			})
 		})
