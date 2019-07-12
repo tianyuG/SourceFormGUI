@@ -136,9 +136,26 @@
 .head-container {
 	display: flex;
 	flex-direction: row;
+	align-items: center;
 }
 
 .head-container h1 {
 	font-weight: 700;
 	text-transform: uppercase;
+	font-size: 46px;
+	letter-spacing: 7px;
+	margin: 0;
+}
+
+.head-container h3 {
+	font-weight: 300;
+	text-transform: uppercase;
+	font-size: 12px;
+	letter-spacing: 2px;
+	margin-top: 0;
+}
+
+.head-grey {
+	color: #b3b3b3;
+	font-weight: 700;
 }
