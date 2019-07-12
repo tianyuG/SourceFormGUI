@@ -118,6 +118,8 @@ $(document)
 			$target.select();
 			$('div.virtual-keyboard')
 				.css("z-index", "1");
+			$('div.virtual-keyboard')
+				.css("left", "80px");
 		} else if ($target.is("input#searchfield")) {
 			$('div.virtual-keyboard')
 				.css("z-index", "1");
@@ -132,10 +134,10 @@ $(document)
 			// 	.css("margin-top", "-70px");
 			// if ($target.get[0].getBoundingClientRect()
 			// 	.left > 140) {
-				$('div.virtual-keyboard')
-					.css("margin-left", "-80px");
-				$('div.virtual-keyboard')
-					.css("transform", "translateX(-0%)");
+			$('div.virtual-keyboard')
+				.css("left", "80px");
+			// $('div.virtual-keyboard')
+			// 	.css("transform", "translateX(-0%)");
 			// }
 		}
 	});
@@ -145,6 +147,11 @@ ipcRenderer.once('select-all-input', (event, message) => {
 	$("#searchfield")
 		.val(message);
 	selectAll = true;
+})
+
+ipcRenderer.once('centre-keyboard', (event, message) => {
+	$("virtual-keyboard")
+		.css("left", "80");
 })
 
 /*

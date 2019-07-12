@@ -68,25 +68,5 @@
     "accessed": "2019-07-09T14:47:07.267Z",
     "image_count": 461,
     "display": false
-  },
-  "0007": {
-    "title": "world cup trophy",
-    "sanitised_title": "world-cup-trophy",
-    "path": "C:\\Users\\Tianyu\\Documents\\SOURCEFORM_TEST\\world-cup-trophy_1562683867188",
-    "thumbnail": "0007.jpg",
-    "updated": "2019-07-09T14:51:07.188Z",
-    "accessed": "2019-07-09T14:51:07.188Z",
-    "image_count": 461,
-    "display": false
-  },
-  "0008": {
-    "title": "test",
-    "sanitised_title": "test",
-    "path": "C:\\Users\\Tianyu\\Documents\\SOURCEFORM_TEST\\test_1562938659365",
-    "thumbnail": "0008.jpg",
-    "updated": "2019-07-12T13:37:39.365Z",
-    "accessed": "2019-07-12T13:37:39.365Z",
-    "image_count": 437,
-    "display": false
   }
 }

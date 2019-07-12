@@ -57,16 +57,46 @@ ipcRenderer.once('search-query-relay', async (event, message) => {
 		});
 })
 
-const abortButton = document.getElementById("preview-no")
 const continueButton = document.getElementById("preview-yes")
+const abortButton = document.getElementById("preview-no")
+const cancelButton = document.getElementById("preview-cancel")
 
-abortButton.addEventListener('click', function() {
-	ipcRenderer.send('preview-aborted', searchResult)
+
+continueButton.addEventListener('mousedown', function() {
+	document.getElementById('preview-yes').style.backgroundColor ="#666"
+	document.getElementById('preview-yes-1').style.color ="#fff"
+	document.getElementById('preview-yes-2').style.color ="#ccc"
+})
+
+continueButton.addEventListener('mouseup', function() {
+	document.getElementById('preview-yes').style.backgroundColor ="#fff"
+	document.getElementById('preview-yes-1').style.color ="#000"
+	document.getElementById('preview-yes-1').style.color ="#666"
 })
 
 continueButton.addEventListener('click', function() {
 	// logMain("TO-DELEGATE")
 	ipcRenderer.send('worker-download-search-r', searchResult)
+})
+
+abortButton.addEventListener('mousedown', function() {
+	document.getElementById('preview-no').style.backgroundColor ="#fff"
+	document.getElementById('preview-no-1').style.color ="#c1272d"
+	document.getElementById('preview-no-2').style.color ="#666"
+})
+
+abortButton.addEventListener('mouseup', function() {
+	document.getElementById('preview-no').style.backgroundColor ="#c1272d"
+	document.getElementById('preview-no-1').style.color ="#000"
+	document.getElementById('preview-no-1').style.color ="#ccc"
+})
+
+abortButton.addEventListener('click', function() {
+	ipcRenderer.send('preview-aborted', searchResult)
+})
+
+cancelButton.addEventListener('click', function() {
+	ipcRenderer.send('preview-cancelled')
 })
 
 // async function getPhotoPreviewURLs(query) {

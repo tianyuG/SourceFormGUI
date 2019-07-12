@@ -317,7 +317,7 @@ ipcMain.on('swap-displays', (evt, arg) => {
 /*
  * Relaying search query to preview window
  */
-ipcMain.on('search-committed', function(event, data) {
+ipcMain.on('search-committed', (event, data) => {
 	windows.main.loadFile('./html/searchpreview.html')
 	windows.main.webContents.once('dom-ready', () => {
 		windows.main.webContents.send('search-query-relay', data);
@@ -327,10 +327,21 @@ ipcMain.on('search-committed', function(event, data) {
 /*
  * Moving from preview back to main screen
  */
-ipcMain.on('preview-aborted', function(event, data) {
+ipcMain.on('preview-aborted', (event, data) => {
 	windows.main.loadFile('./html/index.html')
 	windows.main.webContents.once('dom-ready', () => {
 		windows.main.webContents.send('select-all-input', data);
+		windows.main.webContents.send('centre-keyboard');
+	})
+});
+
+/*
+ * Moving from preview back to main screen
+ */
+ipcMain.on('preview-cancelled', (event, data) => {
+	windows.main.loadFile('./html/index.html')
+	windows.main.webContents.once('dom-ready', () => {
+		windows.main.webContents.send('centre-keyboard');
 	})
 });
 
@@ -339,19 +350,19 @@ ipcMain.on('preview-aborted', function(event, data) {
  * !!!: This function is not responsible for sanitisation input!
  */
 
-ipcMain.on('set-globalvariable', function(event, data) {
+ipcMain.on('set-globalvariable', (event, data) => {
 	let gvK = data[0]
 	let gvV = data[1]
 	setGlobalVariable(gvK, gvV)
 });
 
-ipcMain.on('set-globalvariableint', function(event, data) {
+ipcMain.on('set-globalvariableint', (event, data) => {
 	let gvK = data[0]
 	let gvV = data[1]
 	setGlobalVariableInt(gvK, gvV)
 });
 
-ipcMain.on('set-globalvariablepath', function(event, data) {
+ipcMain.on('set-globalvariablepath', (event, data) => {
 	let gvK = data[0]
 	let gvV = data[1]
 	if (gvV != null) {
@@ -394,16 +405,16 @@ ipcMain.on('open-devtools-main', (event, data) => {
 /*
  * Allow other renderers to write to terminal for debugging
  */
-ipcMain.on('ld-main', function(event, data) {
+ipcMain.on('ld-main', (event, data) => {
 	logDebug(data)
 })
 
-ipcMain.on('worker-download-search-r', function(event, data) {
+ipcMain.on('worker-download-search-r', (event, data) => {
 	logDebug("[MAIN] delegating image download: " + data)
 	windows.workerDownloadHelper.send('worker-download-search', data)
 })
 
-ipcMain.on('worker-modelling-request-r', function(event, data) {
+ipcMain.on('worker-modelling-request-r', (event, data) => {
 	logDebug("[MAIN] delegating modelling request: " + data)
 	windows.workerModellingHelper.send('worker-modelling-request', data)
 })
