@@ -4,41 +4,55 @@ const {
 } = require("electron");
 
 document.addEventListener("keydown", function(e) {
-	// logDebug(e.key)
+
+	/*
+	 * ctrl-shift-alt-i =>
+	 * Open chrome devtools in secondary screen
+	 */
 	if (e.ctrlKey && e.altKey && e.key === 'I') {
-		// logDebug("ctrl-alt-shift-d pressed.")
 		ipcRenderer.send("open-devtools")
 	}
+	/*
+	 * ctrl-shift-alt-o =>
+	 * Open chrome devtools in main screen
+	 */
 	if (e.ctrlKey && e.altKey && e.key === 'O') {
-		// logDebug("ctrl-alt-shift-d pressed.")
 		ipcRenderer.send("open-devtools-main")
 	}
+	/*
+	 * ctrl-shift-alt-j =>
+	 * Open diagnostics in secondary screen
+	 */
 	if (e.ctrlKey && e.altKey && e.key === 'J') {
-		// logDebug("ctrl-alt-shift-d pressed.")
 		ipcRenderer.send("open-diagnostics")
 	}
+	/*
+	 * ctrl-shift-alt-k =>
+	 * Open diagnostics in main screen
+	 */
 	if (e.ctrlKey && e.altKey && e.key === 'K') {
-		// logDebug("ctrl-alt-shift-d pressed.")
 		ipcRenderer.send("open-diagnostics-main")
 	}
+	/*
+	 * ctrl-shift-alt-n =>
+	 * Open setup in secondary screen
+	 */
 	if (e.ctrlKey && e.altKey && e.key === 'N') {
-		// logDebug("ctrl-alt-shift-d pressed.")
 		ipcRenderer.send("open-setup")
 	}
+	/*
+	 * ctrl-shift-alt-m =>
+	 * Open setup in main screen
+	 */
 	if (e.ctrlKey && e.altKey && e.key === 'M') {
-		// logDebug("ctrl-alt-shift-d pressed.")
 		ipcRenderer.send("open-setup-main")
 	}
 
+	/*
+	 * ctrl-shift-alt-q =>
+	 * Quit app
+	 */
 	if (e.ctrlKey && e.altKey && e.key === 'Q') {
-		// logDebug("ctrl-alt-shift-d pressed.")
 		ipcRenderer.send("quit-app")
 	}
-	// switch (event.key) {
-	// 	case "F11":
-	// 		console.log("F11 pressed.");
-	// 		remote.getCurrentWindow()
-	// 			.maximize()
-	// 		break;
-	// 	}
 });

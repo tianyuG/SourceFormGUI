@@ -19,7 +19,7 @@ let searchResult = ""
 ipcRenderer.once('search-query-relay', async (event, message) => {
 	searchResult = message
 	document.getElementById("preview-search-query")
-		.innerHTML = message
+		.innerHTML = "“" + message + "”"
 
 	let ret = await checkAgainstExisting(message)
 
@@ -88,12 +88,23 @@ abortButton.addEventListener('mousedown', function() {
 abortButton.addEventListener('mouseup', function() {
 	document.getElementById('preview-no').style.backgroundColor ="#c1272d"
 	document.getElementById('preview-no-1').style.color ="#000"
-	document.getElementById('preview-no-1').style.color ="#ccc"
+	document.getElementById('preview-no-2').style.color ="#ccc"
 })
 
 abortButton.addEventListener('click', function() {
 	ipcRenderer.send('preview-aborted', searchResult)
 })
+
+cancelButton.addEventListener('mousedown', function() {
+	document.getElementById('preview-cancel').style.backgroundColor ="#666"
+	document.getElementById('preview-cancel-1').style.color ="#ccc"
+})
+
+cancelButton.addEventListener('mouseup', function() {
+	document.getElementById('preview-cancel').style.backgroundColor ="#ccc"
+	document.getElementById('preview-cancel-1').style.color ="#666"
+})
+
 
 cancelButton.addEventListener('click', function() {
 	ipcRenderer.send('preview-cancelled')

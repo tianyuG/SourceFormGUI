@@ -15,7 +15,5 @@
   "remoteIP": "192.168.1.10",
   "remotePath": "C:\\Users\\SourceForm\\Desktop\\SFProc",
   "remoteCOLMAPPath": "C:\\Users\\SourceForm\\Desktop\\COLMAP-dev-windows",
-  "remoteMeshlabPath": "C:\\Program Files\\VCG\\MeshLab\\bin",
-  "openDiagnostics": "e.ctrlKey && e.altKey && e.key === 'D'",
-  "openDiagnostics_remarks": "Ctrl-Shift-Alt-D to open diagnostics window. Modifying `openDiagnostics` variable will not change the keyboard shortcut."
+  "remoteMeshlabPath": "C:\\Program Files\\VCG\\MeshLab\\bin"
 }

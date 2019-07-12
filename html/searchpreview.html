@@ -29,7 +29,7 @@
 				<div class="preview-container">
 					<div class="preview-header">
 						<p class="preview-header" id="preview-ysf">You searched for</p>
-						<p class="preview-header" id="preview-search-query" style="font-style: italic;"></p>
+						<p class="preview-header" id="preview-search-query"></p>
 					</div>
 					<div class="preview-content">
 						<div class="preview-confirmation-container">
@@ -44,14 +44,15 @@
 						</div>
 					</div>
 				</div>
+				
 			</div>
 			<div id="preview-grid"></div>
 		</div>
 		<div class="tail-container"></div>
 	</div>
 
-	<button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
-	<button onclick="require('electron').remote.app.quit();">Quit</button>
+	<!-- <button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
+	<button onclick="require('electron').remote.app.quit();">Quit</button> -->
 	</div>
 	<script>
 		require("../js/searchpreview.js")
