@@ -126,10 +126,15 @@ const populateGrid = (photos) => {
 	// logDebug(JSON.stringify(photos))
 	let count = 0
 	for (let i = 0; i < 20; i++) {
-		if (count < 9 && (photos[i].farm != 0 || photos[i].server != "0")) {
-			let el = document.createElement('img')
-			logDebug(JSON.stringify(photos[i]))
-			el.src = constructFlickrImageURL(photos[i], "n")
+		if (count < 8 && (photos[i].farm != 0 || photos[i].server != "0")) {
+			// let el = document.createElement('img')
+			// // logDebug(JSON.stringify(photos[i]))
+			// el.src = constructFlickrImageURL(photos[i], "n")
+			// el.id = "grid-item-" + i
+			// document.getElementById("preview-grid")
+			// 	.appendChild(el)
+			let el = document.createElement('span')
+			el.style.backgroundImage = "url(\'" + constructFlickrImageURL(photos[i], "n") +"\')"
 			el.id = "grid-item-" + i
 			document.getElementById("preview-grid")
 				.appendChild(el)

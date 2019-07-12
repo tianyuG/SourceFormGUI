@@ -58,3 +58,8 @@ a:active {
 	color: #b3b3b3;
 	font-weight: 700;
 }
+
+/* No scroll bar */
+::-webkit-scrollbar { 
+    display: none; 
+}

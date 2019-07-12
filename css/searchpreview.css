@@ -40,6 +40,16 @@
 	margin-right: 40px;
 }
 
+.content-container {
+	display: flex;
+	flex-direction: row;
+}
+
+.leftpanel-container {
+	display: flex;
+	flex-direction: column;
+}
+
 #preview-yes {
 	background-color: #fff;
 }
@@ -50,4 +60,31 @@
 
 #preview-cancel {
 	background-color: #666;
+}
+
+/* 300px per image */
+
+#preview-grid {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+#grid-item-0,
+#grid-item-1,
+#grid-item-2,
+#grid-item-3,
+#grid-item-4,
+#grid-item-5,
+#grid-item-6,
+#grid-item-7,
+#grid-item-8 {
+	height: 300px;
+	width: 300px;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	border-radius: 16px;
+	margin-bottom: 30px;
 }
