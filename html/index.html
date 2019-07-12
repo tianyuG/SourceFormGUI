@@ -28,80 +28,94 @@
 </head>
 
 <body>
-	<h1>SourceForm</h1>
-	<!-- <a href="diagnostics.html">Diagnostics</a> -->
-	<br />
-	<div class="searchfield-wrapper">
-		<input type="text" id="searchfield" value="search for a new object" onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" onselect="checkSearchFieldOnSelect()" />
-		<img src="../assets/images/Search.svg" alt="" class="searchfield-icon">
-	</div>
-	<p>- OR -</p>
-	<hr>
-	<p>SELECT AN EXISTING MODEL</p>
-	<button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
-	<button onclick="require('electron').remote.app.quit();">Quit</button>
-	<!-- TEST -->
-	<!-- Slider main container -->
-	<div class="swiper-container">
-		<!-- Additional required wrapper -->
-		<div class="swiper-wrapper">
-			<!-- Slides -->
-			<div class="swiper-slide">
-				<div class="swiper-slide-container">
-					<div class="swiper-slide-bg" id="bg0000">
-						<div class="swiper-slide-alt-wrapper">
-							<div class="swiper-slide-alt">
-								Statue of Liberty
-							</div>
-						</div>
-					</div>
-				</div>
+	<div class="main-container">
+		<div class="head-container">
+			<div class="logo-container">
+				<h1>SourceForm</h1>
+				<h3>Automated Crowdsourced Object Generator</h3>
 			</div>
-			<div class="swiper-slide">
-				<div class="swiper-slide-container">
-					<div class="swiper-slide-bg" id="bg0001">
-						<div class="swiper-slide-alt-wrapper">
-							<div class="swiper-slide-alt">
-								David
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="swiper-slide">
-				<div class="swiper-slide-container">
-					<div class="swiper-slide-bg" id="bg0002">
-						<div class="swiper-slide-alt-wrapper">
-							<div class="swiper-slide-alt">
-								World Cup Trophy
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="swiper-slide">
-				<div class="swiper-slide-container">
-					<div class="swiper-slide-bg" id="bg0003">
-						<div class="swiper-slide-alt-wrapper">
-							<div class="swiper-slide-alt">
-								0003
-							</div>
-						</div>
-					</div>
-				</div>
+			<div class="progress-container">
+				<p>TEST</p>
 			</div>
 		</div>
-		<!-- Add Pagination -->
-		<div class="swiper-pagination"></div>
-		<!-- Add left and right arrows -->
-		<div class="swiper-button-next"></div>
-		<div class="swiper-button-prev"></div>
+		<div class="content-container">
+			<div class="searchfield-wrapper">
+				<input type="text" id="searchfield" value="search for a new object" onclick="checkSearchFieldOnClick()" onblur="checkSearchFieldOnBlur()" onselect="checkSearchFieldOnSelect()" />
+				<img src="../assets/images/Search.svg" alt="" class="searchfield-icon">
 	</div>
-	<!-- <button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
-	<button onclick="require('electron').remote.app.quit();">Quit</button> -->
-	<script>
-		require('../js/index.js')
-	</script>
+				<p>- OR -</p>
+				<hr>
+				<p>SELECT AN EXISTING MODEL</p>
+				<button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
+				<button onclick="require('electron').remote.app.quit();">Quit</button>
+				<!-- TEST -->
+				<!-- Slider main container -->
+				<div class="swiper-container">
+					<!-- Additional required wrapper -->
+					<div class="swiper-wrapper">
+						<!-- Slides -->
+						<div class="swiper-slide">
+							<div class="swiper-slide-container">
+								<div class="swiper-slide-bg" id="bg0000">
+									<div class="swiper-slide-alt-wrapper">
+										<div class="swiper-slide-alt">
+											Statue of Liberty
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="swiper-slide-container">
+								<div class="swiper-slide-bg" id="bg0001">
+									<div class="swiper-slide-alt-wrapper">
+										<div class="swiper-slide-alt">
+											David
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="swiper-slide-container">
+								<div class="swiper-slide-bg" id="bg0002">
+									<div class="swiper-slide-alt-wrapper">
+										<div class="swiper-slide-alt">
+											World Cup Trophy
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="swiper-slide-container">
+								<div class="swiper-slide-bg" id="bg0003">
+									<div class="swiper-slide-alt-wrapper">
+										<div class="swiper-slide-alt">
+											0003
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Add Pagination -->
+					<div class="swiper-pagination"></div>
+					<!-- Add left and right arrows -->
+					<div class="swiper-button-next"></div>
+					<div class="swiper-button-prev"></div>
+				</div>
+			</div>
+			<div class="tail-container"></div>
+
+			<!-- <button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
+			<button onclick="require('electron').remote.app.quit();">Quit</button> -->
+		</div>
+
+
+		<script>
+			require('../js/index.js')
+		</script>
 </body>
 
 </html>

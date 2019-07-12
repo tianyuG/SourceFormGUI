@@ -92,9 +92,7 @@
 	background: #cccccc !important;
 }
 
-.swiper-button-prev {
-
-}
+.swiper-button-prev {}
 
 #searchfield {
 	height: 98px;
@@ -108,7 +106,7 @@
 	font-size: 27px;
 	font-weight: 700;
 	text-transform: uppercase;
-	color:  #666666;
+	color: #666666;
 }
 
 .searchfield-wrapper {
@@ -128,4 +126,19 @@
 	top: 300px;
 	left: 80px;
 	margin-top: -70px;
+}
+
+.main-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.head-container {
+	display: flex;
+	flex-direction: row;
+}
+
+.head-container h1 {
+	font-weight: 700;
+	text-transform: uppercase;
 }

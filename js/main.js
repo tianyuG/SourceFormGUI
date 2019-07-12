@@ -29,7 +29,7 @@ global.isInDebugEnv = process.argv.includes('--debugenv')
 global.isInFullscreenDebugEnv = process.argv.includes('--fdebugenv')
 
 // List of current jobs
-// Format: [['name', 'stage', 'elapsed', 'estimate']]
+// Format: [['name', 'stage']]
 global.jobs = []
 /*
  * END: GLOBAL VARIABLES
