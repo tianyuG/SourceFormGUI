@@ -5,6 +5,14 @@ const {
 
 document.addEventListener("keydown", function(e) {
 	// logDebug(e.key)
+	if (e.ctrlKey && e.altKey && e.key === 'I') {
+		// logDebug("ctrl-alt-shift-d pressed.")
+		ipcRenderer.send("open-devtools")
+	}
+	if (e.ctrlKey && e.altKey && e.key === 'O') {
+		// logDebug("ctrl-alt-shift-d pressed.")
+		ipcRenderer.send("open-devtools-main")
+	}
 	if (e.ctrlKey && e.altKey && e.key === 'J') {
 		// logDebug("ctrl-alt-shift-d pressed.")
 		ipcRenderer.send("open-diagnostics")

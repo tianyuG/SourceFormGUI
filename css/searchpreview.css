@@ -1,0 +1,53 @@
+.black-text {
+	color: #000;
+}
+
+.white-text {
+	color:  #fff;
+}
+
+.lgrey-text {
+	color: #ccc;
+}
+
+.dgrey-text {
+	color: #666;
+}
+
+.bold-text {
+	font-weight: 700;
+}
+
+.preview-button {
+	font-size: 24px;
+	height: 60px;
+	border: 0;
+	border-radius: 16px;
+	margin-top: 16px;
+	margin-bottom: 16px;
+	padding-left: 16px;
+	padding-top: 30px;
+	transform: translateY(0%);
+}
+
+.preview-content {
+	display: flex;
+	flex-direction: row;
+}
+
+.preview-confirmation-container {
+	min-width: 	400px;
+	margin-right: 40px;
+}
+
+#preview-yes {
+	background-color: #fff;
+}
+
+#preview-no {
+	background-color: #c1272d;
+}
+
+#preview-cancel {
+	background-color: #666;
+}

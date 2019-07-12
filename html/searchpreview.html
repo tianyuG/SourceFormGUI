@@ -10,23 +10,44 @@
 	<script src="../utils/keybindings.js"></script>
 	<link rel="stylesheet" type="text/css" href="../css/common.css">
 	<link rel="stylesheet" type="text/css" href="../css/disable-text-selection.css">
+	<link rel="stylesheet" type="text/css" href="../css/searchpreview.css">
 </head>
 
 <body>
-	<div class="preview-container">
-		<div class="preview-header">
-			<span class="preview-header">We found these images of </span>
-			<span class="preview-header" id="preview-search-query" style="font-style: italic;"></span>
-		</div>
-		<div id="preview-grid"></div>
-		<div class="preview-confirmation-container">
-			<h2>Are most of those images directly related to the model you want us to print?</h2>
-			<div class="preview-confirmation-buttons-container">
-				<button id="preview-no">No, I want to change my search to something else</button>
-				<button id="preview-yes">Looks alright to me, go ahead and print it out</button>
+	<div class="main-container">
+		<div class="head-container">
+			<div class="logo-container">
+				<h1>S<span class="head-grey">ource</span>F<span class="head-grey">orm</span></h1>
+				<h3>Automated Crowdsourced Object Generator</h3>
+			</div>
+			<div class="progress-container">
+				<p>TEST</p>
 			</div>
 		</div>
+		<div class="content-container">
+			<div class="preview-container">
+				<div class="preview-header">
+					<p class="preview-header" id="preview-ysf">You searched for</p>
+					<p class="preview-header" id="preview-search-query" style="font-style: italic;"></p>
+				</div>
+				<div class="preview-content">
+					<div class="preview-confirmation-container">
+						<h2>Are these images of	what you searched for?</h2>
+						<div class="preview-confirmation-buttons-container">
+							<div class="preview-button" id="preview-yes"><span class="black-text bold-text">YES!</span> <span class="dgrey-text">Let's do this.</span></div>
+							<div class="preview-button" id="preview-no"><span class="white-text bold-text">NOPE.</span> <span class="lgrey-text">Refine search.</span></div>
+							<div class="preview-button" id="preview-cancel"><span class="lgrey-text bold-text">CANCEL</span></div>
+							<!-- <button id="preview-no">No, I want to change my search to something else</button>
+						<button id="preview-yes">Looks alright to me, go ahead and print it out</button> -->
+						</div>
+					</div>
+					<div id="preview-grid"></div>
+				</div>
+			</div>
+		</div>
+		<div class="tail-container"></div>
 	</div>
+
 	<button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
 	<button onclick="require('electron').remote.app.quit();">Quit</button>
 	</div>

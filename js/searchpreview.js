@@ -33,9 +33,8 @@ ipcRenderer.once('search-query-relay', async (event, message) => {
 				ndate = ret[entry].updated
 			}
 		}
-		// TODO: Create an overlay to alert user a model already exists. Ask if they just want to print it out
-		document.getElementById("preview-search-query")
-			.innerHTML = "EXISTS " + message
+		document.getElementById("preview-ysf")
+			.innerHTML = "You searched for:"
 	}
 
 	let flickr = new Flickr(require('electron')

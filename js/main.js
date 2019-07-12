@@ -363,24 +363,32 @@ ipcMain.on('set-globalvariablepath', function(event, data) {
  * Load setup window upon request
  */
 
-ipcMain.on('open-diagnostics', function(event, data) {
+ipcMain.on('open-diagnostics', (event, data) => {
 	windows.preview.loadFile('./html/diagnostics.html')
 })
 
-ipcMain.on('open-diagnostics-main', function(event, data) {
+ipcMain.on('open-diagnostics-main', (event, data) => {
 	windows.main.loadFile('./html/diagnostics.html')
 })
 
-ipcMain.on('open-setup', function(event, data) {
+ipcMain.on('open-setup', (event, data) => {
 	windows.preview.loadFile('./html/setup.html')
 })
 
-ipcMain.on('open-setup-main', function(event, data) {
+ipcMain.on('open-setup-main', (event, data) => {
 	windows.main.loadFile('./html/setup.html')
 })
 
-ipcMain.on('quit-app', function(event, data) {
+ipcMain.on('quit-app', (event, data) => {
 	app.quit()
+})
+
+ipcMain.on('open-devtools', (event, data) => {
+	windows.preview.webContents.toggleDevTools()
+})
+
+ipcMain.on('open-devtools-main', (event, data) => {
+	windows.main.webContents.toggleDevTools()
 })
 
 /*
