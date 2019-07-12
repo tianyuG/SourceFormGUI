@@ -92,7 +92,7 @@ let keyboard = $('input:text')
 		// theme: 'theme-black',
 		layout: {
 			'normal': [
-				'1 2 3 4 5 6 7 8 9 0 {backspace}',
+				['1 2 3 4 5 6 7 8 9 0 {backspace}'],
 				['Q W E R T Y U I O P {sp:1}'],
 				['{sp:3} A S D F G H J K L \' {enterIcon}'],
 				['{sp:1} Z X C V B N M . {sp:3}'],
@@ -121,6 +121,22 @@ $(document)
 		} else if ($target.is("input#searchfield")) {
 			$('div.virtual-keyboard')
 				.css("z-index", "1");
+			logDebug("TEST")
+			// $('div.virtual-keyboard')
+			// 	.css("width", "1760px");
+			// $('div.virtual-keyboard')
+			// 	.css("padding-top", "50px");
+			// $('div.virtual-keyboard')
+			// 	.css("padding-bottom", "50px");
+			// $('div.virtual-keyboard')
+			// 	.css("margin-top", "-70px");
+			// if ($target.get[0].getBoundingClientRect()
+			// 	.left > 140) {
+				$('div.virtual-keyboard')
+					.css("margin-left", "-80px");
+				$('div.virtual-keyboard')
+					.css("transform", "translateX(-0%)");
+			// }
 		}
 	});
 

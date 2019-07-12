@@ -7,11 +7,13 @@
     white-space: nowrap;
     border-radius: .5rem;
     width: 1760px;
-    padding-top: 50px;
-    padding-bottom: 50px;
-    margin-top: -70px;
-    margin-left: 8px;
-    transform: translateX(-5%);
+    padding-top: 64px;
+    padding-bottom: 64px;
+    /* margin-top: -70px;
+    margin-left: 0px;
+    left: 0px;
+    transform: translateX(16px);
+    z-index: 1; */
 }
 
 .virtual-keyboard .layout {

@@ -362,12 +362,25 @@ ipcMain.on('set-globalvariablepath', function(event, data) {
 /*
  * Load setup window upon request
  */
-ipcMain.on('load-setup-window', function(event, data) {
-	windows.preview.loadFile('./html/setup.html')
-})
 
 ipcMain.on('open-diagnostics', function(event, data) {
 	windows.preview.loadFile('./html/diagnostics.html')
+})
+
+ipcMain.on('open-diagnostics-main', function(event, data) {
+	windows.main.loadFile('./html/diagnostics.html')
+})
+
+ipcMain.on('open-setup', function(event, data) {
+	windows.preview.loadFile('./html/setup.html')
+})
+
+ipcMain.on('open-setup-main', function(event, data) {
+	windows.main.loadFile('./html/setup.html')
+})
+
+ipcMain.on('quit-app', function(event, data) {
+	app.quit()
 })
 
 /*

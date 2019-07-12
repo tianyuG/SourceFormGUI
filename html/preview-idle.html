@@ -14,7 +14,7 @@
 
 <body>
 	<button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
-	<button onclick="require('electron').ipcRenderer.send('load-setup-window');">Setup Window</button>
+	<button onclick="require('electron').ipcRenderer.send('open-setup');">Setup Window</button>
 	<button onclick="require('electron').remote.getCurrentWindow().close();">Close Window</button>
 	<img src="../assets/images/logo.png" style="display: block; height: 80vh; width: auto;">
 </body>
