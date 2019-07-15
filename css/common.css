@@ -62,8 +62,8 @@ a:active {
 }
 
 /* No scroll bar */
-::-webkit-scrollbar { 
-    display: none; 
+::-webkit-scrollbar {
+	display: none;
 }
 
 .header-swoosh-container {

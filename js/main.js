@@ -71,6 +71,7 @@ app.on('ready', () => {
 		})
 		windows.main.loadFile('./html/index.html')
 		windows.main.webContents.closeDevTools()
+		windows.main.setBackgroundColor("#000")
 		loadGlobalVariables()
 	} else {
 		windows.main = new BrowserWindow({
@@ -87,6 +88,7 @@ app.on('ready', () => {
 		windows.main.setMinimizable(false)
 		windows.main.setFullScreenable(false)
 		windows.main.setAlwaysOnTop(true)
+		windows.main.setBackgroundColor("#000")
 		loadGlobalVariables()
 	}
 
@@ -126,7 +128,8 @@ app.on('ready', () => {
 			show: false
 		})
 		windows.preview.loadFile('./html/preview-idle.html')
-		windows.main.webContents.closeDevTools()
+		windows.preview.webContents.closeDevTools()
+		windows.preview.setBackgroundColor("#000")
 	} else {
 		if (isInFullscreenDebugEnv) {
 			isInDebugEnv = true
@@ -141,10 +144,11 @@ app.on('ready', () => {
 			show: false
 		})
 		windows.preview.loadFile('./html/preview-idle.html')
-		windows.main.webContents.closeDevTools()
+		windows.preview.webContents.closeDevTools()
 		windows.preview.setMaximizable(false)
 		windows.preview.setMinimizable(false)
 		windows.preview.setFullScreenable(false)
+		windows.preview.setBackgroundColor("#000")
 		// windows.preview.setAlwaysOnTop(true)
 	}
 
