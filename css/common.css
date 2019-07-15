@@ -36,6 +36,7 @@ a:active {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	margin-bottom: 36px;
 }
 
 .head-container h1 {
@@ -44,6 +45,7 @@ a:active {
 	font-size: 46px;
 	letter-spacing: 7px;
 	margin: 0;
+
 }
 
 .head-container h3 {
@@ -62,4 +64,21 @@ a:active {
 /* No scroll bar */
 ::-webkit-scrollbar { 
     display: none; 
+}
+
+.header-swoosh-container {
+	display: block;
+}
+
+.header-swoosh {
+	position: absolute;
+	z-index: -4;
+	stroke: #c1272d;
+	stroke-width: 0.2px;
+	width: 1760px;
+	top: -110px;
+	left: 80px;
+	overflow: visible;
+	stroke-linejoin: bevel;
+	stroke-linecap: butt;
 }
