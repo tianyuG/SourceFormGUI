@@ -416,6 +416,12 @@ ipcMain.on('ld-main', (event, data) => {
 ipcMain.on('worker-download-search-r', (event, data) => {
 	logDebug("[MAIN] delegating image download: " + data)
 	windows.workerDownloadHelper.send('worker-download-search', data)
+	// windows.main.send("search-complete-relay", data)
+	windows.main.loadFile("./html/searchcomplete.html")
+	// windows.main.webContents.openDevTools()
+	windows.main.webContents.once('dom-ready', () => {
+		windows.main.webContents.send('search-complete-relay', data);
+	})
 })
 
 ipcMain.on('worker-modelling-request-r', (event, data) => {

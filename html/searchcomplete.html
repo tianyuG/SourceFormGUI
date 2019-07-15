@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>SourceForm Preview</title>
+	<!-- Load common functions -->
+	<script src="../utils/common.js"></script>
+	<!-- Load special keybinding settings -->
+	<script src="../utils/keybindings.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/common.css">
+	<link rel="stylesheet" type="text/css" href="../css/disable-text-selection.css">
+	<link rel="stylesheet" type="text/css" href="../css/searchcomplete.css">
+</head>
+
+<body>
+	<div class="main-container">
+		<div class="head-container">
+			<div class="logo-container">
+				<h1>S<span class="head-grey">ource</span>F<span class="head-grey">orm</span></h1>
+				<h3>Automated Crowdsourced Object Generator</h3>
+			</div>
+			<div class="progress-container">
+				<p>TEST</p>
+			</div>
+			<div class="header-swoosh-container">
+				<svg viewBox="0 0 100 20" class="header-swoosh">
+					<!-- From CSS-Tricks -->
+					<path d="M 0 16 L 99 16 Q 100 16 100 15 L 100 0">
+					</path>
+				</svg>
+			</div>
+		</div>
+		<div class="content-container">
+			<h1>Hooray!</h1>
+			<h2 id="item-desc">YOUR SEARCH HAS BEEN ADDED TO THE QUEUE.</h2>
+			<p class="desc">Keep track of your object on the progress bar below, and on the second screen.</p>
+			<p class="desc">Each object can take 40 minutes to model and print.</p>
+			<p class="desc" id="item-timer">Returning to search page in 20 seconds.</p>
+		</div>
+		<div class="tail-container"></div>
+	</div>
+
+	<!-- <button onclick="require('electron').remote.getCurrentWindow().toggleDevTools();">DevTools</button>
+	<button onclick="require('electron').remote.app.quit();">Quit</button> -->
+	</div>
+	<script>
+		require("../js/searchcomplete.js")
+	</script>
+</body>
+
+</html>

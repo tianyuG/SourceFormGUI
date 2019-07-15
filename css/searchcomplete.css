@@ -1,0 +1,39 @@
+.black-text {
+	color: #000;
+}
+
+.white-text {
+	color: #fff;
+}
+
+.lgrey-text {
+	color: #ccc;
+}
+
+.dgrey-text {
+	color: #666;
+}
+
+.bold-text {
+	font-weight: 700;
+}
+
+h1 {
+	font-size: 36px;
+	color: #ccc;
+}
+
+h2 {
+	font-size: 24px;
+	color: #fff;
+}
+
+.desc {
+	font-size: 18px;
+	color:  #ccc;
+}
+
+#item-timer {
+	color: #666 !important;
+	font-variant-numeric: tabular-nums !important;
+}
