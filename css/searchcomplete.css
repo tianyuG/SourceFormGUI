@@ -21,16 +21,19 @@
 h1 {
 	font-size: 36px;
 	color: #ccc;
+	font-weight: 700;
 }
 
 h2 {
 	font-size: 24px;
 	color: #fff;
+	font-weight: 700;
 }
 
 .desc {
 	font-size: 18px;
 	color:  #ccc;
+	font-weight: 500;
 }
 
 #item-timer {
