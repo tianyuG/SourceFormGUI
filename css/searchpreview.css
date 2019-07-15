@@ -55,6 +55,8 @@
 .leftpanel-container {
 	display: flex;
 	flex-direction: row;
+	width: 440px;
+	height: 660px;
 	/* justify-content: space-between; */
 	/* align-self: stretch; */
 }
