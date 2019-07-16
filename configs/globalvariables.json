@@ -12,7 +12,9 @@
   "extraPageCount": 2,
   "imageSize": "url_z",
   "downloadTimeout": 15000,
-  "remoteIP": "192.168.1.10",
+  "displayMain": 2528732444,
+  "displayPreview": 2779098405,
+  "remoteIP": "10.0.0.6",
   "remotePath": "C:\\Users\\SourceForm\\Desktop\\SFProc",
   "remoteCOLMAPPath": "C:\\Users\\SourceForm\\Desktop\\COLMAP-dev-windows",
   "remoteMeshlabPath": "C:\\Program Files\\VCG\\MeshLab\\bin"
