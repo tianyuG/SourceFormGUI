@@ -28,6 +28,9 @@ global.isInDebugEnv = process.argv.includes('--debugenv')
 // Define if the program is run in debug environment (fullscreen)
 global.isInFullscreenDebugEnv = process.argv.includes('--fdebugenv')
 
+// Define if the program is run on a low res monitor
+global.isLowRes = process.argv.includes('--lres')
+
 // List of current jobs
 // Format: [['name', 'stage']]
 global.jobs = []

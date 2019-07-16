@@ -32,7 +32,8 @@
   "scripts": {
     "start": "electron .",
     "rebuild": "electron-rebuild .",
-    "debug": "electron . --debugenv"
+    "debug": "electron . --debugenv",
+    "ldebug": "electron . --debugenv --lres"
   },
   "repository": {
     "type": "git",

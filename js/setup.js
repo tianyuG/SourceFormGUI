@@ -17,6 +17,9 @@ const fs = require('fs')
 require('electron')
 	.remote.getCurrentWindow()
 	.webContents.once('dom-ready', () => {
+		if (require('electron').remote.getGlobal("isLowRes")) {
+            require('electron').webFrame.setZoomFactor(0.8)
+        }
 		fs.access(`C:\\Program Files\\AutoHotkey\\AutoHotkey.exe`, (err) => {
 			if (err) {
 				document.getElementById('start-ahk-button')

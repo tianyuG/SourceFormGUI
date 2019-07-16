@@ -212,3 +212,11 @@ const checkAgainstExisting = async (term) => {
 	logDebug(JSON.stringify(retArr))
 	return retArr
 }
+
+require('electron')
+    .remote.getCurrentWindow()
+    .webContents.once('dom-ready', () => {
+        if (require('electron').remote.getGlobal("isLowRes")) {
+            require('electron').webFrame.setZoomFactor(0.8)
+        }
+    })

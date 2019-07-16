@@ -66,6 +66,9 @@ require('electron')
 		getGlobalVariablesCount();
 		getGlobalVariables();
 		checkLocalJSONFiles();
+		if (require('electron').remote.getGlobal("isLowRes")) {
+			require('electron').webFrame.setZoomFactor(0.8)
+		}
 	});
 
 // Use `/` instead of `\\` in filepath, even in Windows!

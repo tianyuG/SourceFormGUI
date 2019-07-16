@@ -1,6 +1,7 @@
 const {
 	ipcRenderer,
-	remote
+	remote,
+	webFrame
 } = require('electron')
 const purify = require('dompurify')
 let selectAll = false
@@ -238,3 +239,11 @@ carousel.on('tap', function() {
 });
 
 // Read `../carousel/content.json` and populate the carousel accordingly.
+
+require('electron')
+    .remote.getCurrentWindow()
+    .webContents.once('dom-ready', () => {
+        if (require('electron').remote.getGlobal("isLowRes")) {
+            require('electron').webFrame.setZoomFactor(0.8)
+        }
+    })
