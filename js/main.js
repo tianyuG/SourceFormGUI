@@ -143,6 +143,7 @@ app.on('ready', async () => {
         windows.preview.setMinimizable(false)
         windows.preview.setFullScreenable(false)
         windows.preview.setResizable(false)
+        windows.preview.setMovable(false)
         windows.preview.setBackgroundColor("#000")
         // windows.preview.setAlwaysOnTop(true)
     }
