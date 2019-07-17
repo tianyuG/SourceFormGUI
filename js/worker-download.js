@@ -149,143 +149,145 @@ const transferToRemote = (projectName, localPath) => {
     let rmtImgPath = require('path').join(rmtProjPath, "/images")
     logMain("[WK_DLD] rmtProjPath, rmtImgPath: " + rmtProjPath + " " + rmtImgPath)
 
-    let colmapPath = require('electron')
-        .remote.getGlobal('remoteCOLMAPPath')
+    let colmapPath = require('electron').remote.getGlobal('remoteCOLMAPPath')
     logMain("[WK_DLD] colampPath: " + colmapPath)
-    // let colmapExecPath = path.join(colmapPath, "COLMAP.bat")
-    // let meshlabPath = require('electron')
-    //     .remote.getGlobal(remoteMeshlabPath)
-    // let colmapBatch = ""
-    // let commands = []
+    let colmapExecPath = path.join(colmapPath, "COLMAP.bat")
+    logMain("[WK_DLD] colmapExecPath: " + colmapExecPath)
+    let meshlabPath = require('electron').remote.getGlobal('remoteMeshlabPath')
+    logMain("[WK_DLD] meshlabPath: " + meshlabPath)
+    let colmapBatch = ""
+    let commands = []
 
     // logMain(require('path').resolve(require('os').homedir(), "./.ssh/id_rsa"))
 
-    // var Client = require('ssh2').Client
-    // var conn = new Client()
+    
 
-    // // Create colmap batch file
-    // // 
-    // // Step 1: COLMAP photogrammetry
-    // // Step 2: pointcloud.py postprocessing point cloud
-    // // Step 3: meshlab ply -> stl
-    // // Step 4: stl -> bmps
-    // // 
-    // // commands[00] <- COLMAP feature_extractor
-    // // commands[01] <- COLMAP exhaustive_matcher
-    // // commands[02] <- COLMAP mapper
-    // // commands[03] <- COLMAP image_undistorter
-    // // commands[04] <- COLMAP patch_match_stereo
-    // // commands[05] <- COLMAP stereo_fusion
-    // // commands[06] <- pointcloud.py (thicken and inverse faces)
-    // // commands[07] <- meshlab (ply -> stl)
-    // // commands[08] <- slicing (TODO; stl -> bmps)
-    // // 
-    // // STEP 1
-    // // feature_extractor
-    // // NOTE: GPU is disabled in this step or it could crash
-    // colmapBatch = colmapExecPath + " feature_extractor"
-    // colmapBatch += " --database_path " + jpath(rmtProjPath, "database.db")
-    // colmapBatch += " --image_path " + jpath(rmtProjPath, "images")
-    // colmapBatch += " --SiftExtraction.use_gpu 0"
-    // commands.push(colmapBatch)
-    // // exhaustive_matcher
-    // colmapBatch = colmapExecPath + " exhaustive_matcher"
-    // colmapBatch += " --database_path " + jpath(rmtProjPath, "database.db")
-    // colmapBatch += " --SiftMatching.use_gpu 1"
-    // commands.push(colmapBatch)
-    // // mapper
-    // colmapBatch = colmapExecPath + " mapper"
-    // colmapBatch += " --database_path " + jpath(rmtProjPath, "database.db")
-    // colmapBatch += " --image_path " + jpath(rmtProjPath, "images")
-    // colmapBatch += " --output_path " + jpath(rmtProjPath, "sparse")
-    // commands.push(colmapBatch)
-    // // image_undistorter
-    // colmapBatch = colmapExecPath + " image_undistorter"
-    // colmapBatch += " --image_path " + jpath(rmtProjPath, "images")
-    // colmapBatch += " --input_path " + jpath(rmtProjPath, "sparse/0")
-    // colmapBatch += " --output_path " + jpath(rmtProjPath, "dense")
-    // colmapBatch += " --output_type COLMAP"
-    // colmapBatch += " --max_image_size 2000"
-    // commands.push(colmapBatch)
-    // // patch_match_stereo
-    // colmapBatch = colmapExecPath + " patch_match_stereo"
-    // colmapBatch += " --workspace_path " + jpath(rmtProjPath, "dense")
-    // colmapBatch += " --PatchMatchStereo.geom_consistency true"
-    // colmapBatch += " --PatchMatchStereo.num_iterations 4"
-    // colmapBatch += " --PatchMatchStereo.window_step 2"
-    // colmapBatch += " --PatchMatchStereo.gpu_index 0,1"
-    // colmapBatch += " --PatchMatchStereo.num_samples 10"
-    // commands.push(colmapBatch)
-    // // stereo_fusion
-    // colmapBatch = colmapExecPath + " stereo_fusion"
-    // colmapBatch += " --workspace_path " + jpath(rmtProjPath, "dense")
-    // colmapBatch += " --workspace_format COLMAP"
-    // colmapBatch += " --input_type geometric"
-    // colmapBatch += " --output_path " + jpath(rmtProjPath, "dense", "fused.ply")
-    // commands.push(colmapBatch)
-    // // 
-    // // STEP 2
-    // // pointcloud.py
-    // colmapBatch = "python " + jpath(colmapPath, "pointcloud.py") + " " + jpath(rmtProjPath, "dense", "fused.ply")
-    // commands.push(colmapBatch)
-    // // 
-    // // STEP 3
-    // // meshlab
-    // colmapBatch = jpath(meshlabPath, "meshlabserver.exe") + " -i " + jpath(rmtProjPath, "dense", "new_fused.ply") + " -o " + jpath(rmtProjPath, "dense", "new_fused.stl")
-    // commands.push(colmapBatch)
-    // // 
-    // // STEP 4
-    // // slicing
+    // Create colmap batch file
+    // 
+    // Step 1: COLMAP photogrammetry
+    // Step 2: pointcloud.py postprocessing point cloud
+    // Step 3: meshlab ply -> stl
+    // Step 4: stl -> bmps
+    // 
+    // commands[00] <- COLMAP feature_extractor
+    // commands[01] <- COLMAP exhaustive_matcher
+    // commands[02] <- COLMAP mapper
+    // commands[03] <- COLMAP image_undistorter
+    // commands[04] <- COLMAP patch_match_stereo
+    // commands[05] <- COLMAP stereo_fusion
+    // commands[06] <- pointcloud.py (thicken and inverse faces)
+    // commands[07] <- meshlab (ply -> stl)
+    // commands[08] <- slicing (TODO; stl -> bmps)
+    // 
+    // STEP 1
+    // feature_extractor
+    // NOTE: GPU is disabled in this step or it could crash
+    colmapBatch = colmapExecPath + " feature_extractor"
+    colmapBatch += " --database_path " + jpath(rmtProjPath, "database.db")
+    colmapBatch += " --image_path " + jpath(rmtProjPath, "images")
+    colmapBatch += " --SiftExtraction.use_gpu 0"
+    commands.push(colmapBatch)
+    // exhaustive_matcher
+    colmapBatch = colmapExecPath + " exhaustive_matcher"
+    colmapBatch += " --database_path " + jpath(rmtProjPath, "database.db")
+    colmapBatch += " --SiftMatching.use_gpu 1"
+    commands.push(colmapBatch)
+    // mapper
+    colmapBatch = colmapExecPath + " mapper"
+    colmapBatch += " --database_path " + jpath(rmtProjPath, "database.db")
+    colmapBatch += " --image_path " + jpath(rmtProjPath, "images")
+    colmapBatch += " --output_path " + jpath(rmtProjPath, "sparse")
+    commands.push(colmapBatch)
+    // image_undistorter
+    colmapBatch = colmapExecPath + " image_undistorter"
+    colmapBatch += " --image_path " + jpath(rmtProjPath, "images")
+    colmapBatch += " --input_path " + jpath(rmtProjPath, "sparse/0")
+    colmapBatch += " --output_path " + jpath(rmtProjPath, "dense")
+    colmapBatch += " --output_type COLMAP"
+    colmapBatch += " --max_image_size 2000"
+    commands.push(colmapBatch)
+    // patch_match_stereo
+    colmapBatch = colmapExecPath + " patch_match_stereo"
+    colmapBatch += " --workspace_path " + jpath(rmtProjPath, "dense")
+    colmapBatch += " --PatchMatchStereo.geom_consistency true"
+    colmapBatch += " --PatchMatchStereo.num_iterations 4"
+    colmapBatch += " --PatchMatchStereo.window_step 2"
+    colmapBatch += " --PatchMatchStereo.gpu_index 0,1"
+    colmapBatch += " --PatchMatchStereo.num_samples 10"
+    commands.push(colmapBatch)
+    // stereo_fusion
+    colmapBatch = colmapExecPath + " stereo_fusion"
+    colmapBatch += " --workspace_path " + jpath(rmtProjPath, "dense")
+    colmapBatch += " --workspace_format COLMAP"
+    colmapBatch += " --input_type geometric"
+    colmapBatch += " --output_path " + jpath(rmtProjPath, "dense", "fused.ply")
+    commands.push(colmapBatch)
+    // 
+    // STEP 2
+    // pointcloud.py
+    colmapBatch = "python " + jpath(colmapPath, "pointcloud.py") + " " + jpath(rmtProjPath, "dense", "fused.ply")
+    commands.push(colmapBatch)
+    // 
+    // STEP 3
+    // meshlab
+    colmapBatch = jpath(meshlabPath, "meshlabserver.exe") + " -i " + jpath(rmtProjPath, "dense", "new_fused.ply") + " -o " + jpath(rmtProjPath, "dense", "new_fused.stl")
+    commands.push(colmapBatch)
+    // 
+    // STEP 4
+    // slicing
 
-    // logMain("[WK_DLD] Parsed commands. Copy files.")
-    // conn.on('ready', () => {
-    //         logMain("[WK_DLD] ssh2 ready.")
-    //         conn.sftp((err, sftp) => {
-    //             if (err) {
-    //                 logMain("[WK_DLD] ssh2 - sftp failed: " + err)
-    //             }
+    logMain("[WK_DLD] Parsed commands. Copy files.")
 
-    //             sftp.mkdir(rmtProjPath, (err) => {
-    //                 logMain("[WK_DLD] ssh2 - mkdir project folder failed: " + err)
-    //             })
-    //             sftp.mkdir(path.resolve(rmtProjPath, "./sparse"), (err) => {
-    //                 logMain("[WK_DLD] ssh2 - mkdir sparse folder failed: " + err)
-    //             })
-    //             sftp.mkdir(path.resolve(rmtProjPath, "./dense"), (err) => {
-    //                 logMain("[WK_DLD] ssh2 - mkdir dense folder failed: " + err)
-    //             })
-    //             sftp.mkdir(rmtImgPath, (err) => {
-    //                 logMain("[WK_DLD] ssh2 - mkdir images folder failed: " + err)
-    //             })
+    var Client = require('ssh2').Client
+    var conn = new Client()
+    conn.on('ready', () => {
+            logMain("[WK_DLD] ssh2 ready.")
+            conn.sftp((err, sftp) => {
+                if (err) {
+                    logMain("[WK_DLD] ssh2 - sftp failed: " + err)
+                }
 
-    //             logMain("[WK_DLD] ssh2 - folders created.")
+                sftp.mkdir(rmtProjPath, (err) => {
+                    logMain("[WK_DLD] ssh2 - mkdir project folder failed: " + err)
+                })
+                sftp.mkdir(path.resolve(rmtProjPath, "./sparse"), (err) => {
+                    logMain("[WK_DLD] ssh2 - mkdir sparse folder failed: " + err)
+                })
+                sftp.mkdir(path.resolve(rmtProjPath, "./dense"), (err) => {
+                    logMain("[WK_DLD] ssh2 - mkdir dense folder failed: " + err)
+                })
+                sftp.mkdir(rmtImgPath, (err) => {
+                    logMain("[WK_DLD] ssh2 - mkdir images folder failed: " + err)
+                })
 
-    //             glob(path.resolve(localPath, "./*.jpg"), (err, files) => {
-    //                 // for each file...
-    //                 for (let f in files) {
-    //                     sftp.fastPut(files[f], rmtImgPath, (err) => {
-    //                         logMain("[WK_DLD] ssh2 - fastPut image failed: " + err)
-    //                     })
-    //                     // Announce file transfer progress
-    //                 }
-    //             })
+                logMain("[WK_DLD] ssh2 - folders created.")
 
-    //             // Announce file transfer complete
-    //             ipcRenderer.send('worker-download-transfer-complete')
-    //             // ipcRenderer.send('worker-modelling-request-r', {
-    //             // 	projname: projectName,
-    //             // 	abspath: absImagePath,
-    //             // 	rmtpath: rmtImgPath,
-    //             // 	commands: commands
-    //             // })
-    //         })
-    //     })
-    //     .connect({
-    //         host: '169.254.214.31',
-    //         port: 22,
-    //         username: 'tianyu',
-    //         privateKey: require('fs').readFileSync('C:\\Users\\Tianyu\\.ssh\\id_rsa')
-    //     })
+                // glob(path.resolve(localPath, "./*.jpg"), (err, files) => {
+                //     // for each file...
+                //     for (let f in files) {
+                //         sftp.fastPut(files[f], rmtImgPath, (err) => {
+                //             logMain("[WK_DLD] ssh2 - fastPut image failed: " + err)
+                //         })
+                //         // Announce file transfer progress
+                //     }
+                // })
+
+                // Announce file transfer complete
+                // ipcRenderer.send('worker-download-transfer-complete')
+                // ipcRenderer.send('worker-modelling-request-r', {
+                // 	projname: projectName,
+                // 	abspath: absImagePath,
+                // 	rmtpath: rmtImgPath,
+                // 	commands: commands
+                // })
+            })
+        })
+        .connect({
+            host: '169.254.214.31',
+            port: 22,
+            username: 'tianyu',
+            privateKey: require('fs').readFileSync('C:\\Users\\Tianyu\\.ssh\\id_rsa')
+        })
 }
 
 // Join path and parse with delimiter for batch files

@@ -1,7 +1,79 @@
+https://blog.frankfu.com.au/2019/03/21/moving-from-windows-1809s-openssh-to-openssh-portable/
+
 https://stackoverflow.com/questions/16212816/setting-up-openssh-for-windows-using-public-key-authentication
 
 https://github.com/PowerShell/Win32-OpenSSH/issues/800
 
+
+
+After performing the obligatory google search, I stumbled across several threads but still couldn't find a solution. This annoyed me enough to look for other alternatives and discovered a Windows port of OpenSSH Portable. So since I didn't want (probably not even possible) to have both binaries (and ssh-agents) running side by side. I decided it would be best that I remove Window's 1809's installed version first then install OpenSSH Portable
+Uninstall Windows' OpenSSH
+
+This basically removes the binaries installed in C:\Windows\System32\OpenSSH
+
+
+Remove-WindowsCapability -Online -Name "OpenSSH.Client~~~~0.0.1.0"
+Remove-WindowsCapability -Online -Name "OpenSSH.Server~~~~0.0.1.0"
+
+Stop and delete the existing Windows Service
+
+Get-Service ssh-agent | Stop-Service
+sc.exe delete ssh-agent
+
+Install OpenSSH Portable
+
+I'm using Chocolatey's openssh package but you can download and install the binaries yourself here. This installs the binaries into C:\Program Files\OpenSSH-Win64 . The /SSHAgentFeature flag ensures that the SSH Agent Service gets installed too.
+
+choco install openssh --package-parameters="/SSHAgentFeature"
+
+Note version 7.9.0.1 was the last good working version for me. 8.0.0.1 was complaining about my ssh key being in an invalid format.
+
+Check that you have the binaries installed
+
+Get-Command ssh*exe
+    
+    CommandType Name              Version Source
+    ----------- ----              ------- ------
+    Application ssh.exe           7.9.0.0 C:\Program Files\OpenSSH-Win64\ssh.exe
+    Application ssh-add.exe       7.9.0.0 C:\Program Files\OpenSSH-Win64\ssh-add.exe
+    Application ssh-agent.exe     7.9.0.0 C:\Program Files\OpenSSH-Win64\ssh-agent.exe
+    Application sshd.exe          7.9.0.0 C:\Program Files\OpenSSH-Win64\sshd.exe
+    Application ssh-keygen.exe    7.9.0.0 C:\Program Files\OpenSSH-Win64\ssh-keygen.exe
+    Application ssh-keyscan.exe   7.9.0.0 C:\Program Files\OpenSSH-Win64\ssh-keyscan.exe
+    Application ssh-shellhost.exe 7.9.0.0 C:\Program Files\OpenSSH-Win64\ssh-shellhost.exe
+
+Check that you have the ssh-agent running
+
+Get-Service ssh-agent
+
+Status   Name               DisplayName
+------   ----               -----------
+Running  ssh-agent          ssh-agent
+
+Configure our git client to use our newly installed binaries for ssh
+
+git config --global core.sshCommand "'C:\Program Files\OpenSSH-Win64\ssh.exe'"
+
+Ensure that it has been configured properly
+
+Get-Content $env:USERPROFILE\.gitconfig | Select-String sshCommand -Context 6
+
+[core]
+        excludesfile = ~/.gitignore_global
+        sshCommand = 'C:\\Program Files\\OpenSSH-Win64\\ssh.exe'
+
+I wanted to remove any existing identities (but this could be optional)
+
+ssh-add -D
+
+Add new identites
+
+ssh-add 
+
+Then we should be good to go ;)
+
+
+~~~~~~
 
 
 Following are setup steps for OpenSSH shipped with Windows 10 v.1803 (April 2018 update. See comments to this post, it might not work with 1809).
