@@ -244,16 +244,16 @@ const transferToRemote = async (projectName, localPath) => {
 
         conn.exec("mkdir -p /" + rmtProjPath.replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ ') + "/{dense,sparse,images}", (err, stream) => {
             if (err) {
-                logMain("[WK_DLD] ssh2 - mkdir sparse folder failed: " + err)
+                logMain("[WK_DLD] ssh2 - mkdir {dense,sparse,images} failed: " + err)
             }
 
             stream.on('close', (code, sig) => {
-                logMain("[WK_DLD] ssh2 - mkdir sparse folder closed with code " + code + " and signal " + sig)
-                conn.end()
+                logMain("[WK_DLD] ssh2 - mkdir {dense,sparse,images} closed with code " + code + " and signal " + sig)
+                // conn.end()
             }).on('data', (d) => {
-                logMain("[WK_DLD] ssh2 - mkdir sparse folder STDOUT: " + d)
+                logMain("[WK_DLD] ssh2 - mkdir {dense,sparse,images} STDOUT: " + d)
             }).stderr.on('data', (d) => {
-                logMain("[WK_DLD] ssh2 - mkdir sparse folder STDERR: " + d)
+                logMain("[WK_DLD] ssh2 - mkdir {dense,sparse,images} STDERR: " + d)
             })
         })
     })
@@ -273,19 +273,28 @@ const transferToRemote = async (projectName, localPath) => {
             }
 
             glob(path.resolve(localPath, "./*.jpg"), (err, files) => {
-                // for each file...
-                for (let f in files) {
-                	logMain(path.resolve(files[f]) + " " + path.join(rmtImgPath, path.win32.basename(files[f])))
+            	const fprom = files.map(async file => {
+            		const fstr = await sftp.fastPut(path.resolve(file), path.join(rmtImgPath, path.win32.basename(file)))
+            	})
 
-                    // sftp.fastPut(path.resolve(files[f]), path.join(rmtImgPath, path.win32.basename(files[f])), (err) => {
-                    //     if (err) {
-                    //     	logMain("[WK_DLD] ssh2 - fastPut image failed: " + err)
-                    //     } else {
-                    //     	logMain("[WK_DLD] ssh2 - fastPut image: " + path.join(rmtImgPath, path.win32.basename(files[f])))
-                    //     }
-                    // })
-                    // Announce file transfer progress
-                }
+            	Promise.all(fprom).then(res => {
+            		logMain("[WK_DLD] image transferred.")
+            	}).catch(e => {
+            		logMain("[WK_DLD] image transfer error: " + e)
+            	})
+                // for each file...
+                // for (let f in files) {
+                // 	logMain(path.resolve(files[f]) + " " + path.join(rmtImgPath, path.win32.basename(files[f])))
+
+                //     sftp.fastPut(path.resolve(files[f]), path.join(rmtImgPath, path.win32.basename(files[f])), (err) => {
+                //         if (err) {
+                //         	logMain("[WK_DLD] ssh2 - fastPut image failed: " + err)
+                //         } else {
+                //         	logMain("[WK_DLD] ssh2 - fastPut image: " + path.join(rmtImgPath, path.win32.basename(files[f])))
+                //         }
+                //     })
+                //     // Announce file transfer progress
+                // }
             })
         })
     })
