@@ -160,7 +160,7 @@ const transferToRemote = (projectName, localPath) => {
 
     // logMain(require('path').resolve(require('os').homedir(), "./.ssh/id_rsa"))
 
-    
+
 
     // Create colmap batch file
     // 
@@ -242,61 +242,87 @@ const transferToRemote = (projectName, localPath) => {
     var conn = new Client()
     conn.on('ready', () => {
             logMain("[WK_DLD] ssh2 ready.")
-            conn.sftp((err, sftp) => {
+            logMain("mkdir /" + rmtProjPath.replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ '))
+            conn.exec("mkdir /" + rmtProjPath.replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ '), (err, stream) => {
                 if (err) {
-                    logMain("[WK_DLD] ssh2 - sftp failed: " + err)
+                    logMain("[WK_DLD] ssh2 - mkdir project folder failed: " + err)
                 }
 
-                sftp.mkdir(rmtProjPath, (err) => {
-                    if (err) {
-                    	logMain("[WK_DLD] ssh2 - mkdir project folder failed: " + err)
-                    } else {
-                    	logMain("[WK_DLD] ssh2 - mkdir project folder completed.")
-                    }
+                stream.on('close', (code, sig) => {
+                    logMain("[WK_DLD] ssh2 - mkdir project folder closed with code " + code + " and signal " + sig)
+                    // conn.end()
+                }).on('data', (d) => {
+                    logMain("[WK_DLD] ssh2 - mkdir project folder STDOUT: " + d)
+                }).stderr.on('data', (d) => {
+                    logMain("[WK_DLD] ssh2 - mkdir project folder STDERR: " + d)
                 })
-                sftp.mkdir(path.resolve(rmtProjPath, "./sparse"), (err) => {
-                    if (err) {
-                    	logMain("[WK_DLD] ssh2 - mkdir sparse folder failed: " + err)
-                    } else {
-                    	logMain("[WK_DLD] ssh2 - mkdir sparse folder completed.")
-                    }
-                })
-                sftp.mkdir(path.resolve(rmtProjPath, "./dense"), (err) => {
-                    if (err) {
-                    	logMain("[WK_DLD] ssh2 - mkdir dense folder failed: " + err)
-                    } else {
-                    	logMain("[WK_DLD] ssh2 - mkdir dense folder completed.")
-                    }
-                })
-                sftp.mkdir(rmtImgPath, (err) => {
-                    if (err) {
-                    	logMain("[WK_DLD] ssh2 - mkdir images folder failed: " + err)
-                    } else {
-                    	logMain("[WK_DLD] ssh2 - mkdir images folder completed.")
-                    }
-                })
-
-                // logMain("[WK_DLD] ssh2 - folders created.")
-
-                // glob(path.resolve(localPath, "./*.jpg"), (err, files) => {
-                //     // for each file...
-                //     for (let f in files) {
-                //         sftp.fastPut(files[f], rmtImgPath, (err) => {
-                //             logMain("[WK_DLD] ssh2 - fastPut image failed: " + err)
-                //         })
-                //         // Announce file transfer progress
-                //     }
-                // })
-
-                // Announce file transfer complete
-                // ipcRenderer.send('worker-download-transfer-complete')
-                // ipcRenderer.send('worker-modelling-request-r', {
-                // 	projname: projectName,
-                // 	abspath: absImagePath,
-                // 	rmtpath: rmtImgPath,
-                // 	commands: commands
-                // })
             })
+
+            conn.exec("mkdir /" + path.resolve(rmtProjPath, "./sparse").replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ '), (err, stream) => {
+                if (err) {
+                    logMain("[WK_DLD] ssh2 - mkdir sparse folder failed: " + err)
+                }
+
+                stream.on('close', (code, sig) => {
+                    logMain("[WK_DLD] ssh2 - mkdir sparse folder closed with code " + code + " and signal " + sig)
+                    // conn.end()
+                }).on('data', (d) => {
+                    logMain("[WK_DLD] ssh2 - mkdir sparse folder STDOUT: " + d)
+                }).stderr.on('data', (d) => {
+                    logMain("[WK_DLD] ssh2 - mkdir sparse folder STDERR: " + d)
+                })
+            })
+
+            conn.exec("mkdir /" + path.resolve(rmtProjPath, "./dense").replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ '), (err, stream) => {
+                if (err) {
+                    logMain("[WK_DLD] ssh2 - mkdir dense folder failed: " + err)
+                }
+
+                stream.on('close', (code, sig) => {
+                    logMain("[WK_DLD] ssh2 - mkdir dense folder closed with code " + code + " and signal " + sig)
+                    // conn.end()
+                }).on('data', (d) => {
+                    logMain("[WK_DLD] ssh2 - mkdir dense folder STDOUT: " + d)
+                }).stderr.on('data', (d) => {
+                    logMain("[WK_DLD] ssh2 - mkdir dense folder STDERR: " + d)
+                })
+            })
+
+            conn.exec("mkdir /" + path.resolve(rmtProjPath, "./images").replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ '), (err, stream) => {
+                if (err) {
+                    logMain("[WK_DLD] ssh2 - mkdir images folder failed: " + err)
+                }
+
+                stream.on('close', (code, sig) => {
+                    logMain("[WK_DLD] ssh2 - mkdir images folder closed with code " + code + " and signal " + sig)
+                    // conn.end()
+                }).on('data', (d) => {
+                    logMain("[WK_DLD] ssh2 - mkdir images folder STDOUT: " + d)
+                }).stderr.on('data', (d) => {
+                    logMain("[WK_DLD] ssh2 - mkdir images folder STDERR: " + d)
+                })
+            })
+            //     // logMain("[WK_DLD] ssh2 - folders created.")
+
+            //     // glob(path.resolve(localPath, "./*.jpg"), (err, files) => {
+            //     //     // for each file...
+            //     //     for (let f in files) {
+            //     //         sftp.fastPut(files[f], rmtImgPath, (err) => {
+            //     //             logMain("[WK_DLD] ssh2 - fastPut image failed: " + err)
+            //     //         })
+            //     //         // Announce file transfer progress
+            //     //     }
+            //     // })
+
+            //     // Announce file transfer complete
+            //     // ipcRenderer.send('worker-download-transfer-complete')
+            //     // ipcRenderer.send('worker-modelling-request-r', {
+            //     // 	projname: projectName,
+            //     // 	abspath: absImagePath,
+            //     // 	rmtpath: rmtImgPath,
+            //     // 	commands: commands
+            //     // })
+            // })
         })
         .connect({
             host: '169.254.214.31',
