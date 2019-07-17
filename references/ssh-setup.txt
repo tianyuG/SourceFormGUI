@@ -1,3 +1,5 @@
+install git (windows) on ssh server
+
 https://blog.frankfu.com.au/2019/03/21/moving-from-windows-1809s-openssh-to-openssh-portable/
 
 https://stackoverflow.com/questions/16212816/setting-up-openssh-for-windows-using-public-key-authentication
@@ -13,6 +15,10 @@ https://stackoverflow.com/questions/8250379/sftp-error-received-message-too-long
 !!!
 https://stackoverflow.com/questions/8250379/sftp-error-received-message-too-long
 
+https://superuser.com/questions/1332346/setting-to-use-git-bash-as-default-shell-when-connecting-remotely-via-openssh-to
+
+https://github.com/PowerShell/Win32-OpenSSH/wiki/DefaultShell
+
 Configure your server to use the internal sftp server adding the following directive to /etc/ssh/sshd_config:
 
 Subsystem sftp internal-sftp
@@ -25,8 +31,13 @@ That way, it will not use the user shell to launch the sftp server program.
 
 In C:\ProgramData\ssh\sshd_config:
 
-Match User *
-ForceCommand internal-sftp
+(Do not use forcecommand in match user,)
+(change default editor in registry instead)
+(HKLM\SOFTWARE\OpenSSH, <string> DefaultShell to)
+(C:\Program Files\Git\bin\bash.exe)
+
+#Match User *
+#ForceCommand internal-sftp
 
 
 !!!
