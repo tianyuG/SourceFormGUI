@@ -158,10 +158,6 @@ const transferToRemote = async (projectName, localPath) => {
     let colmapBatch = ""
     let commands = []
 
-    // logMain(require('path').resolve(require('os').homedir(), "./.ssh/id_rsa"))
-
-
-
     // Create colmap batch file
     // 
     // Step 1: COLMAP photogrammetry
@@ -240,65 +236,97 @@ const transferToRemote = async (projectName, localPath) => {
     var conn = new Client()
 
     conn.on('ready', () => {
-        logMain("mkdir -p /" + rmtProjPath.replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ ') + "/{dense,sparse,images}")
+            logMain("mkdir -p /" + rmtProjPath.replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ ') + "/{dense,sparse,images}")
 
-        conn.exec("mkdir -p /" + rmtProjPath.replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ ') + "/{dense,sparse,images}", (err, stream) => {
+            conn.exec("mkdir -p /" + rmtProjPath.replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ ') + "/{dense,sparse,images}", (err, stream) => {
+                if (err) {
+                    logMain("[WK_DLD] ssh2 - mkdir {dense,sparse,images} failed: " + err)
+                }
+
+                stream.on('close', (code, sig) => {
+                    logMain("[WK_DLD] ssh2 - mkdir {dense,sparse,images} closed with code " + code + " and signal " + sig)
+                    // conn.end()
+                }).on('data', (d) => {
+                    logMain("[WK_DLD] ssh2 - mkdir {dense,sparse,images} STDOUT: " + d)
+                }).stderr.on('data', (d) => {
+                    logMain("[WK_DLD] ssh2 - mkdir {dense,sparse,images} STDERR: " + d)
+                })
+            })
+        })
+        .connect({
+            host: rmtIP,
+            port: 22,
+            username: 'tianyu',
+            // ignoreErrors: true,
+            // debug: logMain,
+            privateKey: require('fs').readFileSync('C:\\Users\\Tianyu\\.ssh\\id_rsa')
+        })
+
+    conn.on('ready', () => {
+            conn.sftp((err, sftp) => {
+                if (err) {
+                    logMain("[WK_DLD] ssh2 - sftp failed: " + err)
+                }
+
+                glob(path.resolve(localPath, "./*.jpg"), (err, files) => {
+                    const fprom = files.map(async file => {
+                        const fstr = await sftp.fastPut(path.resolve(file), path.join(rmtImgPath, path.win32.basename(file)))
+                    })
+
+                    Promise.all(fprom).then(res => {
+                        logMain("[WK_DLD] image transferred.")
+                        logMain(commands.toString())
+                        ipcRenderer.send("worker-download-done", commands)
+
+                    }).catch(e => {
+                        logMain("[WK_DLD] image transfer error: " + e)
+                    })
+                    // for each file...
+                    // for (let f in files) {
+                    // 	logMain(path.resolve(files[f]) + " " + path.join(rmtImgPath, path.win32.basename(files[f])))
+
+                    //     sftp.fastPut(path.resolve(files[f]), path.join(rmtImgPath, path.win32.basename(files[f])), (err) => {
+                    //         if (err) {
+                    //         	logMain("[WK_DLD] ssh2 - fastPut image failed: " + err)
+                    //         } else {
+                    //         	logMain("[WK_DLD] ssh2 - fastPut image: " + path.join(rmtImgPath, path.win32.basename(files[f])))
+                    //         }
+                    //     })
+                    //     // Announce file transfer progress
+                    // }
+                })
+            })
+        })
+        .connect({
+            host: rmtIP,
+            port: 22,
+            username: 'tianyu',
+            // ignoreErrors: true,
+            // debug: logMain,
+            privateKey: require('fs').readFileSync('C:\\Users\\Tianyu\\.ssh\\id_rsa')
+        })
+
+    conn.on('ready', () => {
+        // TODO: testing only
+        // !!!: remove before production
+        // commands = ['exec /C/Users/Tianyu/Desktop/COLMAP-dev-windows/RUN_TESTS.bat']
+        commands = ['exec /C/Users/Tianyu/Desktop/COLMAP-dev-windows/TEST.bat "C:\\Users"']
+
+        conn.exec(commands[0], (err, stream) => {
             if (err) {
-                logMain("[WK_DLD] ssh2 - mkdir {dense,sparse,images} failed: " + err)
+                logMain("!!!!!" + err)
             }
 
             stream.on('close', (code, sig) => {
-                logMain("[WK_DLD] ssh2 - mkdir {dense,sparse,images} closed with code " + code + " and signal " + sig)
+                logMain("[WK_DLD] ssh2 - commands[0] closed with code " + code + " and signal " + sig)
                 // conn.end()
             }).on('data', (d) => {
-                logMain("[WK_DLD] ssh2 - mkdir {dense,sparse,images} STDOUT: " + d)
+                logMain("[WK_DLD] ssh2 - commands[0] STDOUT: " + d)
             }).stderr.on('data', (d) => {
-                logMain("[WK_DLD] ssh2 - mkdir {dense,sparse,images} STDERR: " + d)
+                logMain("[WK_DLD] ssh2 - commands[0] STDERR: " + d)
             })
         })
-    })
-    .connect({
-        host: rmtIP,
-        port: 22,
-        username: 'tianyu',
-        // ignoreErrors: true,
-        // debug: logMain,
-        privateKey: require('fs').readFileSync('C:\\Users\\Tianyu\\.ssh\\id_rsa')
-    })
-
-    conn.on('ready', () => {
-        conn.sftp((err, sftp) => {
-            if (err) {
-                logMain("[WK_DLD] ssh2 - sftp failed: " + err)
-            }
-
-            glob(path.resolve(localPath, "./*.jpg"), (err, files) => {
-            	const fprom = files.map(async file => {
-            		const fstr = await sftp.fastPut(path.resolve(file), path.join(rmtImgPath, path.win32.basename(file)))
-            	})
-
-            	Promise.all(fprom).then(res => {
-            		logMain("[WK_DLD] image transferred.")
-            	}).catch(e => {
-            		logMain("[WK_DLD] image transfer error: " + e)
-            	})
-                // for each file...
-                // for (let f in files) {
-                // 	logMain(path.resolve(files[f]) + " " + path.join(rmtImgPath, path.win32.basename(files[f])))
-
-                //     sftp.fastPut(path.resolve(files[f]), path.join(rmtImgPath, path.win32.basename(files[f])), (err) => {
-                //         if (err) {
-                //         	logMain("[WK_DLD] ssh2 - fastPut image failed: " + err)
-                //         } else {
-                //         	logMain("[WK_DLD] ssh2 - fastPut image: " + path.join(rmtImgPath, path.win32.basename(files[f])))
-                //         }
-                //     })
-                //     // Announce file transfer progress
-                // }
-            })
-        })
-    })
-    .connect({
+    }).connect({
         host: rmtIP,
         port: 22,
         username: 'tianyu',
