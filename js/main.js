@@ -282,12 +282,6 @@ app.on('ready', async () => {
         Promise.all(promises)
             .then(() => {
 
-                // TODO: SIGNAL DOWNLOAD COMPLETE
-                logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
-                logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
-                logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
-                logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
-
                 windows.workerDownloadHelper.send('worker-download-image-complete', {n: dlProjN, d: dlDir})
             })
     })

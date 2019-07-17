@@ -151,9 +151,9 @@ const transferToRemote = async (projectName, localPath) => {
 
     let colmapPath = require('electron').remote.getGlobal('remoteCOLMAPPath')
     logMain("[WK_DLD] colampPath: " + colmapPath)
-    let colmapExecPath = path.join(colmapPath, "COLMAP.bat")
+    let colmapExecPath = "/" + path.join(colmapPath, "COLMAP.bat").replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ ')
     logMain("[WK_DLD] colmapExecPath: " + colmapExecPath)
-    let meshlabPath = require('electron').remote.getGlobal('remoteMeshlabPath')
+    let meshlabPath = "/" + require('electron').remote.getGlobal('remoteMeshlabPath').replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ ')
     logMain("[WK_DLD] meshlabPath: " + meshlabPath)
     let colmapBatch = ""
     let commands = []
@@ -179,32 +179,32 @@ const transferToRemote = async (projectName, localPath) => {
     // feature_extractor
     // NOTE: GPU is disabled in this step or it could crash
     colmapBatch = colmapExecPath + " feature_extractor"
-    colmapBatch += " --database_path " + jpath(rmtProjPath, "database.db")
-    colmapBatch += " --image_path " + jpath(rmtProjPath, "images")
+    colmapBatch += " --database_path " + jpathw32(rmtProjPath, "database.db")
+    colmapBatch += " --image_path " + jpathw32(rmtProjPath, "images")
     colmapBatch += " --SiftExtraction.use_gpu 0"
     commands.push(colmapBatch)
     // exhaustive_matcher
     colmapBatch = colmapExecPath + " exhaustive_matcher"
-    colmapBatch += " --database_path " + jpath(rmtProjPath, "database.db")
+    colmapBatch += " --database_path " + jpathw32(rmtProjPath, "database.db")
     colmapBatch += " --SiftMatching.use_gpu 1"
     commands.push(colmapBatch)
     // mapper
     colmapBatch = colmapExecPath + " mapper"
-    colmapBatch += " --database_path " + jpath(rmtProjPath, "database.db")
-    colmapBatch += " --image_path " + jpath(rmtProjPath, "images")
-    colmapBatch += " --output_path " + jpath(rmtProjPath, "sparse")
+    colmapBatch += " --database_path " + jpathw32(rmtProjPath, "database.db")
+    colmapBatch += " --image_path " + jpathw32(rmtProjPath, "images")
+    colmapBatch += " --output_path " + jpathw32(rmtProjPath, "sparse")
     commands.push(colmapBatch)
     // image_undistorter
     colmapBatch = colmapExecPath + " image_undistorter"
-    colmapBatch += " --image_path " + jpath(rmtProjPath, "images")
-    colmapBatch += " --input_path " + jpath(rmtProjPath, "sparse/0")
-    colmapBatch += " --output_path " + jpath(rmtProjPath, "dense")
+    colmapBatch += " --image_path " + jpathw32(rmtProjPath, "images")
+    colmapBatch += " --input_path " + jpathw32(rmtProjPath, "sparse/0")
+    colmapBatch += " --output_path " + jpathw32(rmtProjPath, "dense")
     colmapBatch += " --output_type COLMAP"
     colmapBatch += " --max_image_size 2000"
     commands.push(colmapBatch)
     // patch_match_stereo
     colmapBatch = colmapExecPath + " patch_match_stereo"
-    colmapBatch += " --workspace_path " + jpath(rmtProjPath, "dense")
+    colmapBatch += " --workspace_path " + jpathw32(rmtProjPath, "dense")
     colmapBatch += " --PatchMatchStereo.geom_consistency true"
     colmapBatch += " --PatchMatchStereo.num_iterations 4"
     colmapBatch += " --PatchMatchStereo.window_step 2"
@@ -213,20 +213,20 @@ const transferToRemote = async (projectName, localPath) => {
     commands.push(colmapBatch)
     // stereo_fusion
     colmapBatch = colmapExecPath + " stereo_fusion"
-    colmapBatch += " --workspace_path " + jpath(rmtProjPath, "dense")
+    colmapBatch += " --workspace_path " + jpathw32(rmtProjPath, "dense")
     colmapBatch += " --workspace_format COLMAP"
     colmapBatch += " --input_type geometric"
-    colmapBatch += " --output_path " + jpath(rmtProjPath, "dense", "fused.ply")
+    colmapBatch += " --output_path " + jpathw32(rmtProjPath, "dense", "fused.ply")
     commands.push(colmapBatch)
     // 
     // STEP 2
     // pointcloud.py
-    colmapBatch = "python " + jpath(colmapPath, "pointcloud.py") + " " + jpath(rmtProjPath, "dense", "fused.ply")
+    colmapBatch = "python " + jpathw32(colmapPath, "pointcloud.py") + " " + jpathw32(rmtProjPath, "dense", "fused.ply")
     commands.push(colmapBatch)
     // 
     // STEP 3
     // meshlab
-    colmapBatch = jpath(meshlabPath, "meshlabserver.exe") + " -i " + jpath(rmtProjPath, "dense", "new_fused.ply") + " -o " + jpath(rmtProjPath, "dense", "new_fused.stl")
+    colmapBatch = jpath(meshlabPath, "meshlabserver.exe") + " -i " + jpathw32(rmtProjPath, "dense", "new_fused.ply") + " -o " + jpathw32(rmtProjPath, "dense", "new_fused.stl")
     commands.push(colmapBatch)
     // 
     // STEP 4
@@ -236,7 +236,7 @@ const transferToRemote = async (projectName, localPath) => {
     var conn = new Client()
 
     conn.on('ready', () => {
-            logMain("mkdir -p /" + rmtProjPath.replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ ') + "/{dense,sparse,images}")
+            // logMain("mkdir -p /" + rmtProjPath.replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ ') + "/{dense,sparse,images}")
 
             conn.exec("mkdir -p /" + rmtProjPath.replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ ') + "/{dense,sparse,images}", (err, stream) => {
                 if (err) {
@@ -275,7 +275,7 @@ const transferToRemote = async (projectName, localPath) => {
 
                     Promise.all(fprom).then(res => {
                         logMain("[WK_DLD] image transferred.")
-                        logMain(commands.toString())
+                        // logMain(commands.toString())
                         ipcRenderer.send("worker-download-done", commands)
 
                     }).catch(e => {
@@ -310,22 +310,27 @@ const transferToRemote = async (projectName, localPath) => {
         // TODO: testing only
         // !!!: remove before production
         // commands = ['exec /C/Users/Tianyu/Desktop/COLMAP-dev-windows/RUN_TESTS.bat']
-        commands = ['exec /C/Users/Tianyu/Desktop/COLMAP-dev-windows/TEST.bat "C:\\Users"']
+        // commands = ['exec /C/Users/Tianyu/Desktop/COLMAP-dev-windows/TEST.bat "C:\\Users"']
 
-        conn.exec(commands[0], (err, stream) => {
-            if (err) {
-                logMain("!!!!!" + err)
-            }
+        // conn.exec(commands[0], (err, stream) => {
+        //     if (err) {
+        //         logMain("!!!!!" + err)
+        //     }
 
-            stream.on('close', (code, sig) => {
-                logMain("[WK_DLD] ssh2 - commands[0] closed with code " + code + " and signal " + sig)
-                // conn.end()
-            }).on('data', (d) => {
-                logMain("[WK_DLD] ssh2 - commands[0] STDOUT: " + d)
-            }).stderr.on('data', (d) => {
-                logMain("[WK_DLD] ssh2 - commands[0] STDERR: " + d)
-            })
-        })
+        //     stream.on('close', (code, sig) => {
+        //         logMain("[WK_DLD] ssh2 - commands[0] closed with code " + code + " and signal " + sig)
+        //         // conn.end()
+        //     }).on('data', (d) => {
+        //         logMain("[WK_DLD] ssh2 - commands[0] STDOUT: " + d)
+        //     }).stderr.on('data', (d) => {
+        //         logMain("[WK_DLD] ssh2 - commands[0] STDERR: " + d)
+        //     })
+        // })
+
+        for (var i in commands) {
+        	logMain(commands[i])
+        	logMain("-")
+        }
     }).connect({
         host: rmtIP,
         port: 22,
@@ -342,4 +347,9 @@ const transferToRemote = async (projectName, localPath) => {
 const jpath = (...p) => {
     return path.join(...p)
         .replace(/\\+/g, '\\\\')
+}
+
+// Join path and parse with delimiter for batch files
+const jpathw32 = (...p) => {
+    return "\"" + path.join(...p) + "\""
 }
