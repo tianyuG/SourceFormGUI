@@ -227,6 +227,7 @@ app.on('ready', async () => {
         // console.log(data)
         const dlDir = data.properties.directory
         const dlUrlArr = data.url
+        const dlProjN = data.properties.projn
         const CancelToken = axios.CancelToken
         let dlTimeout = 15000
         if (global.downloadTimeout != null && global.downloadTimeout >= 5000) {
@@ -285,7 +286,7 @@ app.on('ready', async () => {
                 logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
                 logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
 
-                windows.workerDownloadHelper.send('worker-download-image-complete', dlDir)
+                windows.workerDownloadHelper.send('worker-download-image-complete', [dlProjN, dlDir])
             })
     })
 })

@@ -1,0 +1,2 @@
+route add 10.0.0.0 MASK 255.255.255.0 10.0.0.1 metric 1 IF 18 -p
+add 10.0.0.0 (subnet mask 255.255.255.0) to gateway 10.0.0.1 with metric of 1 to interface 18 (route print) persistently

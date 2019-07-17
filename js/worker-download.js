@@ -83,9 +83,14 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
 	ipcRenderer.send('image-download-request', {
 		url: results,
 		properties: {
-			directory: absImagePath
+			directory: absImagePath,
+			projn: name_f
 		}
 	})
+})
+
+ipcRenderer.on('worker-download-image-complete', async (event, message) => {
+	await transferToRemote(message[0], message[1])
 })
 
 /*
@@ -132,11 +137,12 @@ const populateManifest = async (currImageCount, perPage, name_s, imageSize, absI
 }
 
 const transferToRemote = async (projectName, localPath) => {
+	logMain("[WK_DLD] Starting to transfer to remote.")
 	let rmtIP = require('electron')
 		.remote.getGlobal('remoteIP')
 	let rmtPath = require('electron')
 		.remote.getGlobal('remotePath')
-	let rmtProjPath = path.join(rmtPath, rojectName)
+	let rmtProjPath = path.join(rmtPath, projectName)
 	let rmtImgPath = path.join(rmtImgPath, "/images")
 
 	let Client = ssh.Client()
@@ -257,12 +263,12 @@ const transferToRemote = async (projectName, localPath) => {
 
 				// Announce file transfer complete
 				ipcRenderer.send('worker-download-transfer-complete')
-				ipcRenderer.send('worker-modelling-request-r', {
-					projname: projectName,
-					abspath: absImagePath,
-					rmtpath: rmtImgPath,
-					commands: commands
-				})
+				// ipcRenderer.send('worker-modelling-request-r', {
+				// 	projname: projectName,
+				// 	abspath: absImagePath,
+				// 	rmtpath: rmtImgPath,
+				// 	commands: commands
+				// })
 			})
 		})
 		.connect({
