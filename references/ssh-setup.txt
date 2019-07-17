@@ -4,7 +4,7 @@ https://stackoverflow.com/questions/16212816/setting-up-openssh-for-windows-usin
 
 https://github.com/PowerShell/Win32-OpenSSH/issues/800
 
-
+!!! SERVER: choco install openssh --package-parameters="/SSHAgentFeature /SSHServerFeature"
 
 After performing the obligatory google search, I stumbled across several threads but still couldn't find a solution. This annoyed me enough to look for other alternatives and discovered a Windows port of OpenSSH Portable. So since I didn't want (probably not even possible) to have both binaries (and ssh-agents) running side by side. I decided it would be best that I remove Window's 1809's installed version first then install OpenSSH Portable
 Uninstall Windows' OpenSSH
