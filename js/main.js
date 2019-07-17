@@ -286,7 +286,7 @@ app.on('ready', async () => {
                 logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
                 logDebug("!!!!! TESTTESTTESTTESTTEST !!!!!")
 
-                windows.workerDownloadHelper.send('worker-download-image-complete', [dlProjN, dlDir])
+                windows.workerDownloadHelper.send('worker-download-image-complete', {n: dlProjN, d: dlDir})
             })
     })
 })
