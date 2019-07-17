@@ -84,7 +84,7 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
         url: results,
         properties: {
             directory: absImagePath,
-            projn: name_f
+            projn: ident
         }
     })
 })
@@ -248,19 +248,35 @@ const transferToRemote = (projectName, localPath) => {
                 }
 
                 sftp.mkdir(rmtProjPath, (err) => {
-                    logMain("[WK_DLD] ssh2 - mkdir project folder failed: " + err)
+                    if (err) {
+                    	logMain("[WK_DLD] ssh2 - mkdir project folder failed: " + err)
+                    } else {
+                    	logMain("[WK_DLD] ssh2 - mkdir project folder completed.")
+                    }
                 })
                 sftp.mkdir(path.resolve(rmtProjPath, "./sparse"), (err) => {
-                    logMain("[WK_DLD] ssh2 - mkdir sparse folder failed: " + err)
+                    if (err) {
+                    	logMain("[WK_DLD] ssh2 - mkdir sparse folder failed: " + err)
+                    } else {
+                    	logMain("[WK_DLD] ssh2 - mkdir sparse folder completed.")
+                    }
                 })
                 sftp.mkdir(path.resolve(rmtProjPath, "./dense"), (err) => {
-                    logMain("[WK_DLD] ssh2 - mkdir dense folder failed: " + err)
+                    if (err) {
+                    	logMain("[WK_DLD] ssh2 - mkdir dense folder failed: " + err)
+                    } else {
+                    	logMain("[WK_DLD] ssh2 - mkdir dense folder completed.")
+                    }
                 })
                 sftp.mkdir(rmtImgPath, (err) => {
-                    logMain("[WK_DLD] ssh2 - mkdir images folder failed: " + err)
+                    if (err) {
+                    	logMain("[WK_DLD] ssh2 - mkdir images folder failed: " + err)
+                    } else {
+                    	logMain("[WK_DLD] ssh2 - mkdir images folder completed.")
+                    }
                 })
 
-                logMain("[WK_DLD] ssh2 - folders created.")
+                // logMain("[WK_DLD] ssh2 - folders created.")
 
                 // glob(path.resolve(localPath, "./*.jpg"), (err, files) => {
                 //     // for each file...
@@ -286,6 +302,8 @@ const transferToRemote = (projectName, localPath) => {
             host: '169.254.214.31',
             port: 22,
             username: 'tianyu',
+            // ignoreErrors: true,
+            // debug: logMain,
             privateKey: require('fs').readFileSync('C:\\Users\\Tianyu\\.ssh\\id_rsa')
         })
 }
