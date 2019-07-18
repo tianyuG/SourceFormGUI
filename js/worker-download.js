@@ -25,8 +25,9 @@ let flickr = new Flickr(require('electron')
 
 ipcRenderer.on('worker-download-search', async (event, message) => {
     let t = new Date()
+    t.setTime(message["ts"])
     let t_iso = t.toISOString()
-    let name_o = message.trim()
+    let name_o = message["res"]
     let name_s = purify.sanitize(name_o)
     let name_f = name_s.trim()
         .toLowerCase()
@@ -187,7 +188,8 @@ const transferToRemote = async (projectName, localPath) => {
     // exhaustive_matcher
     colmapBatch = colmapExecPath + " exhaustive_matcher"
     colmapBatch += " --database_path " + jpathw32(rmtProjPath, "database.db")
-    colmapBatch += " --SiftMatching.use_gpu 1"
+    // colmapBatch += " --SiftMatching.use_gpu 1"
+    colmapBatch += " --SiftMatching.use_gpu 0"
     commands.push(colmapBatch)
     // mapper
     colmapBatch = colmapExecPath + " mapper"
@@ -209,7 +211,7 @@ const transferToRemote = async (projectName, localPath) => {
     colmapBatch += " --PatchMatchStereo.geom_consistency true"
     colmapBatch += " --PatchMatchStereo.num_iterations 4"
     colmapBatch += " --PatchMatchStereo.window_step 2"
-    colmapBatch += " --PatchMatchStereo.gpu_index 0,1"
+    // colmapBatch += " --PatchMatchStereo.gpu_index 0,1"
     colmapBatch += " --PatchMatchStereo.num_samples 10"
     commands.push(colmapBatch)
     // stereo_fusion

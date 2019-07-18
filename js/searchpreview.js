@@ -1,14 +1,14 @@
 const {
-	ipcRenderer,
-	remote
+    ipcRenderer,
+    remote
 } = require('electron')
 const Flickr = require('flickr-sdk')
 const http = require('http');
 const parse = require('url')
-	.parse;
+    .parse;
 const purify = require('dompurify')
 const fs = require('fs')
-	.promises
+    .promises
 const path = require("path")
 
 /*
@@ -17,44 +17,44 @@ const path = require("path")
 let searchResult = ""
 
 ipcRenderer.once('search-query-relay', async (event, message) => {
-	searchResult = message
-	document.getElementById("preview-search-query")
-		.innerHTML = "“" + message + "”"
+    searchResult = message
+    document.getElementById("preview-search-query")
+        .innerHTML = "“" + message + "”"
 
-	let ret = await checkAgainstExisting(message)
+    let ret = await checkAgainstExisting(message)
 
-	if (ret.length > 0) {
-		let nid = ret[0].id
-		let ndate = ret[0].updated
+    if (ret.length > 0) {
+        let nid = ret[0].id
+        let ndate = ret[0].updated
 
-		for (let entry in ret) {
-			if (Date.parse(ret[entry].updated) > ndate) {
-				nid = ret[entry].id
-				ndate = ret[entry].updated
-			}
-		}
-		document.getElementById("preview-ysf")
-			.innerHTML = "You searched for:"
-	}
+        for (let entry in ret) {
+            if (Date.parse(ret[entry].updated) > ndate) {
+                nid = ret[entry].id
+                ndate = ret[entry].updated
+            }
+        }
+        document.getElementById("preview-ysf")
+            .innerHTML = "You searched for:"
+    }
 
-	let flickr = new Flickr(require('electron')
-		.remote.getGlobal('flickrKey'))
+    let flickr = new Flickr(require('electron')
+        .remote.getGlobal('flickrKey'))
 
-	let result = flickr.photos.search({
-			text: message,
-			extras: "url_n, owner_name, description, license",
-			privacy_filter: 1,
-			safe_search: 3,
-			sort: "relevance",
-			per_page: 20
-		})
-		.then(function(res) {
-			// logDebug(JSON.stringify(res.body.photos))
-			populateGrid(res.body.photos.photo)
-		})
-		.catch(function(err) {
-			logMain("[SPREV] image preview failed: " + err);
-		});
+    let result = flickr.photos.search({
+            text: message,
+            extras: "url_n, owner_name, description, license",
+            privacy_filter: 1,
+            safe_search: 3,
+            sort: "relevance",
+            per_page: 20
+        })
+        .then(function(res) {
+            // logDebug(JSON.stringify(res.body.photos))
+            populateGrid(res.body.photos.photo)
+        })
+        .catch(function(err) {
+            logMain("[SPREV] image preview failed: " + err);
+        });
 })
 
 const continueButton = document.getElementById("preview-yes")
@@ -63,51 +63,51 @@ const cancelButton = document.getElementById("preview-cancel")
 
 
 continueButton.addEventListener('mousedown', function() {
-	document.getElementById('preview-yes').style.backgroundColor ="#666"
-	document.getElementById('preview-yes-1').style.color ="#fff"
-	document.getElementById('preview-yes-2').style.color ="#ccc"
+    document.getElementById('preview-yes').style.backgroundColor = "#666"
+    document.getElementById('preview-yes-1').style.color = "#fff"
+    document.getElementById('preview-yes-2').style.color = "#ccc"
 })
 
 continueButton.addEventListener('mouseup', function() {
-	document.getElementById('preview-yes').style.backgroundColor ="#fff"
-	document.getElementById('preview-yes-1').style.color ="#000"
-	document.getElementById('preview-yes-1').style.color ="#666"
+    document.getElementById('preview-yes').style.backgroundColor = "#fff"
+    document.getElementById('preview-yes-1').style.color = "#000"
+    document.getElementById('preview-yes-1').style.color = "#666"
 })
 
 continueButton.addEventListener('click', function() {
-	// logMain("TO-DELEGATE")
-	ipcRenderer.send('worker-download-search-r', searchResult)
+    // logMain("TO-DELEGATE")
+    ipcRenderer.send('worker-download-search-r', { res: searchResult, sres: purify.sanitize(searchResult) })
 })
 
 abortButton.addEventListener('mousedown', function() {
-	document.getElementById('preview-no').style.backgroundColor ="#fff"
-	document.getElementById('preview-no-1').style.color ="#c1272d"
-	document.getElementById('preview-no-2').style.color ="#666"
+    document.getElementById('preview-no').style.backgroundColor = "#fff"
+    document.getElementById('preview-no-1').style.color = "#c1272d"
+    document.getElementById('preview-no-2').style.color = "#666"
 })
 
 abortButton.addEventListener('mouseup', function() {
-	document.getElementById('preview-no').style.backgroundColor ="#c1272d"
-	document.getElementById('preview-no-1').style.color ="#000"
-	document.getElementById('preview-no-2').style.color ="#ccc"
+    document.getElementById('preview-no').style.backgroundColor = "#c1272d"
+    document.getElementById('preview-no-1').style.color = "#000"
+    document.getElementById('preview-no-2').style.color = "#ccc"
 })
 
 abortButton.addEventListener('click', function() {
-	ipcRenderer.send('preview-aborted', searchResult)
+    ipcRenderer.send('preview-aborted', searchResult)
 })
 
 cancelButton.addEventListener('mousedown', function() {
-	document.getElementById('preview-cancel').style.backgroundColor ="#666"
-	document.getElementById('preview-cancel-1').style.color ="#ccc"
+    document.getElementById('preview-cancel').style.backgroundColor = "#666"
+    document.getElementById('preview-cancel-1').style.color = "#ccc"
 })
 
 cancelButton.addEventListener('mouseup', function() {
-	document.getElementById('preview-cancel').style.backgroundColor ="#ccc"
-	document.getElementById('preview-cancel-1').style.color ="#666"
+    document.getElementById('preview-cancel').style.backgroundColor = "#ccc"
+    document.getElementById('preview-cancel-1').style.color = "#666"
 })
 
 
 cancelButton.addEventListener('click', function() {
-	ipcRenderer.send('preview-cancelled')
+    ipcRenderer.send('preview-cancelled')
 })
 
 // async function getPhotoPreviewURLs(query) {
@@ -148,69 +148,69 @@ cancelButton.addEventListener('click', function() {
 // - To use this function with an array of Flickr.photos.photo, use map()
 // - For original images, it can be in jpg, gif, or png format.
 const constructFlickrImageURL = (photo, size = "") => {
-	if (["s", "q", "t", "m", "n", "-", "z", "c", "b", "h", "k"].includes(size)) {
-		// scaled images
-		// format: https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_[mstzb].jpg
-		return "https://farm" + photo.farm + ".staticflickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_" + size + ".jpg"
-	} else if (["o"].includes(size)) {
-		// special case for original image
-		// TODO: NOT IMPLEMENTED. 
-		// Flickr.photos.search needs the 
-	} else {
-		// size not specified
-		// format: https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
-		return "https://farm" + photo.farm + ".staticflickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + ".jpg"
-	}
+    if (["s", "q", "t", "m", "n", "-", "z", "c", "b", "h", "k"].includes(size)) {
+        // scaled images
+        // format: https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_[mstzb].jpg
+        return "https://farm" + photo.farm + ".staticflickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_" + size + ".jpg"
+    } else if (["o"].includes(size)) {
+        // special case for original image
+        // TODO: NOT IMPLEMENTED. 
+        // Flickr.photos.search needs the 
+    } else {
+        // size not specified
+        // format: https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
+        return "https://farm" + photo.farm + ".staticflickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + ".jpg"
+    }
 }
 
 const populateGrid = (photos) => {
-	// logDebug(JSON.stringify(photos))
-	let count = 0
-	for (let i = 0; i < 20; i++) {
-		if (count < 8 && (photos[i].farm != 0 || photos[i].server != "0")) {
-			// let el = document.createElement('img')
-			// // logDebug(JSON.stringify(photos[i]))
-			// el.src = constructFlickrImageURL(photos[i], "n")
-			// el.id = "grid-item-" + i
-			// document.getElementById("preview-grid")
-			// 	.appendChild(el)
-			let el = document.createElement('span')
-			el.style.backgroundImage = "url(\'" + constructFlickrImageURL(photos[i], "n") +"\')"
-			el.id = "grid-item-" + i
-			document.getElementById("preview-grid")
-				.appendChild(el)
-			count++
-		}
-	}
+    // logDebug(JSON.stringify(photos))
+    let count = 0
+    for (let i = 0; i < 20; i++) {
+        if (count < 8 && (photos[i].farm != 0 || photos[i].server != "0")) {
+            // let el = document.createElement('img')
+            // // logDebug(JSON.stringify(photos[i]))
+            // el.src = constructFlickrImageURL(photos[i], "n")
+            // el.id = "grid-item-" + i
+            // document.getElementById("preview-grid")
+            // 	.appendChild(el)
+            let el = document.createElement('span')
+            el.style.backgroundImage = "url(\'" + constructFlickrImageURL(photos[i], "n") + "\')"
+            el.id = "grid-item-" + i
+            document.getElementById("preview-grid")
+                .appendChild(el)
+            count++
+        }
+    }
 }
 
 /*
  * Check search term against existing models
  */
 const checkAgainstExisting = async (term) => {
-	const sanitised = purify.sanitize(term)
-		.trim()
-		.toLowerCase()
-		.replace(/\s+/g, '-')
-	logDebug(sanitised)
+    const sanitised = purify.sanitize(term)
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+    logDebug(sanitised)
 
-	let jsonObj = JSON.parse(await fs.readFile(path.resolve(__dirname, "../carousel/content.json")));
-	// logDebug(JSON.stringify(jsonObj))
-	let retArr = []
+    let jsonObj = JSON.parse(await fs.readFile(path.resolve(__dirname, "../carousel/content.json")));
+    // logDebug(JSON.stringify(jsonObj))
+    let retArr = []
 
-	for (let entry in jsonObj) {
-		logDebug(JSON.stringify(jsonObj[entry]))
-		if (jsonObj[entry].sanitised_title == sanitised) {
-			logDebug("FOUND json entry")
-			retArr.unshift({
-				"id": entry,
-				"path": jsonObj[entry].path,
-				"updated": jsonObj[entry].updated
-			})
-		}
-	}
-	logDebug(JSON.stringify(retArr))
-	return retArr
+    for (let entry in jsonObj) {
+        logDebug(JSON.stringify(jsonObj[entry]))
+        if (jsonObj[entry].sanitised_title == sanitised) {
+            logDebug("FOUND json entry")
+            retArr.unshift({
+                "id": entry,
+                "path": jsonObj[entry].path,
+                "updated": jsonObj[entry].updated
+            })
+        }
+    }
+    logDebug(JSON.stringify(retArr))
+    return retArr
 }
 
 require('electron')

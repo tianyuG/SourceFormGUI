@@ -44,7 +44,7 @@ ipcRenderer.on('worker-modelling-request', async (event, message) => {
                 logMain("[WK_MDL] ssh2 - exec/" + i + " STDOUT: " + data)
               }).stderr.on('data', (data) => {
                 // stderr
-                logMain("[WK_MDL] ssh2 - exec/" + i + "STDERR: " + data)
+                logMain("[WK_MDL] ssh2 - exec/" + i + " STDERR: " + data)
               })
               setTimeout(() => {
               	stream.signal("QUIT")

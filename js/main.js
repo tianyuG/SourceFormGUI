@@ -160,18 +160,18 @@ app.on('ready', async () => {
         webPreferences: {
             nodeIntegration: true
         },
-        // show: true
-        show: false
+        show: true
+        // show: false
     })
-    // windows.workerDownload.webContents.openDevTools()
+    windows.workerDownload.webContents.openDevTools()
     windows.workerDownloadHelper = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true
         },
-        // show: true
-        show: false
+        show: true
+        // show: false
     })
-    // windows.workerDownloadHelper.webContents.openDevTools()
+    windows.workerDownloadHelper.webContents.openDevTools()
     windows.workerModelling = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true
@@ -447,14 +447,21 @@ ipcMain.on('ld-main', (event, data) => {
 })
 
 ipcMain.on('worker-download-search-r', (event, data) => {
-    logDebug("[MAIN] delegating image download: " + data)
-    windows.workerDownloadHelper.send('worker-download-search', data)
-    // windows.main.send("search-complete-relay", data)
-    windows.main.loadFile("./html/searchcomplete.html")
-    // windows.main.webContents.openDevTools()
-    windows.main.webContents.once('dom-ready', () => {
-        windows.main.webContents.send('search-complete-relay', data);
-    })
+	let ts = new Date()
+	// let ts_iso = ts.toISOString()
+	let name_o = data["res"].trim()
+	let name_s = data["sres"]
+	let name_p = name_s.trim().toLowerCase().replace(/\s+/g, '-').replace(/\\+/g, '').replace(/\"+/g, '')
+	global.jobs.push({name: name_o, timestamp: ts, status: "downloading", localpath: path.resolve(global.imagePath, "./" + name_p + "_" + ts.getTime()), remotepath: path.resolve(global.remotePath, "./" + name_p + "_" + ts.getTime())})
+  logDebug("[MAIN] delegating image download: " + data["res"])
+  logDebug("[MAIN] delegating image download: " + JSON.stringify(global.jobs))
+  windows.workerDownloadHelper.send('worker-download-search', {res: name_o, ts: ts.getTime()})
+  // windows.main.send("search-complete-relay", data)
+  windows.main.loadFile("./html/searchcomplete.html")
+  // windows.main.webContents.openDevTools()
+  windows.main.webContents.once('dom-ready', () => {
+      windows.main.webContents.send('search-complete-relay', data["res"]);
+  })
 })
 
 // ipcMain.on('worker-modelling-request-r', (event, data) => {

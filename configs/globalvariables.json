@@ -19,6 +19,6 @@
   "remotePath": "C:\\Users\\Tianyu\\Desktop\\SFProc",
   "remoteCOLMAPPath": "C:\\Users\\Tianyu\\Desktop\\COLMAP-dev-windows",
   "remoteMeshlabPath": "C:\\Program Files\\VCG\\MeshLab\\bin",
-  "remoteCommandsTimeout": [5, 5, 5, 5, 5, 5, 5, 5],
+  "remoteCommandsTimeout": [500, 500, 500, 500, 500, 500, 500, 500],
   "remoteCommandsTimeoutRemark": "time out in seconds for each of the commands executed"
 }
