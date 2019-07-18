@@ -172,19 +172,22 @@ app.on('ready', async () => {
         show: false
     })
     // windows.workerDownloadHelper.webContents.openDevTools()
-    windows.workerModelling =
-        new BrowserWindow({
-            webPreferences: {
-                nodeIntegration: true
-            },
-            show: false
-        })
+    windows.workerModelling = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true
+        },
+        show: true
+        // show: false
+    })
     windows.workerModellingHelper = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true
         },
-        show: false
+        show: true
+        // show: false
     })
+    windows.workerModelling.webContents.openDevTools()
+    windows.workerModellingHelper.webContents.openDevTools()
     windows.workerPrinting = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true
@@ -454,14 +457,14 @@ ipcMain.on('worker-download-search-r', (event, data) => {
     })
 })
 
-ipcMain.on('worker-modelling-request-r', (event, data) => {
-    logDebug("[MAIN] delegating modelling request: " + JSON.stringify(data))
-    windows.workerModellingHelper.send('worker-modelling-request', data)
-})
+// ipcMain.on('worker-modelling-request-r', (event, data) => {
+//     logDebug("[MAIN] delegating modelling request: " + JSON.stringify(data))
+//     windows.workerModellingHelper.send('worker-modelling-request', data)
+// })
 
 ipcMain.on('worker-download-transfer-done-r', (event, data) => {
-	logDebug("[MAIN] delegating modelling request: " + JSON.stringify(data))
-    // windows.workerModellingHelper.send('worker-modelling-request', data)
+    logDebug("[MAIN] delegating modelling request: " + JSON.stringify(data))
+    windows.workerModellingHelper.send('worker-modelling-request', data)
 })
 
 ipcMain.on('worker-printing-request-r', (event, data) => {
