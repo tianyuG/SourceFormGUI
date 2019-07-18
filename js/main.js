@@ -282,7 +282,7 @@ app.on('ready', async () => {
         Promise.all(promises)
             .then(() => {
 
-                windows.workerDownloadHelper.send('worker-download-image-complete', {n: dlProjN, d: dlDir})
+                windows.workerDownloadHelper.send('worker-download-image-complete', { n: dlProjN, d: dlDir })
             })
     })
 })
@@ -455,14 +455,21 @@ ipcMain.on('worker-download-search-r', (event, data) => {
 })
 
 ipcMain.on('worker-modelling-request-r', (event, data) => {
-    logDebug("[MAIN] delegating modelling request: " + data)
+    logDebug("[MAIN] delegating modelling request: " + JSON.stringify(data))
     windows.workerModellingHelper.send('worker-modelling-request', data)
 })
 
+ipcMain.on('worker-download-transfer-done-r', (event, data) => {
+	logDebug("[MAIN] delegating modelling request: " + JSON.stringify(data))
+    // windows.workerModellingHelper.send('worker-modelling-request', data)
+})
+
 ipcMain.on('worker-printing-request-r', (event, data) => {
-    logDebug("[MAIN] delegating printing request: " + data)
+    logDebug("[MAIN] delegating printing request: " + JSON.stringify(data))
     windows.workerPrintingHelper.send('worker-printing-request', data)
 })
+
+
 
 /*
  *

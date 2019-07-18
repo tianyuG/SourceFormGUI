@@ -143,6 +143,7 @@ const transferToRemote = async (projectName, localPath) => {
         .remote.getGlobal('remoteIP')
     let rmtPath = require('electron')
         .remote.getGlobal('remotePath')
+    let rmtUser = require('electron').remote.getGlobal('remoteUsername')
     logMain("[WK_DLD] rmtIP, rmtPath: " + rmtIP + " " + rmtPath)
     logMain("[WK_DLD] projectName, localPath: " + projectName + " " + localPath)
     let rmtProjPath = require('path').join(rmtPath, projectName)
@@ -246,6 +247,7 @@ const transferToRemote = async (projectName, localPath) => {
                 stream.on('close', (code, sig) => {
                     logMain("[WK_DLD] ssh2 - mkdir {dense,sparse,images} closed with code " + code + " and signal " + sig)
                     // conn.end()
+                    // ipcRenderer.send("worker-download-mkdir-done")
                 }).on('data', (d) => {
                     logMain("[WK_DLD] ssh2 - mkdir {dense,sparse,images} STDOUT: " + d)
                 }).stderr.on('data', (d) => {
@@ -256,7 +258,7 @@ const transferToRemote = async (projectName, localPath) => {
         .connect({
             host: rmtIP,
             port: 22,
-            username: 'tianyu',
+            username: rmtUser,
             // ignoreErrors: true,
             // debug: logMain,
             privateKey: require('fs').readFileSync('C:\\Users\\Tianyu\\.ssh\\id_rsa')
@@ -273,12 +275,11 @@ const transferToRemote = async (projectName, localPath) => {
                         const fstr = await sftp.fastPut(path.resolve(file), path.join(rmtImgPath, path.win32.basename(file)))
                     })
 
-                    Promise.all(fprom).then(res => {
+                    Promise.all(fprom).then((res) => {
                         logMain("[WK_DLD] image transferred.")
                         // logMain(commands.toString())
-                        ipcRenderer.send("worker-download-done", commands)
-
-                    }).catch(e => {
+                        ipcRenderer.send("worker-download-transfer-done-r", { projname: projectName, abspath: localPath, rmtpath: rmtImgPath, commands: commands })
+                    }).catch((e) => {
                         logMain("[WK_DLD] image transfer error: " + e)
                     })
                     // for each file...
@@ -300,45 +301,45 @@ const transferToRemote = async (projectName, localPath) => {
         .connect({
             host: rmtIP,
             port: 22,
-            username: 'tianyu',
+            username: rmtUser,
             // ignoreErrors: true,
             // debug: logMain,
             privateKey: require('fs').readFileSync('C:\\Users\\Tianyu\\.ssh\\id_rsa')
         })
 
-    conn.on('ready', () => {
-        // TODO: testing only
-        // !!!: remove before production
-        // commands = ['exec /C/Users/Tianyu/Desktop/COLMAP-dev-windows/RUN_TESTS.bat']
-        // commands = ['exec /C/Users/Tianyu/Desktop/COLMAP-dev-windows/TEST.bat "C:\\Users"']
+    // conn.on('ready', () => {
+    //     // TODO: testing only
+    //     // !!!: remove before production
+    //     // commands = ['exec /C/Users/Tianyu/Desktop/COLMAP-dev-windows/RUN_TESTS.bat']
+    //     // commands = ['exec /C/Users/Tianyu/Desktop/COLMAP-dev-windows/TEST.bat "C:\\Users"']
 
-        // conn.exec(commands[0], (err, stream) => {
-        //     if (err) {
-        //         logMain("!!!!!" + err)
-        //     }
+    //     // conn.exec(commands[0], (err, stream) => {
+    //     //     if (err) {
+    //     //         logMain("!!!!!" + err)
+    //     //     }
 
-        //     stream.on('close', (code, sig) => {
-        //         logMain("[WK_DLD] ssh2 - commands[0] closed with code " + code + " and signal " + sig)
-        //         // conn.end()
-        //     }).on('data', (d) => {
-        //         logMain("[WK_DLD] ssh2 - commands[0] STDOUT: " + d)
-        //     }).stderr.on('data', (d) => {
-        //         logMain("[WK_DLD] ssh2 - commands[0] STDERR: " + d)
-        //     })
-        // })
+    //     //     stream.on('close', (code, sig) => {
+    //     //         logMain("[WK_DLD] ssh2 - commands[0] closed with code " + code + " and signal " + sig)
+    //     //         // conn.end()
+    //     //     }).on('data', (d) => {
+    //     //         logMain("[WK_DLD] ssh2 - commands[0] STDOUT: " + d)
+    //     //     }).stderr.on('data', (d) => {
+    //     //         logMain("[WK_DLD] ssh2 - commands[0] STDERR: " + d)
+    //     //     })
+    //     // })
 
-        for (var i in commands) {
-        	logMain(commands[i])
-        	logMain("-")
-        }
-    }).connect({
-        host: rmtIP,
-        port: 22,
-        username: 'tianyu',
-        // ignoreErrors: true,
-        // debug: logMain,
-        privateKey: require('fs').readFileSync('C:\\Users\\Tianyu\\.ssh\\id_rsa')
-    })
+    //     for (var i in commands) {
+    //         logMain(commands[i])
+    //         logMain("-")
+    //     }
+    // }).connect({
+    //     host: rmtIP,
+    //     port: 22,
+    //     username: 'tianyu',
+    //     // ignoreErrors: true,
+    //     // debug: logMain,
+    //     privateKey: require('fs').readFileSync('C:\\Users\\Tianyu\\.ssh\\id_rsa')
+    // })
 
 
 }

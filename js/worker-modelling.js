@@ -10,11 +10,13 @@ const glob = require('glob')
 
 ipcRenderer.on('worker-modelling-request', async (event, message) => {
 	// message: { projname:projectName, abspath:absImagePath, rmtPath:rmtImgPath }
-	// 
+	logDebug("[WK_MDL] Acquired modelling request.")
 	let projName = message['projname']
 	let absPath = message['abspath']
 	let rmtPath = message['rmtpath']
 	let cmds = message['commands']
+
+	let rmtUser = require('electron').remote.getGlobal('remoteUsername')
 
 	let Client = ssh.Client()
 	let conn = new Client()
@@ -56,9 +58,7 @@ ipcRenderer.on('worker-modelling-request', async (event, message) => {
 		.connect({
 			host: rmtIP,
 			port: 22,
-			username: 'SourceForm',
-			privateKey: require('fs')
-				.readFileSync(path.join(require('os')
-					.homedir(), "/.ssh/id_rsa"));
+			username: rmtUser,
+			privateKey: require('fs').readFileSync('C:\\Users\\Tianyu\\.ssh\\id_rsa')
 		})
 })
