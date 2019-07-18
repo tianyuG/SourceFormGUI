@@ -149,6 +149,10 @@ $(document).mousedown((e) => {
     currElem = e.target
 })
 
+$(document).click((e) => {
+    currElem = e.target
+})
+
 // // search field handlers
 // $(document).touchstart((e) => {
 //     currElem = e.target
@@ -164,8 +168,13 @@ checkSearchFieldOnClick = () => {
 // Restore default content in the searchfield textbox if textbox loose focus and is blank
 checkSearchFieldOnBlur = () => {
 	// console.log(currElem)
-    if (document.getElementById("searchfield").value === "" && currElem != null && !$(currElem).hasClass("virtual-keyboard")) {
+    if (document.getElementById("searchfield").value === "" && currElem != null && !$(currElem).hasClass("virtual-keyboard") && !$(currElem).hasClass("kb-row")) {
         document.getElementById("searchfield").value = "search for a new object";
+    }
+
+    if ($(currElem).hasClass("virtual-keyboard") || $(currElem).hasClass("kb-row")) {
+    	document.getElementById("searchfield").focus()
+    	$('div.virtual-keyboard').css("left", "80px");
     }
 }
 
