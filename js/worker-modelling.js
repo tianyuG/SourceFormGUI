@@ -1,10 +1,10 @@
 const {
-    ipcRenderer,
-    remote
+	ipcRenderer,
+	remote
 } = require('electron')
 const path = require("path")
 const fs = require('fs')
-    .promises
+.promises
 const ssh = require('ssh2')
 const glob = require('glob')
 
@@ -25,52 +25,51 @@ ipcRenderer.on('worker-modelling-request', async (event, message) => {
     let canMoveOn = true
 
     conn.on('ready', async () => {
-            for (let i = 0; i < cmds.length; i++) {
-                if (canMoveOn) {
-                    let cmdlet = new Promise((resolve, reject) => {
-                        conn.exec(cmds[i], (err, stream) => {
-                            if (err) {
-                                logMain("[WK_MDL] ssh2 - exec/" + i + " failed: " + err)
-                            }
-                            stream.on('close', (ecode, sig) => {
-                                logMain("[WK_MDL] ssh2 - exec/" + i + " stream close: exit code " + ecode + ", signal: " + sig)
-                                if (ecode == 0) {
-                                    resolve()
-                                } else {
-                                    reject()
-                                }
-                                // stream.end()
-                                // exec/1
-                                // 
-                            }).on('data', (data) => {
-                                // stdout
-                                logMain("[WK_MDL] ssh2 - exec/" + i + " STDOUT: " + data)
-                            }).stderr.on('data', (data) => {
-                                // stderr
-                                logMain("[WK_MDL] ssh2 - exec/" + i + "STDERR: " + data)
-                            })
-                            setTimeout(() => {
-                                stream.signal("QUIT")
-                                reject(new Error("exec/" + i + " timed out"))
-                            }, cmdsTO[i] * 1000)
-                        })
-                    })
+    	for (let i = 0; i < cmds.length; i++) {
+    		if (canMoveOn) {
+    			let cmdlet = new Promise((resolve, reject) => {
+    				conn.exec(cmds[i], (err, stream) => {
+    					if (err) {
+    						logMain("[WK_MDL] ssh2 - exec/" + i + " failed: " + err)
+    					}
+    					stream.on('close', (ecode, sig) => {
+    						logMain("[WK_MDL] ssh2 - exec/" + i + " stream close: exit code " + ecode + ", signal: " + sig)
+    						if (ecode == 0) {
+    							resolve()
+    						} else {
+    							reject()
+    						}
+    					}).on('data', (data) => {
+                // stdout
+                logMain("[WK_MDL] ssh2 - exec/" + i + " STDOUT: " + data)
+              }).stderr.on('data', (data) => {
+                // stderr
+                logMain("[WK_MDL] ssh2 - exec/" + i + "STDERR: " + data)
+              })
+              setTimeout(() => {
+              	stream.signal("QUIT")
+              	reject(new Error("exec/" + i + " timed out"))
+              }, cmdsTO[i] * 1000)
+            })
+    			})
 
-                    await cmdlet.then(() => {
-                        logMain("[WK_MDL] COMPLETE-2")
-                    }).catch((err) => {
-                        logMain("[WK_MDL] ERR-2: " + err)
-                        ipcRenderer.send("worker-modelling-failed-at", i)
-                        canMoveOn = false
-                    })
-                }
-            }
+    			await cmdlet.then(() => {
+    				logMain("[WK_MDL] COMPLETE-2")
+    			}).catch((err) => {
+    				logMain("[WK_MDL] ERR-2: " + err)
+    				ipcRenderer.send("worker-modelling-failed-at", i)
+    				canMoveOn = false
+    			})
+    		}
+    	}
 
-        })
-        .connect({
-            host: rmtIP,
-            port: 22,
-            username: rmtUser,
-            privateKey: require('fs').readFileSync('C:\\Users\\Tianyu\\.ssh\\id_rsa')
-        })
-})
+    	// TODO:
+    	// If all commands are executed successfully, fetch sliced images from remote
+    })
+    .connect({
+    	host: rmtIP,
+    	port: 22,
+    	username: rmtUser,
+    	privateKey: require('fs').readFileSync('C:\\Users\\Tianyu\\.ssh\\id_rsa')
+    })
+  })
