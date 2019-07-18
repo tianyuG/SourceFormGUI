@@ -176,18 +176,18 @@ app.on('ready', async () => {
         webPreferences: {
             nodeIntegration: true
         },
-        show: true
-        // show: false
+        // show: true
+        show: false
     })
     windows.workerModellingHelper = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true
         },
-        show: true
-        // show: false
+        // show: true
+        show: false
     })
-    windows.workerModelling.webContents.openDevTools()
-    windows.workerModellingHelper.webContents.openDevTools()
+    // windows.workerModelling.webContents.openDevTools()
+    // windows.workerModellingHelper.webContents.openDevTools()
     windows.workerPrinting = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true
