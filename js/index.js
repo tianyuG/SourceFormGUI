@@ -149,10 +149,10 @@ $(document).mousedown((e) => {
     currElem = e.target
 })
 
-// search field handlers
-$(document).touchstart((e) => {
-    currElem = e.target
-})
+// // search field handlers
+// $(document).touchstart((e) => {
+//     currElem = e.target
+// })
 
 // Remove default content in the searchfield textbox on click
 checkSearchFieldOnClick = () => {
