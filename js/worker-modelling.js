@@ -54,9 +54,9 @@ ipcRenderer.on('worker-modelling-request', async (event, message) => {
     			})
 
     			await cmdlet.then(() => {
-    				logMain("[WK_MDL] COMPLETE-2")
+    				logMain("[WK_MDL] exec/" + i + " COMPLETE")
     			}).catch((err) => {
-    				logMain("[WK_MDL] ERR-2: " + err)
+    				logMain("[WK_MDL] exec/" + i + " ERR: " + err)
     				ipcRenderer.send("worker-modelling-failed-at", i)
     				canMoveOn = false
     			})
