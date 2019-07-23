@@ -266,15 +266,22 @@ const transferToRemote = async (projectName, localPath) => {
             privateKey: require('fs').readFileSync('C:\\Users\\Tianyu\\.ssh\\id_rsa')
         })
 
-    conn.on('ready', () => {
+    conn.on('ready', async () => {
+
             conn.sftp((err, sftp) => {
                 if (err) {
                     logMain("[WK_DLD] ssh2 - sftp failed: " + err)
                 }
 
                 glob(path.resolve(localPath, "./*.jpg"), (err, files) => {
+                	logMain("[WK_DLD] glob found " + files.length + " files")
                     const fprom = files.map(async file => {
-                        const fstr = await sftp.fastPut(path.resolve(file), path.join(rmtImgPath, path.win32.basename(file)))
+                        const fstr = await sftp.fastPut(path.resolve(file), path.join(rmtImgPath, path.win32.basename(file)), (err) => {
+                        	if (err) {
+                        		logMain("[WK_DLD] fastPut error: " + err)
+                        	}
+                        })
+                        // logDebug(path.join(rmtImgPath, path.win32.basename(file)))
                     })
 
                     Promise.all(fprom).then((res) => {
