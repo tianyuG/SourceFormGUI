@@ -20,21 +20,21 @@ require('electron')
             require('electron').webFrame.setZoomFactor(0.8)
         }
 
-        for (var i = 21; i > 0; i--) {
-            await sleep(1000)
-            if (i > 2) {
-                document.getElementById("item-timer")
-                    .innerHTML = "Returning to search page in " + (i - 1) + " seconds."
-            } else if (i == 2) {
-                document.getElementById("item-timer")
-                    .innerHTML = "Returning to search page in " + (i - 1) + " second."
-            } else {
-                document.getElementById("item-timer")
-                    .innerHTML = " "
-            }
-        }
+        // for (var i = 21; i > 0; i--) {
+        //     await sleep(1000)
+        //     if (i > 2) {
+        //         document.getElementById("item-timer")
+        //             .innerHTML = "Returning to search page in " + (i - 1) + " seconds."
+        //     } else if (i == 2) {
+        //         document.getElementById("item-timer")
+        //             .innerHTML = "Returning to search page in " + (i - 1) + " second."
+        //     } else {
+        //         document.getElementById("item-timer")
+        //             .innerHTML = " "
+        //     }
+        // }
 
-        ipcRenderer.send("preview-cancelled")
+        // ipcRenderer.send("preview-cancelled")
     });
 
 sleep = (ms) => {

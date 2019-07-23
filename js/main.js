@@ -587,3 +587,9 @@ const logDebug = (arg) => {
  		});
  	}
  }
+
+ // const checkExistingJobs = (currStage) => {
+ //    if (global.jobs.length != 0) {
+        
+ //    }
+ // }
