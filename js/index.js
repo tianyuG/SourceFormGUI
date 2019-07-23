@@ -291,3 +291,23 @@ require('electron')
             require('electron').webFrame.setZoomFactor(0.8)
         }
     })
+
+document.getElementById('bg0000').addEventListener('click', () => {
+	ipcRenderer.send("bg0000-clicked")
+	logMain("[INDEX] BG0000 clicked.")
+})
+
+document.getElementById('bg0001').addEventListener('click', () => {
+	ipcRenderer.send("bg0001-clicked")
+	logMain("[INDEX] BG0001 clicked")
+})
+
+document.getElementById('bg0002').addEventListener('click', () => {
+	ipcRenderer.send("bg0002-clicked")
+	logMain("[INDEX] BG0002 clicked")
+})
+
+document.getElementById('bg0003').addEventListener('click', () => {
+	ipcRenderer.send("bg0003-clicked")
+	logMain("[INDEX] BG0003 clicked")
+})

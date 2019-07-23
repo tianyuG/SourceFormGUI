@@ -53,6 +53,18 @@
 	background-image: url(../carousel/imgs/0003.jpg);
 }
 
+#bg0004 {
+	background-image: url(../carousel/imgs/0004.jpg);
+}
+
+#bg0005 {
+	background-image: url(../carousel/imgs/0005.jpg);
+}
+
+#bg0006 {
+	background-image: url(../carousel/imgs/0006.jpg);
+}
+
 .swiper-slide-alt-wrapper {
 	width: 398px;
 	overflow: hidden;

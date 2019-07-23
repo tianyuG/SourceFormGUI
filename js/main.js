@@ -500,6 +500,13 @@ ipcMain.on('worker-printing-request-r', (event, data) => {
 	windows.workerPrintingHelper.send('worker-printing-request', data)
 })
 
+ipcMain.on('bg0000-clicked', (event, data) => {
+    windows.workerPrintingHelper.send('worker-printing-request', "")
+    windows.main.loadFile("./html/searchcomplete.html")
+    windows.main.webContents.once('dom-ready', () => {
+        windows.main.webContents.send('search-complete-relay', "STATUE OF LIBERTY")
+    })
+})
 
 
 /*
@@ -590,6 +597,6 @@ const logDebug = (arg) => {
 
  // const checkExistingJobs = (currStage) => {
  //    if (global.jobs.length != 0) {
-        
+
  //    }
  // }
