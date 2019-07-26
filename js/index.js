@@ -241,10 +241,10 @@ let carousel = new Swiper('.swiper-container', {
     // slideToClickedSlide: true, // DO NOT use, doesn't work as intended
     loop: true,
     // DEBUG: Comment the next four lines to disable autoplay
-    // autoplay: {
-    // 	delay: 3000,
-    // 	disableOnInteraction: false,
-    // }
+    autoplay: {
+    	delay: 3000,
+    	disableOnInteraction: false,
+    }
 });
 
 // Show the description for the image in the centre of the carousel
@@ -310,4 +310,9 @@ document.getElementById('bg0002').addEventListener('click', () => {
 document.getElementById('bg0003').addEventListener('click', () => {
 	ipcRenderer.send("bg0003-clicked")
 	logMain("[INDEX] BG0003 clicked")
+})
+
+document.getElementById('bg0004').addEventListener('click', () => {
+	ipcRenderer.send("bg0004-clicked")
+	logMain("[INDEX] BG0004 clicked")
 })
