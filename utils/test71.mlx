@@ -1,0 +1,58 @@
+<!DOCTYPE FilterScript>
+<FilterScript>
+ <filter name="Transform: Rotate">
+  <Param enum_cardinality="4" enum_val0="X axis" value="0" enum_val2="Z axis" enum_val3="custom axis" enum_val1="Y axis" tooltip="Choose a method" type="RichEnum" description="Rotation on:" name="rotAxis"/>
+  <Param enum_cardinality="3" enum_val0="origin" value="0" enum_val2="custom point" enum_val1="barycenter" tooltip="Choose a method" type="RichEnum" description="Center of rotation:" name="rotCenter"/>
+  <Param max="360" value="90" min="-360" tooltip="Angle of rotation (in &lt;b>degree&lt;/b>). If snapping is enable this vaule is rounded according to the snap value" type="RichDynamicFloat" description="Rotation Angle" name="angle"/>
+  <Param x="0" z="0" y="0" tooltip="This rotation axis is used only if the 'custom axis' option is chosen." type="RichPoint3f" description="Custom axis" name="customAxis"/>
+  <Param x="0" z="0" y="0" tooltip="This rotation center is used only if the 'custom point' option is chosen." type="RichPoint3f" description="Custom center" name="customCenter"/>
+  <Param value="false" tooltip="If selected, before starting the filter will remove anyy unreference vertex (for which curvature values are not defined)" type="RichBool" description="Snap angle" name="snapFlag"/>
+  <Param value="30" tooltip="This value is used to snap the rotation angle (i.e. if the snapping value is 30, 227 becomes 210)." type="RichFloat" description="Snapping Value" name="snapAngle"/>
+  <Param value="true" tooltip="The transformation is explicitly applied, and the vertex coordinates are actually changed" type="RichBool" description="Freeze Matrix" name="Freeze"/>
+  <Param value="false" tooltip="If selected the filter will be applied to all visible mesh layers" type="RichBool" description="Apply to all visible Layers" name="allLayers"/>
+ </filter>
+ <filter name="Compute normals for point sets">
+  <Param value="10" tooltip="The number of neighbors used to estimate normals." type="RichInt" description="Neighbour num" name="K"/>
+  <Param value="0" tooltip="The number of smoothing iteration done on the p used to estimate and propagate normals." type="RichInt" description="Smooth Iteration" name="smoothIter"/>
+  <Param value="false" tooltip="If the 'viewpoint' (i.e. scanner position) is known, it can be used to disambiguate normals orientation, so that all the normals will be oriented in the same direction." type="RichBool" description="Flip normals w.r.t. viewpoint" name="flipFlag"/>
+  <Param x="0" z="0" y="0" tooltip="The viewpoint position can be set by hand (i.e. getting the current viewpoint) or it can be retrieved from mesh camera, if the viewpoint position is stored there." type="RichPoint3f" description="Viewpoint Pos." name="viewPos"/>
+ </filter>
+ <filter name="Fractal Displacement">
+  <Param max="12.2768" value="0.122767" min="0" tooltip="Defines the maximum height for the perturbation." type="RichAbsPerc" description="Max height:" name="maxHeight"/>
+  <Param max="10" value="1" min="0" tooltip="Scales the fractal perturbation in and out. Values larger than 1 mean zoom out; values smaller than one mean zoom in." type="RichDynamicFloat" description="Scale factor:" name="scale"/>
+  <Param value="5" tooltip="Face normals will be smoothed to make the perturbation more homogeneous. This parameter represents the number of smoothing steps." type="RichInt" description="Normals smoothing steps:" name="smoothingSteps"/>
+  <Param value="2" tooltip="By varying this seed, the terrain morphology will change.&#xa;Don't change the seed if you want to refine the current terrain morphology by changing the other parameters." type="RichFloat" description="Seed:" name="seed"/>
+  <Param enum_cardinality="5" enum_val0="fBM (fractal Brownian Motion)" enum_val4="Ridged multifractal terrain" value="4" enum_val2="Heterogeneous multifractal" enum_val3="Hybrid multifractal terrain" enum_val1="Standard multifractal" tooltip="The algorithm with which the fractal terrain will be generated." type="RichEnum" description="Algorithm" name="algorithm"/>
+  <Param max="20" value="8" min="1" tooltip="The number of Perlin noise frequencies that will be used to generate the terrain. Reasonable values are in range [2,9]." type="RichDynamicFloat" description="Octaves:" name="octaves"/>
+  <Param value="4" tooltip="The gap between noise frequencies. This parameter is used in conjunction with fractal increment to compute the spectral weights that contribute to the noise in each octave." type="RichFloat" description="Lacunarity:" name="lacunarity"/>
+  <Param value="0.2" tooltip="This parameter defines how rough the generated terrain will be. The range of reasonable values changes according to the used algorithm, however you can choose it in range [0.2, 1.5]." type="RichFloat" description="Fractal increment:" name="fractalIncrement"/>
+  <Param value="0.9" tooltip="This parameter controls the multifractality of the generated terrain. If offset is low, then the terrain will be smooth." type="RichFloat" description="Offset:" name="offset"/>
+  <Param value="2.5" tooltip="Ignored in all the algorithms except the ridged one. This parameter defines how hard the terrain will be." type="RichFloat" description="Gain:" name="gain"/>
+  <Param value="false" tooltip="Saves the perturbation value as vertex quality." type="RichBool" description="Save as vertex quality" name="saveAsQuality"/>
+ </filter>
+ <xmlfilter name="Screened Poisson Surface Reconstruction">
+  <xmlparam value="0" name="cgDepth"/>
+  <xmlparam value="false" name="confidence"/>
+  <xmlparam value="12" name="depth"/>
+  <xmlparam value="5" name="fullDepth"/>
+  <xmlparam value="8" name="iters"/>
+  <xmlparam value="0" name="pointWeight"/>
+  <xmlparam value="false" name="preClean"/>
+  <xmlparam value="1.5" name="samplesPerNode"/>
+  <xmlparam value="1.1" name="scale"/>
+  <xmlparam value="false" name="visibleLayer"/>
+ </xmlfilter>
+ <filter name="Change the current layer">
+  <Param value="1" tooltip="The name of the current mesh" type="RichMesh" description="Mesh" name="mesh"/>
+ </filter>
+ <filter name="Remove Isolated pieces (wrt Diameter)">
+  <Param max="16.2851" value="1.62851" min="0" tooltip="Delete all the connected components (floating pieces) with a diameter smaller than the specified one" type="RichAbsPerc" description="Enter max diameter of isolated pieces" name="MinComponentDiag"/>
+  <Param value="true" tooltip="if true, the unreferenced vertices remaining after the face deletion are removed." type="RichBool" description="Remove unfreferenced vertices" name="removeUnref"/>
+ </filter>
+ <filter name="Remove Unreferenced Vertices"/>
+ <filter name="Remove Duplicate Faces"/>
+ <filter name="Remove Isolated pieces (wrt Face Num.)">
+  <Param value="25" tooltip="Delete all the connected components (floating pieces) composed by a number of triangles smaller than the specified one" type="RichInt" description="Enter minimum conn. comp size:" name="MinComponentSize"/>
+  <Param value="true" tooltip="if true, the unreferenced vertices remaining after the face deletion are removed." type="RichBool" description="Remove unfreferenced vertices" name="removeUnref"/>
+ </filter>
+</FilterScript>
