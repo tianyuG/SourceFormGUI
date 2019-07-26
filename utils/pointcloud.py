@@ -68,6 +68,6 @@ if __name__ == "__main__":
     new_pcd.points = Vector3dVector(points)
     new_pcd.colors = Vector3dVector(colors)
     new_pcd.normals = Vector3dVector(normals)
-    write_point_cloud("new_pcd3"+".ply", new_pcd)
+    write_point_cloud("new_pcd3"+".ply", new_pcd, write_ascii=True)
     #draw_geometries([new_pcd])
     #print("")
