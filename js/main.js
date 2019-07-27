@@ -242,6 +242,7 @@ app.on('ready', async () => {
         // console.log(data)
         const dlDir = data.properties.directory
         const dlUrlArr = data.url
+        const dlTS = data.properties.timestamp
         const dlProjN = data.properties.projn
         const CancelToken = axios.CancelToken
         let dlTimeout = 15000
@@ -295,7 +296,7 @@ app.on('ready', async () => {
         Promise.all(promises)
         .then(() => {
 
-        	windows.workerDownloadHelper.send('worker-download-image-complete', { n: dlProjN, d: dlDir })
+        	windows.workerDownloadHelper.send('worker-download-image-complete', { n: dlProjN, d: dlDir, ts: dlTS })
         })
       })
   })
@@ -492,6 +493,7 @@ ipcMain.on('worker-download-search-r', (event, data) => {
 
 ipcMain.on('worker-download-transfer-done-r', (event, data) => {
 	logDebug("[MAIN] delegating modelling request: " + JSON.stringify(data))
+	// TODO: Increment status for this job (data.ts for timestamp)
 	windows.workerModellingHelper.send('worker-modelling-request', data)
 })
 

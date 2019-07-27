@@ -86,14 +86,15 @@ ipcRenderer.on('worker-download-search', async (event, message) => {
         url: results,
         properties: {
             directory: absImagePath,
-            projn: ident
+            projn: ident,
+            timestamp: t.getTime()
         }
     })
 })
 
 ipcRenderer.on('worker-download-image-complete', async (event, message) => {
     // logMain(message["d"])
-    await transferToRemote(message["n"], message["d"])
+    await transferToRemote(message["n"], message["d"], message["ts"])
 })
 
 /*
@@ -139,7 +140,7 @@ const populateManifest = async (currImageCount, perPage, name_s, imageSize, absI
     return urls
 }
 
-const transferToRemote = async (projectName, localPath) => {
+const transferToRemote = async (projectName, localPath, ts) => {
     logMain("[WK_DLD] Starting to transfer to remote.")
     let rmtIP = require('electron')
         .remote.getGlobal('remoteIP')
@@ -156,7 +157,7 @@ const transferToRemote = async (projectName, localPath) => {
     logMain("[WK_DLD] colampPath: " + colmapPath)
     let colmapExecPath = "/" + path.join(colmapPath, "COLMAP.bat").replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ ')
     logMain("[WK_DLD] colmapExecPath: " + colmapExecPath)
-    let meshlabPath = "/" + require('electron').remote.getGlobal('remoteMeshlabPath').replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ ')
+    let meshlabPath = "/" + path.join(require('electron').remote.getGlobal('remoteMeshlabPath'), "meshlabserver.exe").replace(/:+/g, '').replace(/\\+/g, '/').replace(/ +/g, '\\ ')
     logMain("[WK_DLD] meshlabPath: " + meshlabPath)
     let colmapBatch = ""
     let commands = []
@@ -179,52 +180,53 @@ const transferToRemote = async (projectName, localPath) => {
     // commands[08] <- slicing (TODO; stl -> bmps)
     // 
     // STEP 1
-    // feature_extractor
+    // [0] feature_extractor
     // NOTE: GPU is disabled in this step or it could crash
     colmapBatch = colmapExecPath + " feature_extractor"
     colmapBatch += " --database_path " + jpathw32(rmtProjPath, "database.db")
     colmapBatch += " --image_path " + jpathw32(rmtProjPath, "images")
-    colmapBatch += " --SiftExtraction.use_gpu 0"
+    colmapBatch += " --SiftExtraction.use_gpu 0 >> " + jpathw32(rmtProjPath, "00000log.txt")
     commands.push(colmapBatch)
-    // exhaustive_matcher
+    // [1] exhaustive_matcher
     colmapBatch = colmapExecPath + " exhaustive_matcher"
     colmapBatch += " --database_path " + jpathw32(rmtProjPath, "database.db")
-    // colmapBatch += " --SiftMatching.use_gpu 1"
-    colmapBatch += " --SiftMatching.use_gpu 0"
+    colmapBatch += " --SiftMatching.use_gpu 1 >> " + jpathw32(rmtProjPath, "00000log.txt")
+    // colmapBatch += " --SiftMatching.use_gpu"
     commands.push(colmapBatch)
-    // mapper
+    // [2] mapper
     colmapBatch = colmapExecPath + " mapper"
     colmapBatch += " --database_path " + jpathw32(rmtProjPath, "database.db")
     colmapBatch += " --image_path " + jpathw32(rmtProjPath, "images")
-    colmapBatch += " --output_path " + jpathw32(rmtProjPath, "sparse")
+    colmapBatch += " --output_path " + jpathw32(rmtProjPath, "sparse") + " >> " + jpathw32(rmtProjPath, "00000log.txt")
     commands.push(colmapBatch)
-    // image_undistorter
+    // [3] image_undistorter
     colmapBatch = colmapExecPath + " image_undistorter"
     colmapBatch += " --image_path " + jpathw32(rmtProjPath, "images")
     colmapBatch += " --input_path " + jpathw32(rmtProjPath, "sparse/0")
     colmapBatch += " --output_path " + jpathw32(rmtProjPath, "dense")
     colmapBatch += " --output_type COLMAP"
-    colmapBatch += " --max_image_size 2000"
+    colmapBatch += " --max_image_size 2000 >> " + jpathw32(rmtProjPath, "00000log.txt")
     commands.push(colmapBatch)
-    // patch_match_stereo
+    // [4] patch_match_stereo
     colmapBatch = colmapExecPath + " patch_match_stereo"
     colmapBatch += " --workspace_path " + jpathw32(rmtProjPath, "dense")
     colmapBatch += " --PatchMatchStereo.geom_consistency true"
     colmapBatch += " --PatchMatchStereo.num_iterations 4"
     colmapBatch += " --PatchMatchStereo.window_step 2"
-    // colmapBatch += " --PatchMatchStereo.gpu_index 0,1"
-    colmapBatch += " --PatchMatchStereo.num_samples 10"
+    colmapBatch += " --PatchMatchStereo.gpu_index 0,1"
+    colmapBatch += " --PatchMatchStereo.num_samples 10 >> " + jpathw32(rmtProjPath, "00000log.txt")
     commands.push(colmapBatch)
-    // stereo_fusion
+    // [5] stereo_fusion
     colmapBatch = colmapExecPath + " stereo_fusion"
     colmapBatch += " --workspace_path " + jpathw32(rmtProjPath, "dense")
     colmapBatch += " --workspace_format COLMAP"
     colmapBatch += " --input_type geometric"
-    colmapBatch += " --output_path " + jpathw32(rmtProjPath, "dense", "fused.ply")
+    colmapBatch += " --output_path " + jpathw32(rmtProjPath, "dense", "fused.ply") + " >> " + jpathw32(rmtProjPath, "00000log.txt")
     commands.push(colmapBatch)
     // 
     // STEP 2
     // pointcloud.py
+    // Not used: creates way too many vertices
     colmapBatch = "python " + jpathw32(colmapPath, "pointcloud.py") + " " + jpathw32(rmtProjPath, "dense", "fused.ply")
     commands.push(colmapBatch)
     // 
@@ -275,7 +277,7 @@ const transferToRemote = async (projectName, localPath) => {
                                             logMain("[WK_DLD] failed to remove compressed file: " + err)
                                         } else {
                                             logMain("[WK_DLD] removed compressed file.")
-                                            ipcRenderer.send("worker-download-transfer-done-r", { projname: projectName, abspath: localPath, rmtpath: rmtImgPath, commands: commands })
+                                            ipcRenderer.send("worker-download-transfer-done-r", { projname: projectName, abspath: localPath, rmtpath: rmtImgPath, commands: commands, ts: ts })
                                         }
                                     })
                                 }).on('data', (d) => {

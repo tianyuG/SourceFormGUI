@@ -15,6 +15,7 @@ ipcRenderer.on('worker-modelling-request', async (event, message) => {
     let absPath = message['abspath']
     let rmtPath = message['rmtpath']
     let cmds = message['commands']
+    let ts = message['ts']
     let cmdsTO = require('electron').remote.getGlobal('remoteCommandsTimeout')
 
     let rmtUser = require('electron').remote.getGlobal('remoteUsername')

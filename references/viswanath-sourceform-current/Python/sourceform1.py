@@ -24,7 +24,7 @@ def sourceform1():
     port="com3"
     ser=serial.Serial(port,9600,timeout=0)
     #path=input('enter image folder location')
-    path=r'E:\STL\Trials\demoliberty'
+    path=os.path.normpath(sys.argv[1])
     #exp_time=int(input('please enter exp time for 100 microns'))
     exp_time=400
     #path=path
