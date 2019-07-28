@@ -2,8 +2,9 @@ const {
 	ipcRenderer,
 	remote
 } = require('electron')
-const util = require('util')
-const execFile = util.promisify(require('child_process').execFile)
+// const util = require('util')
+// const execFile = util.promisify(require('child_process').execFile)
+const { execFile } = require('child_process')
 
 ipcRenderer.on('worker-printing-request', async (event, message) => {
 	// TODO: Might look into npm package johnny-five
@@ -24,7 +25,5 @@ ipcRenderer.on('worker-printing-request', async (event, message) => {
 		if (stderr) {
 			logMain("[WK_PRN] execFile STDERR: " + stderr)
 		}
-	}).then(() => {
-		ipcRenderer.send("worker-printing-completed")
 	})
 })
