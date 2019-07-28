@@ -523,6 +523,7 @@ ipcMain.on('bg0000-clicked', (event, data) => {
 })
 
 ipcMain.on('testprint-clicked', (event, data) => {
+	ogDebug("[MAIN] delegating printing request: " + JSON.stringify(data))
 	windows.workerPrintingHelper.send('worker-printing-request', {localSlicesPath: "E:\\STL\\Trials\\demoliberty"})
 })
 
