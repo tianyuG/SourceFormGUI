@@ -60,6 +60,7 @@ require('electron')
 		const remoteipinput        = document.getElementById('remoteip-input')
 		const remoteipbtncnfm      = document.getElementById('remoteip-button-confirm');
 		const remoteipwarning      = document.getElementById('remoteip-warning');
+		const testprintbtn         = document.getElementById('testprint-button');
 
 		flickrkeycurr.innerHTML = require('electron')
 			.remote.getGlobal('flickrKey')
@@ -274,5 +275,9 @@ require('electron')
 			if (event.keyCode == 13) {
 				remoteipbtncnfm.click()
 			}
+		})
+
+		testprintbtn.addEventListener('click', () => {
+			ipcRenderer.send("testprint-clicked")
 		})
 	});

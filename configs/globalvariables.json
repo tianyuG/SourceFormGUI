@@ -6,7 +6,7 @@
   "imagePath": "C:\\Users\\Tianyu\\Documents\\SOURCEFORM_TEST",
   "PLY2STLScriptPath": "",
   "STL2BMPScriptPath": "",
-  "printerScriptPath": "",
+  "printerScriptPath": "C:\\Users\\vmeenak\\Desktop\\Sourceform_current\\Python",
   "numberOfImagesPerModel": 1000,
   "imagesPerPage": 100,
   "extraPageCount": 2,

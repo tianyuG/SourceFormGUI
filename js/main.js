@@ -498,16 +498,32 @@ ipcMain.on('worker-download-transfer-done-r', (event, data) => {
 })
 
 ipcMain.on('worker-printing-request-r', (event, data) => {
-	logDebug("[MAIN] delegating printing request: " + JSON.stringify(data))
-	windows.workerPrintingHelper.send('worker-printing-request', data)
+	// Send in: timestamp (ts), local path for the sliced images (localSlicesPath)
+	
+	if (!global.jobs.some((e) => { return e["status"] == 3 })) {
+		logDebug("[MAIN] delegating printing request: " + JSON.stringify(data))
+		windows.workerPrintingHelper.send('worker-printing-request', data)
+	} else {
+		logDebug("[MAIN] could not delegate printing request: a request is already being worked on.")
+	}
+	
 })
 
 ipcMain.on('bg0000-clicked', (event, data) => {
-    windows.workerPrintingHelper.send('worker-printing-request', "")
-    windows.main.loadFile("./html/searchcomplete.html")
+	if (!global.jobs.some((e) => { return e["status"] == 3 })) {
+		logDebug("[MAIN] delegating printing request: " + JSON.stringify(data))
+		windows.workerPrintingHelper.send('worker-printing-request', data)
+		windows.main.loadFile("./html/searchcomplete.html")
     windows.main.webContents.once('dom-ready', () => {
         windows.main.webContents.send('search-complete-relay', "STATUE OF LIBERTY")
     })
+	} else {
+		logDebug("[MAIN] could not delegate printing request: a request is already being worked on.")
+	}
+})
+
+ipcMain.on('testprint-clicked', (event, data) => {
+	windows.workerPrintingHelper.send('worker-printing-request', {localSlicesPath: "E:\\STL\\Trials\\demoliberty"})
 })
 
 
