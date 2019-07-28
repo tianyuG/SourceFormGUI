@@ -509,18 +509,18 @@ ipcMain.on('worker-printing-request-r', (event, data) => {
 	
 })
 
-ipcMain.on('bg0000-clicked', (event, data) => {
-	if (!global.jobs.some((e) => { return e["status"] == 3 })) {
-		logDebug("[MAIN] delegating printing request: " + JSON.stringify(data))
-		windows.workerPrintingHelper.send('worker-printing-request', data)
-		windows.main.loadFile("./html/searchcomplete.html")
-    windows.main.webContents.once('dom-ready', () => {
-        windows.main.webContents.send('search-complete-relay', "STATUE OF LIBERTY")
-    })
-	} else {
-		logDebug("[MAIN] could not delegate printing request: a request is already being worked on.")
-	}
-})
+// ipcMain.on('bg0000-clicked', (event, data) => {
+// 	if (!global.jobs.some((e) => { return e["status"] == 3 })) {
+// 		logDebug("[MAIN] delegating printing request: " + JSON.stringify(data))
+// 		windows.workerPrintingHelper.send('worker-printing-request', data)
+// 		windows.main.loadFile("./html/searchcomplete.html")
+//     windows.main.webContents.once('dom-ready', () => {
+//         windows.main.webContents.send('search-complete-relay', "STATUE OF LIBERTY")
+//     })
+// 	} else {
+// 		logDebug("[MAIN] could not delegate printing request: a request is already being worked on.")
+// 	}
+// })
 
 ipcMain.on('testprint-clicked', (event, data) => {
 	ogDebug("[MAIN] delegating printing request: " + JSON.stringify(data))
