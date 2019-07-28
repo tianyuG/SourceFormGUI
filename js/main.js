@@ -159,7 +159,7 @@ app.on('ready', async () => {
       }
 
       windows.preview.on('ready-to-show', () => {
-      	windows.preview.show()
+      	// windows.preview.show()
       })
 
       windows.preview.on('closed', () => {
