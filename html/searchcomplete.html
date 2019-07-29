@@ -21,7 +21,9 @@
 				<h3>Automated Crowdsourced Object Generator</h3>
 			</div>
 			<div class="progress-container">
-				<p><!-- TEST --></p>
+				<p>
+					<!-- TEST -->
+				</p>
 			</div>
 			<div class="header-swoosh-container">
 				<svg viewBox="0 0 100 20" class="header-swoosh">
@@ -36,13 +38,16 @@
 			<h2 id="item-desc">YOUR SEARCH HAS BEEN ADDED TO THE QUEUE.</h2>
 			<!-- <p class="desc">Keep track of your object on the progress bar below, and on the second screen.</p> -->
 			<p class="desc">Each object can take 40 minutes to model and 30 minutes to print.</p>
-			<!-- <p class="desc" id="item-timer">Returning to search page in 20 seconds.</p> -->
+			<p class="desc" id="item-timer"></p>
 		</div>
-		<div class="tail-container"></div>
-	</div>
-	<script>
-		require("../js/searchcomplete.js")
-	</script>
+		<div class="tail-container">
+			<span id="status-msg">IDLE</span>
+			<img src="../assets/images/progress-02.svg" id="status-bar" style="visibility: show;"/>
+		</div>
+		</div>
+		<script>
+			require("../js/searchcomplete.js")
+		</script>
 </body>
 
 </html>

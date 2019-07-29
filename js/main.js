@@ -527,6 +527,29 @@ ipcMain.on('testprint-clicked', (event, data) => {
 	windows.workerPrintingHelper.send('worker-printing-request', {localSlicesPath: "E:\\STL\\Trials\\demoliberty"})
 })
 
+ipcMain.on('set-status-msg', (event, data) => {
+	windows.main.webContents.getElementById("status-msg").innerHTML = data
+})
+
+ipcMain.on('set-status-bar', (event, data) => {
+	if (data != null) {
+		windows.main.webContents.getElementById("status-bar").src = "../assets/images/progress-0" + data + ".svg"
+	} else {
+		windows.main.webContents.getElementById("status-bar").style.visibility = "hidden"
+	}
+})
+
+// ipcMain.on('timed-status-change', async (event, data) => {
+// 	logDebug("[][][][][][][][][]")
+// 	// let t = data + Math.floor(Math.random() * 1000 * 60 * 40)
+// 	let t = 1
+// 	await setTimeout(function() {
+// 		windows.main.webContents.getElementById("status-msg").innerHTML = "OPERATOR: ATTENTION REQUIRED. CHECK LOG"
+// 		// windows.main.webContents.getElementById("status-msg").style.color = '#c1272d'
+// 		// windows.main.webContents.getElementById("status-bar").style.visibility = "hidden"
+// 	}, t)
+// })
+
 
 /*
  *

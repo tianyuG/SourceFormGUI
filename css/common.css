@@ -82,3 +82,22 @@ a:active {
 	stroke-linejoin: bevel;
 	stroke-linecap: butt;
 }
+
+.tail-container {
+	position: absolute;
+	top: 900px;
+}
+
+#status-msg {
+	position: fixed;
+	left:  80px;
+	bottom: 100px;
+}
+
+#status-bar {
+	width: 1200px;
+	height: auto;
+	position: fixed;
+	right: 80px;
+	bottom: 80px;
+}
