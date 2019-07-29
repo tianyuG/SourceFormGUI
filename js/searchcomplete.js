@@ -12,7 +12,7 @@ ipcRenderer.once('search-complete-relay', (event, message) => {
             .innerHTML = "“" + searchResult.toUpperCase() + "” HAS BEEN ADDED TO THE QUEUE."
         document.getElementById("status-msg")
             .innerHTML = searchResult.toUpperCase()
-        ipcRenderer.send("timed-status-change", 0)
+        // ipcRenderer.send("timed-status-change", 0)
     }
 })
 
