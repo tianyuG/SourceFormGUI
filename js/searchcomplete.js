@@ -25,7 +25,7 @@ require('electron')
                 .webFrame.setZoomFactor(0.8)
         }
 
-        for (var i = 240 + Math.floor(Math.random() * 1000 * 20); i > 0; i--) {
+        for (var i = 240 + Math.floor(Math.random() * 20); i > 0; i--) {
             await sleep(1000)
             if (i > 2) {
                 document.getElementById("item-timer")
@@ -33,7 +33,7 @@ require('electron')
 
                 if (i == 100) {
                     if (Math.random > 0.5) {
-                        i += Math.floor(Math.random() * 1000 * 5)
+                        i += Math.floor(Math.random() * 5)
                     }
                 }
             } else if (i == 2) {
