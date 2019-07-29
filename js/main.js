@@ -390,8 +390,8 @@ ipcMain.on('swap-displays', (evt, arg) => {
  	windows.main.loadFile('./html/index.html')
  	windows.main.webContents.once('dom-ready', () => {
  		windows.main.webContents.send('centre-keyboard');
- 		windows,main.webContents.getElementById("status-msg").innerHTML = "PROCESSING"
- 		windows,main.webContents.getElementById("status-bar").src = "../assets/images/progress-03.svg"
+ 		// windows,main.webContents.getElementById("status-msg").innerHTML = "PROCESSING"
+ 		// windows,main.webContents.getElementById("status-bar").src = "../assets/images/progress-03.svg"
  	})
  });
 
