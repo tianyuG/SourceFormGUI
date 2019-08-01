@@ -37,30 +37,30 @@ if __name__ == "__main__":
     #print("Downsample the point cloud with a voxel of 0.05")
     # downpcd = voxel_down_sample(pcd, voxel_size = 0.0005)
     # draw_geometries([downpcd])
-    width = 0.1
-    samples = 2
+    width = 0.005
+    samples = 1
     points = np.asarray(pcd.points)
     normals = np.asarray(pcd.normals)
     colors = np.asarray(pcd.colors)
     for i in range(points.shape[0]):
         s_width = width / 2
-        incr = s_width / samples
+        incr = s_width / 2
         for j in range(samples):
             pointL = points[i] + incr * j * normals[i]
             pointR = points[i] - incr * j * normals[i]
             additional_points.append(pointL)
             additional_points.append(pointR)
-            additional_colors.append(colors[i])
-            additional_colors.append(colors[i])
+            # additional_colors.append(colors[i])
+            # additional_colors.append(colors[i])
             additional_normals.append(normals[i])
             additional_normals.append(-normals[i])
 
     additional_points = np.array(additional_points)
     points = np.append(points,additional_points,axis=0)
-    colors = np.append(colors,np.array(additional_colors),axis=0)
+    # colors = np.append(colors,np.array(additional_colors),axis=0)
     normals = np.append(normals,np.array(additional_normals),axis=0)
-    points = np.array(rotate90(points))
-    normals  = np.array(rotate90(normals))
+    # points = np.array(rotate90(points))
+    # normals  = np.array(rotate90(normals))
     print("TEST")
 
             # Pass xyz to Open3D.PointCloud.points and visualize
